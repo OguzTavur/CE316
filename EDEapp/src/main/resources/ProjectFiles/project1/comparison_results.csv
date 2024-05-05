@@ -1,2 +1,4 @@
 
 
+src\main\resources\ProjectFiles\project1\result.txt,src\main\resources\ProjectFiles\project1\expectedResult.txt,Match
+src\main\resources\ProjectFiles\project1\result.txt,src\main\resources\ProjectFiles\project1\expectedResult.txt,Mismatch

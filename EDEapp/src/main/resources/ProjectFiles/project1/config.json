@@ -1,0 +1,12 @@
+{
+    "compilerConfig": {
+        "language": "Java",
+        "compiler": "/usr/bin/javac",
+        "compileCommand": "javac {sourceFile}",
+        "runCommand": "java {mainClass}"
+    },
+    "testConfig": {
+        "testInput": "input.txt",
+        "expectedOutput": "output.txt"
+    }
+}

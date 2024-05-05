@@ -1,5 +1,7 @@
 package com.edeapp;
 
+
+
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -176,6 +178,47 @@ public class Controller {
 
         boolean match = compareResult(studentOutputPath, expectedOutputPath, csvFilePath);
         System.out.println("Comparison result: " + (match ? "Match" : "Mismatch"));
+        */
+    }
+
+    public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
+        String compiler = "/usr/bin/javac";
+        String compileCommand = "javac {sourceFile}";
+        String runCommand = "java {mainClass}";
+        String testInput = "input.txt";
+
+        String json = "{\n" +
+                "    \"compilerConfig\": {\n" +
+                "        \"language\": \"" + language + "\",\n" +
+                "        \"compiler\": \"" + compiler + "\",\n" +
+                "        \"compileCommand\": \"" + compileCommand + "\",\n" +
+                "        \"runCommand\": \"" + runCommand + "\"\n" +
+                "    },\n" +
+                "    \"testConfig\": {\n" +
+                "        \"testInput\": \"" + testInput + "\",\n" +
+                "        \"expectedOutput\": \"" + expectedOutputPath + "\"\n" +
+                "    }\n" +
+                "}";
+
+        String pathWithoutFile = inputCodePath.substring(0, inputCodePath.lastIndexOf("\\"));
+        File configFile = new File(pathWithoutFile + "/config.json");
+        try (FileWriter writer = new FileWriter(configFile)) {
+            writer.write(json);
+        }
+
+        return configFile;
+
+        /* Will be put to the method that will run this method
+        String language = "Java";
+        String inputCodePath = "src\\main\\resources\\ProjectFiles\\project1\\result.txt";
+        String expectedOutputPath = "output.txt";
+
+        try {
+            File configFile = createJsonConfiguration(language, inputCodePath, expectedOutputPath);
+            System.out.println("JSON configuration file created: " + configFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         */
     }
 }
