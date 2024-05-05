@@ -15,6 +15,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Controller {
     @FXML
@@ -62,6 +65,7 @@ public class Controller {
                 }
             }
         });
+
     }
 
     // Recursive function to populate the TreeView with subfiles and subdirectories
@@ -142,5 +146,36 @@ public class Controller {
 
         Tab newTab = new Tab(tabHeader,textArea);
         tabPane.getTabs().add(newTab);
+    }
+
+    //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
+    private boolean compareResult(String studentOutputPath, String expectedOutputPath, String csvFilePath) {
+        try {
+            // Read student output and expected output files
+            String studentOutput = new String(Files.readAllBytes(Paths.get(studentOutputPath)));
+            String expectedOutput = new String(Files.readAllBytes(Paths.get(expectedOutputPath)));
+
+            // Compare outputs
+            boolean match = studentOutput.trim().equals(expectedOutput.trim());
+
+            // Write comparison result to CSV file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, true))) {
+                writer.append(studentOutputPath + "," + expectedOutputPath + "," + (match ? "Match" : "Mismatch") + "\n");
+            }
+
+            return match;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        /*
+        String studentOutputPath = "src\\main\\resources\\ProjectFiles\\project1\\result.txt"; // Path to student output file
+        String expectedOutputPath = "src\\main\\resources\\ProjectFiles\\project1\\expectedResult.txt"; // Path to expected output file
+        String csvFilePath = "src\\main\\resources\\ProjectFiles\\project1\\comparison_results.csv"; // Path to CSV file to store results
+
+        boolean match = compareResult(studentOutputPath, expectedOutputPath, csvFilePath);
+        System.out.println("Comparison result: " + (match ? "Match" : "Mismatch"));
+        */
     }
 }
