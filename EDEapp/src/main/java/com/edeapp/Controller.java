@@ -36,11 +36,18 @@ public class Controller {
     }
 
     @FXML
+    protected void onNewProjectButtonClicked(){
+
+    }
+
+    @FXML
     protected void onOpenButtonClicked(){
         DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
         directoryChooser.setTitle("Choose Project Directory");
         directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles")); // Initial Path
         File selectedDirectory = directoryChooser.showDialog(new Popup()); // Popup is used to show Dialog
+        if (selectedDirectory == null)// Check if any directory is selected
+            return;
         _InitialDirectory = selectedDirectory.getAbsoluteFile(); // To store selected root directory
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(selectedDirectory.getAbsoluteFile()));
@@ -93,7 +100,7 @@ public class Controller {
     /*
     This record is used for keeping the File but when we need to display this
      object in a TreeItem object we are able to pass the name of the file by
-     overriding soString() method.
+     overriding toString() method.
      */
     record FileItem(File file) {
 
