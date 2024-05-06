@@ -20,6 +20,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import org.json.JSONObject;
 
 public class Controller {
     @FXML
@@ -227,5 +228,50 @@ public class Controller {
             e.printStackTrace();
         }
         */
+    }
+    public static String runSourceCode(String configFilePath) throws Exception {
+        //TODO:Change and test the method to meet the requirement
+        // base method to run source code it will be updated
+
+        // Read the JSON file
+        String jsonText = new String(Files.readAllBytes(Paths.get(configFilePath)));
+
+        // Parse the JSON
+        JSONObject json = new JSONObject(jsonText);
+
+        // Get the commands
+        String compileCommand = json.getString("compileCommand");
+        String runCommand = json.getString("runCommand");
+
+        // Compile the source code
+        ProcessBuilder compileProcessBuilder = new ProcessBuilder(compileCommand.split(" "));
+        Process compileProcess = compileProcessBuilder.start();
+        compileProcess.waitFor();
+
+        // Check if the compilation was successful
+        if (compileProcess.exitValue() != 0) {
+            return "Compilation failed";
+        }
+
+        // Run the compiled code
+        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand.split(" "));
+        Process runProcess = runProcessBuilder.start();
+        runProcess.waitFor();
+
+        // Check if the run was successful
+        if (runProcess.exitValue() != 0) {
+            return "Run failed";
+        }
+
+        // Get the output of the run
+        BufferedReader reader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append("\n");
+        }
+
+        // Return the output as a string
+        return output.toString();
     }
 }
