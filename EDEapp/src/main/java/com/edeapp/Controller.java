@@ -15,6 +15,7 @@ import javafx.stage.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,10 +33,12 @@ public class Controller {
     @FXML
     private TabPane tabPane;
     private File _InitialDirectory;
-    private ArrayList<String> _acceptedExtensions = new ArrayList<>(Arrays.asList("txt", "java", "c", "cpp", "py", "json"));
+    private ArrayList<String> _acceptedExtensions = new ArrayList<>(Arrays.asList("txt", "java", "c", "cpp", "py", "json", "csv"));
     public TreeView<FileItem> treeView;
     @FXML
     private Label welcomeText;
+    public RadioButton radioNew;
+    public RadioButton radioImport;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -153,6 +156,9 @@ public class Controller {
                 while (reader.hasNextLine()) // Read each line in the File and add to ArrayList
                     fileData.add(reader.nextLine()); // Later this data is going to shown on the Tab
 
+                fileData.add(System.getenv("JAVA_HOME"));
+
+
                 return true;
 
             } catch (FileNotFoundException e) {
@@ -254,7 +260,7 @@ public class Controller {
         // base method to run source code it will be updated
 
         // Read the JSON file
-        String jsonText = new String(Files.readAllBytes(Paths.get(configFilePath)));
+        String jsonText = new String(Files.readAllBytes(Path.of("C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project1\\config.json")));
 
         // Parse the JSON
         JSONObject json = new JSONObject(jsonText);

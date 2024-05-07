@@ -30,8 +30,8 @@
                <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="10.0" prefWidth="400.0">
                   <children>
                      <Label layoutX="14.0" layoutY="16.0" text="Configuration" />
-                     <RadioButton layoutX="126.0" layoutY="16.0" mnemonicParsing="false" text="New" />
-                     <RadioButton layoutX="200.0" layoutY="16.0" mnemonicParsing="false" text="Import" />
+                     <RadioButton fx:id="radioNew" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" text="New" />
+                     <RadioButton fx:id="radioImport" layoutX="200.0" layoutY="16.0" mnemonicParsing="false" text="Import" />
                   </children>
                   <padding>
                      <Insets bottom="5.0" top="5.0" />
