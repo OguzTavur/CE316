@@ -301,7 +301,12 @@ public class Controller {
         }
         */
     }
-    public static String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
+    @FXML
+    protected void den1() throws Exception {
+        System.out.println(runSourceCode("C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project1\\config.json",
+                "C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project2\\Deneme.java","C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project2\\Deneme.java"));
+    }
+    public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
         // Read the JSON file
         String jsonText = new String(Files.readAllBytes(Path.of(configFilePath)));
 
@@ -309,9 +314,11 @@ public class Controller {
         JSONObject json = new JSONObject(jsonText);
 
         // Get the language and commands
-        String language = json.getString("language");
-        String compileCommand = json.getString("compileCommand");
-        String runCommand = json.getString("runCommand");
+        System.out.println(json);
+        JSONObject compilerConfig = json.getJSONObject("compilerConfig");
+        String language = compilerConfig.getString("language");
+        String compileCommand = compilerConfig.getString("compileCommand");
+        String runCommand = compilerConfig.getString("runCommand");
 
         // Get the compiler path from the environment variable
         String compilerPath;
@@ -334,7 +341,7 @@ public class Controller {
         compileCommand = compileCommand.replace("{sourceFile}", sourceFile);
         runCommand = runCommand.replace("{mainClass}", mainClass);
 
-        // Compile the source code
+        // Compile the source
         ProcessBuilder compileProcessBuilder = new ProcessBuilder((compilerPath + " " + compileCommand).split(" "));
         Process compileProcess = compileProcessBuilder.start();
         compileProcess.waitFor();

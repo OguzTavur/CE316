@@ -3,9 +3,5 @@
         "language": "Java",
         "compileCommand": "javac {sourceFile}",
         "runCommand": "java {mainClass}"
-    },
-    "testConfig": {
-        "testInput": "input.txt",
-        "expectedOutput": "output.txt"
     }
 }
