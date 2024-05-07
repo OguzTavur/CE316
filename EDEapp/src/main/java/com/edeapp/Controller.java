@@ -216,7 +216,6 @@ public class Controller {
     }
 
     public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
-        String compiler = "/usr/bin/javac";
         String compileCommand = "javac {sourceFile}";
         String runCommand = "java {mainClass}";
         String testInput = "input.txt";
@@ -224,7 +223,6 @@ public class Controller {
         String json = "{\n" +
                 "    \"compilerConfig\": {\n" +
                 "        \"language\": \"" + language + "\",\n" +
-                "        \"compiler\": \"" + compiler + "\",\n" +
                 "        \"compileCommand\": \"" + compileCommand + "\",\n" +
                 "        \"runCommand\": \"" + runCommand + "\"\n" +
                 "    },\n" +
@@ -319,7 +317,7 @@ public class Controller {
         // Return the output as a string
         return output.toString();
     }
-}
+
 
     public Stage getPopup() {
         return popup;

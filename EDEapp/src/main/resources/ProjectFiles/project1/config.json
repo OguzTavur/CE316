@@ -1,7 +1,6 @@
 {
     "compilerConfig": {
         "language": "Java",
-        "compiler": "/usr/bin/javac",
         "compileCommand": "javac {sourceFile}",
         "runCommand": "java {mainClass}"
     },
