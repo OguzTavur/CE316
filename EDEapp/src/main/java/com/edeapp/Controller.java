@@ -29,7 +29,8 @@ import java.nio.file.Paths;
 import org.json.JSONObject;
 
 public class Controller {
-
+    @FXML
+    public TableView tableView;
     private Stage popup;
     private Stage primaryStage;
     @FXML
@@ -112,6 +113,21 @@ public class Controller {
                 }
             }
         });
+
+        /*// ID column
+        TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
+
+        // Result column
+        TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
+
+        tableView.getColumns().addAll(idColumn, resultColumn);
+
+        // Sample data
+        tableView.getItems().addAll(
+                new Student("1", true),
+                new Student("2", false),
+                new Student("3", true)
+        );*/
 
     }
 
