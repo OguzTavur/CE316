@@ -26,6 +26,9 @@ import java.nio.file.Paths;
 import org.json.JSONObject;
 
 public class Controller {
+
+    private Stage popup;
+    private Stage primaryStage;
     @FXML
     private TabPane tabPane;
     private File _InitialDirectory;
@@ -43,11 +46,17 @@ public class Controller {
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
 
-        Stage stage = new Stage();
-        stage.setTitle("New Project");
-        Scene scene = new Scene(fxmlLoader.load(), 500,500);
-        stage.setScene(scene);
-        stage.showAndWait();
+
+        // Scene
+        setPopup(new Stage());
+        popup.initOwner(getPrimaryStage());
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("New Project");
+        popup.setResizable(false);
+        popup.setScene(fxmlLoader.load());
+
+        popup.showAndWait();
+
 
     }
 
@@ -119,8 +128,9 @@ public class Controller {
             public String toString() {
                 return file.getName(); // Display file name in the TreeItem
             }
-    }
 
+
+    }
     protected ArrayList<String> fileData = new ArrayList<>();
 
     // Reads the given File and stores all data in a ArrayList
@@ -283,5 +293,20 @@ public class Controller {
 
         // Return the output as a string
         return output.toString();
+    }
+
+    public Stage getPopup() {
+        return popup;
+    }
+    public void setPopup(Stage popup) {
+        this.popup = popup;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 }
