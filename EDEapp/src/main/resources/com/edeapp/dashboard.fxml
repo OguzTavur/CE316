@@ -42,7 +42,6 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -52,7 +51,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.Controller" >
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -95,24 +94,22 @@
     </MenuBar>
     <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <TreeView fx:id="treeView" prefHeight="130.0" prefWidth="98.0" SplitPane.resizableWithParent="false" />
+        <TreeView fx:id="treeView" prefHeight="551.0" prefWidth="264.0" SplitPane.resizableWithParent="false" />
 
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER" tabMaxWidth="200" tabMinWidth="100">
+            <TabPane fx:id="tabPane" prefHeight="551.0" prefWidth="487.0" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER" tabMaxWidth="200" tabMinWidth="100">
               <tabs>
 
               </tabs>
             </TabPane>
-            <BorderPane>
+            <BorderPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="551.0" prefWidth="196.0" SplitPane.resizableWithParent="false">
                <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="535.0" prefWidth="221.0">
+                  <ScrollPane fitToHeight="true" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="526.0" prefWidth="199.0" BorderPane.alignment="TOP_RIGHT">
                      <content>
-                        <HBox prefHeight="532.0" prefWidth="221.0">
+                        <HBox alignment="TOP_RIGHT" prefHeight="524.0" prefWidth="195.0">
                            <children>
-                              <VBox prefHeight="298.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="524.0" prefWidth="217.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-
-                                    </TableView>
+                                    <TableView fx:id="tableView" nodeOrientation="LEFT_TO_RIGHT" prefHeight="524.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -121,7 +118,7 @@
                   </ScrollPane>
                </center>
                <bottom>
-                  <HBox alignment="TOP_RIGHT" prefHeight="20.0" prefWidth="221.0" BorderPane.alignment="CENTER">
+                  <HBox alignment="TOP_RIGHT" prefHeight="25.0" prefWidth="178.0" BorderPane.alignment="CENTER">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="52.0" text="Check">
                            <HBox.margin>

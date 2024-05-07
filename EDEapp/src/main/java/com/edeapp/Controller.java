@@ -2,6 +2,8 @@ package com.edeapp;
 
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -113,21 +116,35 @@ public class Controller {
                 }
             }
         });
+        /* TableView of students it will be moved to its method
+        tableView.getColumns().clear();
 
-        /*// ID column
+        ObservableList<Student> data =
+                FXCollections.observableArrayList(
+                        new Student("20200602013", "❌"),
+                        new Student("2", "✔"),
+                        new Student("3", "✔")
+                );
+
+
         TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
+        idColumn.setMinWidth(120);
+        idColumn.setCellValueFactory(
+                new PropertyValueFactory<Student,String>("id")
+        );
 
-        // Result column
         TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
+        resultColumn.setMinWidth(50);
+        resultColumn.setCellValueFactory(
+                new PropertyValueFactory<Student,Boolean>("result")
+        );
 
         tableView.getColumns().addAll(idColumn, resultColumn);
 
         // Sample data
-        tableView.getItems().addAll(
-                new Student("1", true),
-                new Student("2", false),
-                new Student("3", true)
-        );*/
+        tableView.setItems(data);
+
+         */
 
     }
 

@@ -2,9 +2,9 @@ package com.edeapp;
 
 public class Student {
     private String id;
-    private boolean result;
+    private String result;
 
-    public Student(String Id, boolean Result) {
+    public Student(String Id, String Result) {
         this.id = Id;
         this.result = Result;
     }
@@ -18,11 +18,11 @@ public class Student {
         this.id = id;
     }
 
-    public boolean isResult() {
+    public String isResult() {
         return result;
     }
 
-    public void setResult(boolean result) {
+    public void setResult(String result) {
         this.result = result;
     }
 }
