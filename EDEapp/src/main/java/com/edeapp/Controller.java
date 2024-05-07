@@ -255,22 +255,41 @@ public class Controller {
         }
         */
     }
-    public static String runSourceCode(String configFilePath) throws Exception {
-        //TODO:Change and test the method to meet the requirement
-        // base method to run source code it will be updated
-
+    public static String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
         // Read the JSON file
-        String jsonText = new String(Files.readAllBytes(Path.of("C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project1\\config.json")));
+        String jsonText = new String(Files.readAllBytes(Path.of(configFilePath)));
 
         // Parse the JSON
         JSONObject json = new JSONObject(jsonText);
 
-        // Get the commands
+        // Get the language and commands
+        String language = json.getString("language");
         String compileCommand = json.getString("compileCommand");
         String runCommand = json.getString("runCommand");
 
+        // Get the compiler path from the environment variable
+        String compilerPath;
+        if ("Java".equalsIgnoreCase(language)) {
+            compilerPath = System.getenv("JAVA_HOME");
+            if (compilerPath == null) {
+                return "JAVA_HOME is not set";
+            }
+            compilerPath += File.separator + "bin" + File.separator + "javac";
+        } else if ("C".equalsIgnoreCase(language)) {
+            compilerPath = System.getenv("GCC"); // Replace with the correct environment variable for C compiler
+            if (compilerPath == null) {
+                return "GCC is not set"; // Replace with the correct error message for C compiler
+            }
+        } else {
+            return "Unsupported language: " + language;
+        }
+
+        // Replace {sourceFile} and {mainClass} in the commands with the actual values
+        compileCommand = compileCommand.replace("{sourceFile}", sourceFile);
+        runCommand = runCommand.replace("{mainClass}", mainClass);
+
         // Compile the source code
-        ProcessBuilder compileProcessBuilder = new ProcessBuilder(compileCommand.split(" "));
+        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compilerPath + " " + compileCommand).split(" "));
         Process compileProcess = compileProcessBuilder.start();
         compileProcess.waitFor();
 
@@ -300,6 +319,7 @@ public class Controller {
         // Return the output as a string
         return output.toString();
     }
+}
 
     public Stage getPopup() {
         return popup;
