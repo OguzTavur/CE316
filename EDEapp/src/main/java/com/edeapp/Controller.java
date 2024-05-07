@@ -3,12 +3,14 @@ package com.edeapp;
 
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Paint;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Popup;
+import javafx.stage.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +22,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import org.json.JSONObject;
 
 public class Controller {
@@ -37,7 +40,14 @@ public class Controller {
     }
 
     @FXML
-    protected void onNewProjectButtonClicked(){
+    protected void onNewProjectButtonClicked() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
+
+        Stage stage = new Stage();
+        stage.setTitle("New Project");
+        Scene scene = new Scene(fxmlLoader.load(), 500,500);
+        stage.setScene(scene);
+        stage.showAndWait();
 
     }
 
