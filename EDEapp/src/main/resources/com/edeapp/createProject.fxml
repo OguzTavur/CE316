@@ -14,7 +14,7 @@
 <Scene xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.Controller">
     <AnchorPane prefHeight="324.0" prefWidth="400.0">
       <children>
-         <VBox prefHeight="300.0" prefWidth="400.0">
+         <VBox prefHeight="404.0" prefWidth="500.0">
             <children>
                <Label text="Create New Project">
                   <VBox.margin>
@@ -23,15 +23,15 @@
                </Label>
                <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                   <children>
-                     <Label layoutX="14.0" layoutY="18.0" text="Project Name" />
-                     <TextField layoutX="126.0" layoutY="14.0" prefHeight="25.0" prefWidth="250.0" />
+                     <Label layoutX="15.0" layoutY="18.0" text="Project Name" />
+                     <TextField layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="340.0" />
                   </children>
                </AnchorPane>
                <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="10.0" prefWidth="400.0">
                   <children>
-                     <Label layoutX="14.0" layoutY="16.0" text="Configuration" />
-                     <RadioButton fx:id="radioNew" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" text="New" />
-                     <RadioButton fx:id="radioImport" layoutX="200.0" layoutY="16.0" mnemonicParsing="false" text="Import" />
+                     <Label layoutX="15.0" layoutY="16.0" text="Configuration" />
+                     <RadioButton fx:id="radioNew" layoutX="125.0" layoutY="16.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="New" />
+                     <RadioButton fx:id="radioImport" layoutX="200.0" layoutY="16.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="Import" />
                   </children>
                   <padding>
                      <Insets bottom="5.0" top="5.0" />
@@ -39,12 +39,12 @@
                </AnchorPane>
                <AnchorPane prefHeight="200.0" prefWidth="200.0">
                   <children>
-                     <VBox prefHeight="200.0" prefWidth="400.0" visible="false">
+                     <VBox fx:id="newConfigInfo" prefHeight="200.0" prefWidth="500.0" visible="false">
                         <children>
                            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                               <children>
-                                 <Label layoutX="14.0" layoutY="18.0" text="Project Language" />
-                                 <ChoiceBox layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="90.0" />
+                                 <Label layoutX="15.0" layoutY="18.0" text="Project Language" />
+                                 <ChoiceBox layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" />
                               </children>
                               <padding>
                                  <Insets bottom="5.0" top="5.0" />
@@ -52,8 +52,8 @@
                            </AnchorPane>
                            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                               <children>
-                                 <Label layoutX="14.0" layoutY="12.0" text="Project Arguments" />
-                                 <TextField layoutX="124.0" layoutY="8.0" prefHeight="25.0" prefWidth="255.0" promptText="example: Joe,Allen,123,Car" />
+                                 <Label layoutX="15.0" layoutY="12.0" text="Project Arguments" />
+                                 <TextField layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Joe,Allen,123,Car" />
                               </children>
                               <VBox.margin>
                                  <Insets />
@@ -64,13 +64,13 @@
                            </AnchorPane>
                            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                               <children>
-                                 <Label layoutX="14.0" layoutY="16.0" text="Path" />
-                                 <TextField layoutX="125.0" layoutY="12.0" prefHeight="25.0" prefWidth="213.0" promptText="../Projects/">
+                                 <Label layoutX="15.0" layoutY="16.0" text="Path" />
+                                 <TextField layoutX="125.0" layoutY="12.0" prefHeight="25.0" prefWidth="280.0" promptText="../Projects/">
                                     <cursor>
                                        <Cursor fx:constant="DEFAULT" />
                                     </cursor>
                                  </TextField>
-                                 <Button layoutX="338.0" layoutY="11.0" mnemonicParsing="false" text="Search" />
+                                 <Button layoutX="410.0" layoutY="11.0" mnemonicParsing="false" text="Explore" />
                               </children>
                               <padding>
                                  <Insets bottom="5.0" top="5.0" />
@@ -78,12 +78,13 @@
                            </AnchorPane>
                         </children>
                      </VBox>
-                     <VBox prefHeight="200.0" prefWidth="400.0" visible="false">
+                     <VBox fx:id="importConfigInfo" prefHeight="200.0" prefWidth="500.0" visible="false">
                         <children>
-                           <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <AnchorPane prefHeight="200.0" prefWidth="500.0">
                               <children>
-                                 <Label layoutX="14.0" layoutY="20.0" text="Path" />
-                                 <TextField layoutX="70.0" layoutY="16.0" prefHeight="25.0" prefWidth="316.0" promptText="C:/User/" />
+                                 <Label layoutX="15.0" layoutY="20.0" text="Path" />
+                                 <TextField layoutX="125.0" layoutY="16.0" prefHeight="25.0" prefWidth="280.0" promptText="C:/User/" />
+                                 <Button layoutX="410.0" layoutY="16.0" mnemonicParsing="false" text="Explore" />
                               </children>
                            </AnchorPane>
                         </children>
@@ -92,8 +93,8 @@
                </AnchorPane>
                <AnchorPane prefHeight="200.0" prefWidth="200.0">
                   <children>
-                     <Label layoutX="14.0" layoutY="13.0" text="Project Zip File" />
-                     <TextField layoutX="131.0" layoutY="9.0" prefHeight="25.0" prefWidth="255.0" promptText="projects.zip" />
+                     <Label layoutX="15.0" layoutY="13.0" text="Project Zip File" />
+                     <TextField layoutX="125.0" layoutY="9.0" prefHeight="25.0" prefWidth="340.0" promptText="projects.zip" />
                   </children>
                   <padding>
                      <Insets bottom="10.0" />
@@ -101,7 +102,7 @@
                </AnchorPane>
                <AnchorPane prefHeight="46.0" prefWidth="400.0">
                   <children>
-                     <Button alignment="CENTER" contentDisplay="CENTER" layoutX="335.0" layoutY="11.0" mnemonicParsing="false" text="Create" />
+                     <Button alignment="CENTER" contentDisplay="CENTER" layoutX="422.0" layoutY="11.0" mnemonicParsing="false" text="Create" />
                   </children>
                   <padding>
                      <Insets bottom="10.0" />

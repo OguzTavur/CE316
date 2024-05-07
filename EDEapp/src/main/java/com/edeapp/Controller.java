@@ -2,6 +2,7 @@ package com.edeapp;
 
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.*;
 
@@ -39,6 +41,8 @@ public class Controller {
     private Label welcomeText;
     public RadioButton radioNew;
     public RadioButton radioImport;
+    public VBox importConfigInfo;
+    public VBox newConfigInfo;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -48,8 +52,6 @@ public class Controller {
     @FXML
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
-
-
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -57,10 +59,23 @@ public class Controller {
         popup.setTitle("New Project");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
-
         popup.showAndWait();
+    }
 
-
+    @FXML
+    protected void onRadioButtonClicked(ActionEvent event){
+        if (event.getSource().equals(radioNew)) {
+            radioNew.setSelected(true);
+            radioImport.setSelected(false);
+            importConfigInfo.setVisible(false);
+            newConfigInfo.setVisible(true);
+        }
+        else {
+            radioImport.setSelected(true);
+            radioNew.setSelected(false);
+            newConfigInfo.setVisible(false);
+            importConfigInfo.setVisible(true);
+        }
     }
 
     @FXML
