@@ -1,7 +1,7 @@
 {
     "compilerConfig": {
-        "language": "Java",
-        "compileCommand": "javac {sourceFile}",
-        "runCommand": "java {mainClass}"
+        "language": "C",
+        "compileCommand": "gcc -o {outputFile} {sourceFile}",
+        "runCommand": "./{outputFile}"
     }
 }

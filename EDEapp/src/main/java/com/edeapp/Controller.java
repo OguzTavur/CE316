@@ -43,10 +43,7 @@ public class Controller {
     public TreeView<FileItem> treeView;
     @FXML
     private Label welcomeText;
-    public RadioButton radioNew;
-    public RadioButton radioImport;
-    public VBox importConfigInfo;
-    public VBox newConfigInfo;
+
 
     @FXML
     protected void onHelloButtonClick() {
@@ -56,6 +53,7 @@ public class Controller {
     @FXML
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
+        fxmlLoader.setController(new PopupController());
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -66,21 +64,7 @@ public class Controller {
         popup.showAndWait();
     }
 
-    @FXML
-    protected void onRadioButtonClicked(ActionEvent event){
-        if (event.getSource().equals(radioNew)) {
-            radioNew.setSelected(true);
-            radioImport.setSelected(false);
-            importConfigInfo.setVisible(false);
-            newConfigInfo.setVisible(true);
-        }
-        else {
-            radioImport.setSelected(true);
-            radioNew.setSelected(false);
-            newConfigInfo.setVisible(false);
-            importConfigInfo.setVisible(true);
-        }
-    }
+
 
     @FXML
     protected void onOpenButtonClicked(){
@@ -342,7 +326,7 @@ public class Controller {
         runCommand = runCommand.replace("{mainClass}", mainClass);
 
         // Compile the source
-        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compilerPath + " " + compileCommand).split(" "));
+        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compileCommand).split(" "));
         Process compileProcess = compileProcessBuilder.start();
         compileProcess.waitFor();
 
