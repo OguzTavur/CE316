@@ -287,8 +287,8 @@ public class Controller {
     }
     @FXML
     protected void den1() throws Exception {
-        System.out.println(runSourceCode("C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project1\\config.json",
-                "C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project2\\Deneme.java","C:\\Users\\Harun\\GitProjects\\CE316\\EDEapp\\src\\main\\resources\\ProjectFiles\\project2\\Deneme.java"));
+        System.out.println(runSourceCode("EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\configj.json",
+                "EDEapp\\build\\resources\\main\\ProjectFiles\\project2\\Deneme.java","EDEapp\\build\\resources\\main\\ProjectFiles\\project2\\Deneme.java"));
     }
     public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
         // Read the JSON file
