@@ -2,19 +2,9 @@ package com.edeapp;
 
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.*;
 
 import java.io.File;
@@ -27,7 +17,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.json.JSONObject;
 
@@ -287,8 +276,13 @@ public class Controller {
     }
     @FXML
     protected void den1() throws Exception {
-        System.out.println(runSourceCode("EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\config.json",
-                "EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\main.c","EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\main.c"));
+        File configFile = new File("Configurations/config.json");
+        File srcFile = new File("ProjectFiles/project1/main.c");
+
+        String configFilePath = configFile.getAbsolutePath();
+        String sourceFilePath = srcFile.getAbsolutePath();
+
+        System.out.println(runSourceCode(configFilePath,sourceFilePath,sourceFilePath));
     }
     public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
         // Read the JSON file
