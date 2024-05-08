@@ -28,6 +28,7 @@ public class PopupController {
     public TextField projectDestinationPath;
     public Button configFilePathButton;
     public Button projectDestinationPathButton;
+    public Button zipFilePathButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -91,6 +92,12 @@ public class PopupController {
                 projectDestinationPath.setText(file.getAbsolutePath());
             }
             else System.out.println("File not found!");
+        } else if (event.getSource() == zipFilePathButton) {
+            File file = get_ZipDirectory();
+            if (file != null) {
+                projectDestinationPath.setText(file.getAbsolutePath());
+            }
+            else System.out.println("File not found!");
         }
     }
 
@@ -104,8 +111,15 @@ public class PopupController {
     private File get_JSONFilePath() {
         FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json")); // TODO: Extension Filter is not working
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles")); // Initial Path
+        return fileChooser.showOpenDialog(new Popup());
+    }
+
+    private File get_ZipDirectory() {
+        FileChooser fileChooser = new FileChooser(); // To chose only Directories
+        fileChooser.setTitle("Choose Zip File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Zip Files", "*.zip"));
         return fileChooser.showOpenDialog(new Popup());
     }
 }

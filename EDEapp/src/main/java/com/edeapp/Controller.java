@@ -28,7 +28,7 @@ public class Controller {
     @FXML
     private TabPane tabPane;
     private File _InitialDirectory;
-    private ArrayList<String> _acceptedExtensions = new ArrayList<>(Arrays.asList("txt", "java", "c", "cpp", "py", "json", "csv"));
+    private final ArrayList<String> _acceptedExtensions = new ArrayList<>(Arrays.asList("txt", "java", "c", "cpp", "py", "json", "csv"));
     public TreeView<FileItem> treeView;
     @FXML
     private Label welcomeText;
@@ -58,12 +58,20 @@ public class Controller {
         popup.close();
     }
 
-    protected void createNewProject(){
-        //TreeItem<FileItem> root = new TreeItem<>(new FileItem(selectedDirectory.getAbsoluteFile()));
-        //root.setExpanded(true);
-        //treeView.setRoot(root);
+    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language) throws IOException {
+        File createNewProjectDirectory = new File(projectDirectory + "/" + projectName);
 
-        //populateTreeView(root);
+        // If we have already a JSON Config File then we don't need to create one.
+        if (!importConfig) {
+            //createJsonConfiguration(language,"","");
+        }
+
+
+        TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
+        root.setExpanded(true);
+        treeView.setRoot(root);
+
+        populateTreeView(root);
     }
 
     @FXML
