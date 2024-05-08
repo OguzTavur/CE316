@@ -287,8 +287,8 @@ public class Controller {
     }
     @FXML
     protected void den1() throws Exception {
-        System.out.println(runSourceCode("EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\configj.json",
-                "EDEapp\\build\\resources\\main\\ProjectFiles\\project2\\Deneme.java","EDEapp\\build\\resources\\main\\ProjectFiles\\project2\\Deneme.java"));
+        System.out.println(runSourceCode("EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\config.json",
+                "EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\main.c","EDEapp\\build\\resources\\main\\ProjectFiles\\project1\\main.c"));
     }
     public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
         // Read the JSON file
@@ -305,7 +305,8 @@ public class Controller {
         String runCommand = compilerConfig.getString("runCommand");
 
         // Get the compiler path from the environment variable
-        String compilerPath;
+        // TODO: 8.05.2024 path should be checked
+        /*String compilerPath;
         if ("Java".equalsIgnoreCase(language)) {
             compilerPath = System.getenv("JAVA_HOME");
             if (compilerPath == null) {
@@ -320,6 +321,8 @@ public class Controller {
         } else {
             return "Unsupported language: " + language;
         }
+
+         */
 
         // Replace {sourceFile} and {mainClass} in the commands with the actual values
         compileCommand = compileCommand.replace("{sourceFile}", sourceFile);
