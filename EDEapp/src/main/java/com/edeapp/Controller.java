@@ -294,6 +294,43 @@ public class Controller {
         */
     }
 
+    /*public static File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
+        String compileCommand;
+        String runCommand;
+
+        if ("Java".equalsIgnoreCase(language)) {
+            compileCommand = "javac {sourceFile}";
+            runCommand = "java {mainClass}";
+        } else if ("C".equalsIgnoreCase(language)) {
+            compileCommand = "gcc -o {outputFile} {sourceFile}";
+            runCommand = "./{outputFile}";
+        } else {
+            throw new IllegalArgumentException("Unsupported language: " + language);
+        }
+
+        String json = "{\n" +
+                "    \"compilerConfig\": {\n" +
+                "        \"language\": \"" + language + "\",\n" +
+                "        \"compileCommand\": \"" + compileCommand + "\",\n" +
+                "        \"runCommand\": \"" + runCommand + "\"\n" +
+                "    },\n" +
+                "    \"testConfig\": {\n" +
+                "        \"arguments\": \"" + testInput + "\",\n" +
+                "        \"expectedOutput\": \"" + expectedOutput + "\"\n" +
+                "    }\n" +
+                "}";
+
+        // Replace with the path where you want to save the config file
+        String configFilePath = "config.json";
+        File configFile = new File(configFilePath);
+        try (FileWriter writer = new FileWriter(configFile)) {
+            writer.write(json);
+        }
+
+        return configFile;
+    }*/
+
+
     protected void deleteJsonConfiguration(String configName){
         File myObj = new File("Configurations/"+ configName+".json");
         if (myObj.delete()) {
