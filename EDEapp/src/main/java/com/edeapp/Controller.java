@@ -42,7 +42,8 @@ public class Controller {
     @FXML
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
-        fxmlLoader.setController(new PopupController());
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -53,7 +54,17 @@ public class Controller {
         popup.showAndWait();
     }
 
+    protected void closePopUp(){
+        popup.close();
+    }
 
+    protected void createNewProject(){
+        //TreeItem<FileItem> root = new TreeItem<>(new FileItem(selectedDirectory.getAbsoluteFile()));
+        //root.setExpanded(true);
+        //treeView.setRoot(root);
+
+        //populateTreeView(root);
+    }
 
     @FXML
     protected void onOpenButtonClicked(){

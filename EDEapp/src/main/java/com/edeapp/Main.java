@@ -10,10 +10,13 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
         Controller controller = new Controller();
+
         controller.setPrimaryStage(stage);
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 750);
+        messageExchangePoint.setController(fxmlLoader.getController());
         stage.setTitle("EDE App");
         stage.setScene(scene);
         stage.show();

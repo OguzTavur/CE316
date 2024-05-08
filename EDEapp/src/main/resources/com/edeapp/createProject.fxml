@@ -80,7 +80,7 @@
                                        <Cursor fx:constant="DEFAULT" />
                                     </cursor>
                                  </TextField>
-                                 <Button layoutX="410.0" layoutY="11.0" mnemonicParsing="false" text="Explore" />
+                                 <Button fx:id="projectDestinationPathButton" layoutX="410.0" layoutY="11.0" mnemonicParsing="false" text="Explore" onAction="#onExploreButtonClicked"/>
                               </children>
                               <padding>
                                  <Insets bottom="5.0" top="5.0" />
@@ -94,7 +94,7 @@
                               <children>
                                  <Label layoutX="15.0" layoutY="20.0" text="Config File Path" />
                                  <TextField fx:id="configFilePath" layoutX="125.0" layoutY="16.0" prefHeight="25.0" prefWidth="280.0" promptText="C:/User/" />
-                                 <Button layoutX="410.0" layoutY="16.0" mnemonicParsing="false" text="Explore" />
+                                 <Button fx:id="configFilePathButton" layoutX="410.0" layoutY="16.0" mnemonicParsing="false" text="Explore" onAction="#onExploreButtonClicked"/>
                               </children>
                            </AnchorPane>
                         </children>

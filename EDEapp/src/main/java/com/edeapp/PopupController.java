@@ -2,12 +2,17 @@ package com.edeapp;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Popup;
+
+import java.io.File;
+import java.nio.file.Paths;
 
 public class PopupController {
 
@@ -21,6 +26,8 @@ public class PopupController {
     public ChoiceBox languageChoice;
     public TextField projectArguments;
     public TextField projectDestinationPath;
+    public Button configFilePathButton;
+    public Button projectDestinationPathButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -42,15 +49,22 @@ public class PopupController {
     protected void onCreateButtonClicked(){
         if (radioNew.isSelected()) {
             if (checkInputAreas(false)) {
-
+                System.out.println("Project Name: " + projectName.getText());
+                System.out.println("Language: " + languageChoice.getValue());
+                System.out.println("Project Arguments: " + projectArguments.getText());
+                System.out.println("Project Destination Path: " + projectDestinationPath.getText());
+                System.out.println("Zip File Path: " + zipFilePath.getText());
+                MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+                messageExchangePoint.getController().closePopUp();
             }
         }
         else if (radioImport.isSelected()) {
             if (checkInputAreas(true)) {
-                System.out.println("Project Name: " + projectName);
-                System.out.println("Config File Path: " + configFilePath);
-                System.out.println("Zip File Path: " + zipFilePath);
-
+                System.out.println("Project Name: " + projectName.getText());
+                System.out.println("Config File Path: " + configFilePath.getText());
+                System.out.println("Zip File Path: " + zipFilePath.getText());
+                MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+                messageExchangePoint.getController().closePopUp();
             }
         }
         // else TODO: Add here state information after
@@ -61,5 +75,37 @@ public class PopupController {
             return !projectName.getText().isEmpty() && !configFilePath.getText().isEmpty() && !zipFilePath.getText().isEmpty();
         }
         else return !projectName.getText().isEmpty() && !projectDestinationPath.getText().isEmpty() && !zipFilePath.getText().isEmpty();
+    }
+
+    @FXML
+    protected void onExploreButtonClicked(ActionEvent event){
+        if (event.getSource() == configFilePathButton) {
+            File file = get_JSONFilePath();
+            if (file != null) {
+                configFilePath.setText(file.getAbsolutePath());
+            }
+            else System.out.println("File not found!");
+        } else if (event.getSource() == projectDestinationPathButton) {
+            File file = get_InitialDirectory();
+            if (file != null) {
+                projectDestinationPath.setText(file.getAbsolutePath());
+            }
+            else System.out.println("File not found!");
+        }
+    }
+
+    private File get_InitialDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
+        directoryChooser.setTitle("Choose Save Project Directory");
+        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles")); // Initial Path
+        return directoryChooser.showDialog(new Popup());
+    }
+
+    private File get_JSONFilePath() {
+        FileChooser fileChooser = new FileChooser(); // To chose only Directories
+        fileChooser.setTitle("Choose Configuration File");
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JSON Files","*.json")); // TODO: Extension Filter is not working
+        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles")); // Initial Path
+        return fileChooser.showOpenDialog(new Popup());
     }
 }

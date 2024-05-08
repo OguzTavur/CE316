@@ -1,0 +1,7 @@
+{
+    "compilerConfig": {
+        "language": "C",
+        "compileCommand": "gcc -o {outputFile} {sourceFile}",
+        "runCommand": "./{outputFile}"
+    }
+}
