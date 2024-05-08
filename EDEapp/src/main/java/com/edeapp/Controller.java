@@ -58,14 +58,18 @@ public class Controller {
         popup.close();
     }
 
-    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language) throws IOException {
+    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments) throws IOException {
         File createNewProjectDirectory = new File(projectDirectory + "/" + projectName);
+        System.out.println(createNewProjectDirectory.getAbsolutePath());
 
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
             //createJsonConfiguration(language,"","");
         }
 
+        File relocateZipFile = new File(zipFilePath);
+        if(relocateZipFile.renameTo(new File(projectDirectory + "/" + projectName + "/" + relocateZipFile.getName())))
+            System.out.println("Zip Moved to " + relocateZipFile.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
         root.setExpanded(true);

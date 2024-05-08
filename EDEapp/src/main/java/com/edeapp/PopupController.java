@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 public class PopupController {
@@ -47,7 +48,7 @@ public class PopupController {
     }
 
     @FXML
-    protected void onCreateButtonClicked(){
+    protected void onCreateButtonClicked() throws IOException {
         if (radioNew.isSelected()) {
             if (checkInputAreas(false)) {
                 System.out.println("Project Name: " + projectName.getText());
@@ -57,6 +58,7 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText());
             }
         }
         else if (radioImport.isSelected()) {
@@ -66,6 +68,8 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
+                // TODO: GUI ye destination path ekle
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null);
             }
         }
         // else TODO: Add here state information after
