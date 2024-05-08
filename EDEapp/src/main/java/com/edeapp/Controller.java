@@ -285,6 +285,28 @@ public class Controller {
         }
         */
     }
+
+    protected void deleteJsonConfiguration(String configName){
+        File myObj = new File("Configurations/"+ configName+".json");
+        if (myObj.delete()) {
+            System.out.println("Deleted the file: " + myObj.getName());
+        } else {
+            System.out.println("Failed to delete the file.");
+        }
+
+    }
+
+    protected void editJsonConfiguration(String language, String inputCodePath, String expectedOutputPath,String configName){
+        deleteJsonConfiguration(configName);
+        try {
+            createJsonConfiguration(language, inputCodePath, expectedOutputPath);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
     @FXML
     protected void den1() throws Exception {
         File configFile = new File("Configurations/config.json");
