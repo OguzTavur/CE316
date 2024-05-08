@@ -104,7 +104,7 @@ public class PopupController {
     private File get_JSONFilePath() {
         FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
-        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JSON Files","*.json")); // TODO: Extension Filter is not working
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json")); // TODO: Extension Filter is not working
         fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles")); // Initial Path
         return fileChooser.showOpenDialog(new Popup());
     }
