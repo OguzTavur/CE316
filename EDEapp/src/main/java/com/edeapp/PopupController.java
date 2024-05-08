@@ -99,7 +99,7 @@ public class PopupController {
         } else if (event.getSource() == zipFilePathButton) {
             File file = get_ZipDirectory();
             if (file != null) {
-                projectDestinationPath.setText(file.getAbsolutePath());
+                zipFilePath.setText(file.getAbsolutePath());
             }
             else System.out.println("File not found!");
         }
