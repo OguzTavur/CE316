@@ -50,11 +50,6 @@ public class Controller {
 
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-    @FXML
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
@@ -179,7 +174,9 @@ public class Controller {
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
             File newJSONConfigFile = createJsonConfiguration(language,arguments,expectedOutput);
-            // TODO: Burada json file ı klasöre ekle
+            File relocateJSONFile = new File(newJSONConfigFile.getAbsolutePath());
+            if(relocateJSONFile.renameTo(new File(projectDirectory + "\\" + projectName, relocateJSONFile.getName())))
+                System.out.println("JSON Moved to " + relocateJSONFile.getAbsolutePath());
         }
         else {
             File configFile = new File(configFilePath);
