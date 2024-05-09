@@ -388,7 +388,8 @@ public class Controller {
         */
     }
 
-   /* public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
+
+    /*public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
         String compileCommand = "javac {sourceFile}";
         String runCommand = "java {mainClass}";
         String testInput = "input.txt";
