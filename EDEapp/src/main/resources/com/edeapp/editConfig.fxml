@@ -33,7 +33,7 @@
             <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                 <children>
                     <Label layoutX="15.0" layoutY="12.0" text="Compile Command" />
-                    <TextField fx:id="compCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Java" />
+                    <TextField fx:id="compCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Java" editable="false" />
                 </children>
                 <VBox.margin>
                     <Insets />
@@ -45,7 +45,7 @@
             <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                 <children>
                     <Label layoutX="15.0" layoutY="12.0" text="Run Command" />
-                    <TextField fx:id="runCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: gcc -c" />
+                    <TextField fx:id="runCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: gcc -c" editable="false"/>
                 </children>
                 <VBox.margin>
                     <Insets />

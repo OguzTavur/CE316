@@ -23,6 +23,7 @@ import java.nio.file.Files;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONWriter;
 
 public class Controller {
     @FXML
@@ -104,6 +105,20 @@ public class Controller {
         compCommand.setText(compileCommand);
         TextField rCommand = (TextField) root.lookup("#runCommand");
         rCommand.setText(runCommand);
+
+        editConfigLanguageBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals("Java")) {
+                compCommand.setText("javac {sourceFile}");
+                rCommand.setText("java {mainClass}");
+            } else if (newValue.equals("C")) {
+                compCommand.setText("gcc -o {outputFile} {sourceFile}");
+                rCommand.setText("./{outputFile}");
+            }else if (newValue.equals("Python")) { //TODO: add here comp and run commands
+                compCommand.setText("");
+                rCommand.setText("");
+            }
+        });
+
         TextField argument = (TextField) root.lookup("#arguments");
         argument.setText(argumentsToStr);
         TextArea expectedOut = (TextArea) root.lookup("#expectedOutput");
@@ -464,23 +479,24 @@ public class Controller {
         projectConfig.put("argument", jsonArray);
         projectConfig.put("expectedOutput", expectedOutput.getText());
 
-        // Create the main JSON object and add the compilerConfig and projectConfig objects
         JSONObject json = new JSONObject();
         json.put("compilerConfig", compilerConfig);
         json.put("projectConfig", projectConfig);
 
-        Files.write(Paths.get(secretPath.getText()), json.toString().getBytes());
+        // Format the JSON string for better readability
+        String formattedJson = json.toString(4); // Indent with 4 spaces
 
-        //System.out.println(secretPath.getText());
-        // System.out.println(json.toString());
-
+        Files.write(Paths.get(secretPath.getText()), formattedJson.getBytes());
     }
+
 
 
     @FXML
     protected void den1() throws Exception {
-        File configFile = new File("Configurations/config.json");
-        File srcFile = new File("ProjectFiles/project1/main.c");
+        File configFile = new File("Configurations/configj.json");
+        File srcFile = new File("src/main/resources/ProjectFiles/project2/Deneme.java");
+        System.out.println(configFile.getAbsolutePath());
+        System.out.println(srcFile.getAbsolutePath());
 
         String configFilePath = configFile.getAbsolutePath();
         String sourceFilePath = srcFile.getAbsolutePath();
@@ -525,8 +541,10 @@ public class Controller {
         compileCommand = compileCommand.replace("{sourceFile}", sourceFile);
         runCommand = runCommand.replace("{mainClass}", mainClass);
 
+        System.out.println(compileCommand);
+        System.out.println(runCommand);
         // Compile the source
-        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compileCommand).split(" "));
+        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compileCommand).split(" ",2));//TODO : burası değiştirilecek
         Process compileProcess = compileProcessBuilder.start();
         compileProcess.waitFor();
 
@@ -536,7 +554,7 @@ public class Controller {
         }
 
         // Run the compiled code
-        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand.split(" "));
+        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand.split(" ",2));//TODO : burası değiştirilecek
         Process runProcess = runProcessBuilder.start();
         runProcess.waitFor();
 
