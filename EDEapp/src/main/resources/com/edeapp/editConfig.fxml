@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.edeapp.Controller">
+    <VBox fx:id="newConfigInfo" prefHeight="500.0" prefWidth="500.0">
+        <children>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                <children>
+                    <Label layoutX="15.0" layoutY="18.0" text="Language" />
+                    <ChoiceBox  fx:id="editConfigLanguageBox" layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" value="C">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="C" />
+                                <String fx:value="Java" />
+                                <String fx:value="Python" />
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+                </children>
+                <padding>
+                    <Insets bottom="10.0" top="5.0" />
+                </padding>
+            </AnchorPane>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                <children>
+                    <Label layoutX="15.0" layoutY="12.0" text="Compile Command" />
+                    <TextField fx:id="compCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Java" />
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="15.0" top="20.0" />
+                </padding>
+            </AnchorPane>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                <children>
+                    <Label layoutX="15.0" layoutY="12.0" text="Run Command" />
+                    <TextField fx:id="runCommand" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: gcc -c" />
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="15.0" top="20.0" />
+                </padding>
+            </AnchorPane>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                <children>
+                    <Label layoutX="15.0" layoutY="12.0" text="Arguments" />
+                    <TextField fx:id="arguments" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Joe,Allen,123,Car" />
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="15.0" top="20.0" />
+                </padding>
+            </AnchorPane>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                <children>
+                    <Label layoutX="15.0" layoutY="12.0" text="Expected Output" />
+                    <TextArea fx:id="expectedOutput" layoutX="125.0" layoutY="8.0" prefHeight="180.0" prefWidth="340.0" promptText="example: Hello, World!" />
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="15.0" top="20.0" />
+                </padding>
+            </AnchorPane>
+            <AnchorPane prefHeight="46.0" prefWidth="400.0">
+                <children>
+                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="416.0" layoutY="11.0" mnemonicParsing="false" onAction="#editJsonConfiguration" text="Save" />
+                    <Label text="" fx:id="secretPath" visible="false"/>
+                </children>
+                <padding>
+                    <Insets bottom="10.0" />
+                </padding>
+            </AnchorPane>
+        </children>
+    </VBox>
+</AnchorPane>

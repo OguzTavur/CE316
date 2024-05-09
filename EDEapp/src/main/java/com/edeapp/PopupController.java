@@ -126,4 +126,5 @@ public class PopupController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Zip Files", "*.zip"));
         return fileChooser.showOpenDialog(new Popup());
     }
+
 }

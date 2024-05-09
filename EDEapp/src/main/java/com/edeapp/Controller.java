@@ -2,8 +2,11 @@ package com.edeapp;
 
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.*;
 
@@ -18,11 +21,20 @@ import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
 
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Controller {
     @FXML
     public TableView tableView;
+    public ChoiceBox editConfigLanguageBox;
+    public TextField compCommand;
+    public TextField runCommand;
+    public TextField arguments;
+    public TextArea expectedOutput;
+    public Label secretPath;
+
     private Stage popup;
     private Stage primaryStage;
     @FXML
@@ -52,6 +64,72 @@ public class Controller {
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         popup.showAndWait();
+    }
+    @FXML
+    protected void onEditConfigButtonClicked(ActionEvent event) throws IOException {
+
+        FileChooser fileChooser = new FileChooser(); // To chose only Directories
+        fileChooser.setTitle("Choose Configuration File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles"));
+        File file = fileChooser.showOpenDialog(new Popup());
+
+        //It is getting json informations to put them in text fields
+        String jsonText = new String(Files.readAllBytes(Paths.get(file.getPath())));
+
+        JSONObject jsonObject = new JSONObject(jsonText);
+
+        JSONObject compilerConfig = jsonObject.getJSONObject("compilerConfig");
+        String language = compilerConfig.getString("language");
+        String compileCommand = compilerConfig.getString("compileCommand");
+        String runCommand = compilerConfig.getString("runCommand");
+
+        JSONObject projectConfig = jsonObject.getJSONObject("projectConfig");
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+        String expectedOutput = projectConfig.getString("expectedOutput");
+
+        String argumentsToStr = "";
+        for (int i = 0; i < arguments.length(); i++) {
+            argumentsToStr += arguments.getString(i);
+            if (i != arguments.length()-1)
+                argumentsToStr+=",";
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
+        Parent root = fxmlLoader.load();
+
+
+
+        ChoiceBox editConfigLanguageBox = (ChoiceBox) root.lookup("#editConfigLanguageBox");
+        editConfigLanguageBox.setValue(language);
+        TextField compCommand = (TextField) root.lookup("#compCommand");
+        compCommand.setText(compileCommand);
+        TextField rCommand = (TextField) root.lookup("#runCommand");
+        rCommand.setText(runCommand);
+        TextField argument = (TextField) root.lookup("#arguments");
+        argument.setText(argumentsToStr);
+        TextArea expectedOut = (TextArea) root.lookup("#expectedOutput");
+        expectedOut.setText(expectedOutput);
+        Label secretPath = (Label) root.lookup("#secretPath");
+        secretPath.setText(file.getPath());
+
+
+        /* to print console
+        System.out.println("Language: " + language);
+        System.out.println("Compile Command: " + compileCommand);
+        System.out.println("Run Command: " + runCommand);
+
+        System.out.println("Arguments: " + argumentsToStr);
+        System.out.println("Expected Output: " + expectedOutput);
+        */
+
+        Stage popupStage = new Stage();
+        popupStage.initOwner(getPrimaryStage());
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Edit Configuration");
+        popupStage.setResizable(false);
+        popupStage.setScene(new Scene(root));
+        popupStage.showAndWait();
+
     }
 
     protected void closePopUp(){
@@ -345,13 +423,36 @@ public class Controller {
 
     }
 
-    protected void editJsonConfiguration(String language, String inputCodePath, String expectedOutputPath,String configName){
-        deleteJsonConfiguration(configName);
-        try {
-            createJsonConfiguration(language, inputCodePath, expectedOutputPath);
-        }catch(IOException e){
-            e.printStackTrace();
+    @FXML
+    protected void editJsonConfiguration() throws IOException {
+        JSONObject compilerConfig = new JSONObject();
+        compilerConfig.put("language", editConfigLanguageBox.getValue());
+        compilerConfig.put("compileCommand", compCommand.getText());
+        compilerConfig.put("runCommand", runCommand.getText());
+
+        // Create the projectConfig object
+        JSONObject projectConfig = new JSONObject();
+
+        JSONArray jsonArray = new JSONArray();
+        String text = arguments.getText();
+        String[] values = text.split(",");
+
+        for (String value : values) {
+            jsonArray.put(value.trim()); // Trim to remove leading/trailing spaces
         }
+
+        projectConfig.put("argument", jsonArray);
+        projectConfig.put("expectedOutput", expectedOutput.getText());
+
+        // Create the main JSON object and add the compilerConfig and projectConfig objects
+        JSONObject json = new JSONObject();
+        json.put("compilerConfig", compilerConfig);
+        json.put("projectConfig", projectConfig);
+
+        Files.write(Paths.get(secretPath.getText()), json.toString().getBytes());
+
+        //System.out.println(secretPath.getText());
+        // System.out.println(json.toString());
 
     }
 
