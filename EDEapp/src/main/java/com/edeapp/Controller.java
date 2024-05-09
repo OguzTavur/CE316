@@ -1,7 +1,5 @@
 package com.edeapp;
 
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -74,7 +73,7 @@ public class Controller {
         fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles"));
         File file = fileChooser.showOpenDialog(new Popup());
 
-        //It is getting json informations to put them in text fields
+        //It is getting json information to put them in text fields
         String jsonText = new String(Files.readAllBytes(Paths.get(file.getPath())));
 
         JSONObject jsonObject = new JSONObject(jsonText);
@@ -137,16 +136,35 @@ public class Controller {
     }
 
     protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments) throws IOException {
-        File createNewProjectDirectory = new File(projectDirectory + "/" + projectName);
-        System.out.println(createNewProjectDirectory.getAbsolutePath());
+        // Create the destination directory if it doesn't exist
+        File createNewProjectDirectory = new File(projectDirectory + "\\" + projectName);
+        if (!createNewProjectDirectory.exists()) {
+            if(createNewProjectDirectory.mkdirs()){
+                System.out.println("Directory is created!");
+                System.out.println(createNewProjectDirectory.getAbsolutePath());
+            }
+        }
+
 
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
             //createJsonConfiguration(language,"","");
         }
+        else {
+            File configFile = new File(configFilePath);
+            Path sourcePath = Path.of(configFilePath);
+            Path destinationPath = Path.of(projectDirectory + "\\" + projectName + "\\" + configFile.getName());
+            try {
+                // Perform the copy operation
+                Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File copied successfully from " + configFilePath + " to " + projectDirectory + "\\" + projectName);
+            } catch (IOException e) {
+                System.out.println("Failed to copy file: " + e.getMessage());
+            }
+        }
 
         File relocateZipFile = new File(zipFilePath);
-        if(relocateZipFile.renameTo(new File(projectDirectory + "/" + projectName + "/" + relocateZipFile.getName())))
+        if(relocateZipFile.renameTo(new File(projectDirectory + "\\" + projectName, relocateZipFile.getName())))
             System.out.println("Zip Moved to " + relocateZipFile.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
@@ -154,6 +172,7 @@ public class Controller {
         treeView.setRoot(root);
 
         populateTreeView(root);
+        addFunctionalityToTreeItems();
     }
 
     @FXML
@@ -172,24 +191,7 @@ public class Controller {
 
         populateTreeView(root);
 
-        // To detect double-click on TreeView
-        // Other functionalities like is clicked element is a file or folder, handled in redFile() function
-        // TODO: Selected Files shouldn't be able to open at multiple tabs
-        // TODO: If a file is selected and even though the user does not click on it double times the file opens because it is selected
-        treeView.setOnMouseClicked(event -> {
-            if (event.isPrimaryButtonDown()) {
-
-            }
-            if (event.getClickCount() == 2) {
-                TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null && selectedItem.getValue() != null) {
-                    System.out.println("Double-clicked on: " + selectedItem.getValue());
-                    if (readFile(selectedItem.getValue().file()))
-                        openTabWithFileData(selectedItem.getValue().toString());
-                    // Add your double click handling code here
-                }
-            }
-        });
+        addFunctionalityToTreeItems();
         /* TableView of students it will be moved to its method
         tableView.getColumns().clear();
 
@@ -220,6 +222,27 @@ public class Controller {
 
          */
 
+    }
+
+    private void addFunctionalityToTreeItems(){
+        // To detect double-click on TreeView
+        // Other functionalities like is clicked element is a file or folder, handled in redFile() function
+        // TODO: Selected Files shouldn't be able to open at multiple tabs
+        // TODO: If a file is selected and even though the user does not click on it double times the file opens because it is selected
+        treeView.setOnMouseClicked(event -> {
+            if (event.isPrimaryButtonDown()) {
+
+            }
+            if (event.getClickCount() == 2) {
+                TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null && selectedItem.getValue() != null) {
+                    System.out.println("Double-clicked on: " + selectedItem.getValue());
+                    if (readFile(selectedItem.getValue().file()))
+                        openTabWithFileData(selectedItem.getValue().toString());
+                    // Add your double click handling code here
+                }
+            }
+        });
     }
 
     // Recursive function to populate the TreeView with subfiles and subdirectories
@@ -277,9 +300,6 @@ public class Controller {
 
                 while (reader.hasNextLine()) // Read each line in the File and add to ArrayList
                     fileData.add(reader.nextLine()); // Later this data is going to shown on the Tab
-
-                fileData.add(System.getenv("JAVA_HOME"));
-
 
                 return true;
 

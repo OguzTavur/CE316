@@ -51,7 +51,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -59,10 +58,10 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#onNewProjectButtonClicked" text="New Project" />
-            <MenuItem mnemonicParsing="false" onAction="#onOpenButtonClicked" text="Open…" />
+            <MenuItem mnemonicParsing="false" onAction="#onOpenButtonClicked" text="Open Project" />
             <Menu mnemonicParsing="false" text="Open Recent" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" onAction="#den1"/>
+            <MenuItem mnemonicParsing="false" onAction="#den1" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
             <MenuItem mnemonicParsing="false" text="Save As…" />
             <MenuItem mnemonicParsing="false" text="Revert" />
@@ -93,7 +92,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.2, 0.7506" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
         <TreeView fx:id="treeView" prefHeight="551.0" prefWidth="264.0" SplitPane.resizableWithParent="false" />
 

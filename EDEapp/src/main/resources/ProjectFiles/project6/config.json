@@ -1,0 +1,1 @@
+{"compilerConfig":{"compileCommand":"javac {sourceFile}","language":"Java","runCommand":"java {mainClass}"},"projectConfig":{"argument":["ege","harun"],"expectedOutput":"ouz"}}

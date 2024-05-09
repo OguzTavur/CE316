@@ -30,6 +30,8 @@ public class PopupController {
     public Button configFilePathButton;
     public Button projectDestinationPathButton;
     public Button zipFilePathButton;
+    public TextField projectDestinationPathImport;
+    public Button projectDestinationPathImportButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -65,11 +67,12 @@ public class PopupController {
             if (checkInputAreas(true)) {
                 System.out.println("Project Name: " + projectName.getText());
                 System.out.println("Config File Path: " + configFilePath.getText());
+                System.out.println("Project Destination Path: " + projectDestinationPathImport.getText());
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
                 // TODO: GUI ye destination path ekle
-                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null);
+                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null);
             }
         }
         // else TODO: Add here state information after
@@ -102,6 +105,11 @@ public class PopupController {
                 zipFilePath.setText(file.getAbsolutePath());
             }
             else System.out.println("File not found!");
+        } else if (event.getSource() == projectDestinationPathImportButton) {
+            File file = get_InitialDirectory();
+            if (file != null) {
+                projectDestinationPathImport.setText(file.getAbsolutePath());
+            } else System.out.println("File not found!");
         }
     }
 

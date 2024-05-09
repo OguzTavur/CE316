@@ -100,12 +100,26 @@
                      </VBox>
                      <VBox fx:id="importConfigInfo" prefHeight="344.0" prefWidth="500.0" visible="false">
                         <children>
-                           <AnchorPane prefHeight="200.0" prefWidth="500.0">
+                           <AnchorPane prefHeight="58.0" prefWidth="500.0">
                               <children>
                                  <Label layoutX="15.0" layoutY="20.0" text="Config File Path" />
                                  <TextField fx:id="configFilePath" layoutX="125.0" layoutY="16.0" prefHeight="25.0" prefWidth="280.0" promptText="C:/User/" />
                                  <Button fx:id="configFilePathButton" layoutX="410.0" layoutY="16.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
                               </children>
+                           </AnchorPane>
+                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                              <children>
+                                 <Label layoutX="15.0" layoutY="16.0" text="Destination Path" />
+                                 <TextField fx:id="projectDestinationPathImport" layoutX="125.0" layoutY="12.0" prefHeight="25.0" prefWidth="280.0" promptText="../Projects/">
+                                    <cursor>
+                                       <Cursor fx:constant="DEFAULT" />
+                                    </cursor>
+                                 </TextField>
+                                 <Button fx:id="projectDestinationPathImportButton" layoutX="410.0" layoutY="11.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
+                              </children>
+                              <padding>
+                                 <Insets bottom="5.0" top="5.0" />
+                              </padding>
                            </AnchorPane>
                         </children>
                      </VBox>
