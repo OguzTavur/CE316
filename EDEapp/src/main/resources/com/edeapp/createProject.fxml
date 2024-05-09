@@ -76,7 +76,7 @@
                            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                               <children>
                                  <Label layoutX="15.0" layoutY="12.0" text="Expected Output" />
-                                 <TextArea layoutX="125.0" layoutY="8.0" prefHeight="186.0" prefWidth="340.0" />
+                                 <TextArea fx:id="expectedOutput" layoutX="125.0" layoutY="8.0" prefHeight="186.0" prefWidth="340.0" />
                               </children>
                               <padding>
                                  <Insets bottom="5.0" top="5.0" />

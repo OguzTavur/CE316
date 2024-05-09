@@ -165,7 +165,7 @@ public class Controller {
         popup.close();
     }
 
-    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments) throws IOException {
+    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments, String expectedOutput) throws IOException {
         // Create the destination directory if it doesn't exist
         File createNewProjectDirectory = new File(projectDirectory + "\\" + projectName);
         if (!createNewProjectDirectory.exists()) {
@@ -178,7 +178,8 @@ public class Controller {
 
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
-            //createJsonConfiguration(language,"","");
+            File newJSONConfigFile = createJsonConfiguration(language,arguments,expectedOutput);
+            // TODO: Burada json file ı klasöre ekle
         }
         else {
             File configFile = new File(configFilePath);
@@ -387,7 +388,7 @@ public class Controller {
         */
     }
 
-    public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
+   /* public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
         String compileCommand = "javac {sourceFile}";
         String runCommand = "java {mainClass}";
         String testInput = "input.txt";
@@ -412,7 +413,7 @@ public class Controller {
 
         return configFile;
 
-        /* Will be put to the method that will run this method
+         Will be put to the method that will run this method
         String language = "Java";
         String inputCodePath = "src\\main\\resources\\ProjectFiles\\project1\\result.txt";
         String expectedOutputPath = "output.txt";
@@ -423,10 +424,10 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
-    }
 
-    /*public static File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
+    }*/
+
+    public static File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
         String runCommand;
 
@@ -447,7 +448,7 @@ public class Controller {
                 "        \"runCommand\": \"" + runCommand + "\"\n" +
                 "    },\n" +
                 "    \"testConfig\": {\n" +
-                "        \"arguments\": \"" + testInput + "\",\n" +
+                "        \"arguments\": \"" + arguments + "\",\n" +
                 "        \"expectedOutput\": \"" + expectedOutput + "\"\n" +
                 "    }\n" +
                 "}";
@@ -460,7 +461,7 @@ public class Controller {
         }
 
         return configFile;
-    }*/
+    }
 
 
     protected void deleteJsonConfiguration(String configName){

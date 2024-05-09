@@ -2,10 +2,7 @@ package com.edeapp;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -32,6 +29,7 @@ public class PopupController {
     public Button zipFilePathButton;
     public TextField projectDestinationPathImport;
     public Button projectDestinationPathImportButton;
+    public TextArea expectedOutput;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -60,7 +58,7 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
-                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText());
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
             }
         }
         else if (radioImport.isSelected()) {
@@ -72,7 +70,7 @@ public class PopupController {
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
                 // TODO: GUI ye destination path ekle
-                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null);
+                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null,null);
             }
         }
         // else TODO: Add here state information after
