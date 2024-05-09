@@ -11,7 +11,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="com.edeapp.Controller">
-    <VBox fx:id="newConfigInfo" prefHeight="500.0" prefWidth="500.0">
+    <VBox prefHeight="500.0" prefWidth="500.0">
         <children>
             <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                 <children>
@@ -82,7 +82,7 @@
                 <children>
                     <Button alignment="CENTER" contentDisplay="CENTER" layoutX="416.0" layoutY="11.0" mnemonicParsing="false" onAction="#editJsonConfiguration" text="Save" />
                     <Button fx:id="backButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="370.0" layoutY="11.0" mnemonicParsing="false"  text="Back" />
-                    <Label text="" fx:id="secretPath" visible="false"/>
+                    <Label  fx:id="secretPath" visible="false"/>
                 </children>
                 <padding>
                     <Insets bottom="10.0" />
