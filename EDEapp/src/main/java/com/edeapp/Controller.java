@@ -1,5 +1,7 @@
 package com.edeapp;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +36,7 @@ public class Controller {
     public TextField arguments;
     public TextArea expectedOutput;
     public Label secretPath;
+    public Button backButton;
 
     private Stage popup;
     private Stage primaryStage;
@@ -142,10 +145,22 @@ public class Controller {
         popupStage.setTitle("Edit Configuration");
         popupStage.setResizable(false);
         popupStage.setScene(new Scene(root));
-        popupStage.showAndWait();
+        popupStage.show();
+
+        Button backBut = (Button) root.lookup("#backButton");
+        backBut.pressedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    // Close the popup
+                    popupStage.close();
+                }
+            }
+        });
 
     }
 
+    @FXML
     protected void closePopUp(){
         popup.close();
     }

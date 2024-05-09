@@ -81,6 +81,7 @@
             <AnchorPane prefHeight="46.0" prefWidth="400.0">
                 <children>
                     <Button alignment="CENTER" contentDisplay="CENTER" layoutX="416.0" layoutY="11.0" mnemonicParsing="false" onAction="#editJsonConfiguration" text="Save" />
+                    <Button fx:id="backButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="370.0" layoutY="11.0" mnemonicParsing="false"  text="Back" />
                     <Label text="" fx:id="secretPath" visible="false"/>
                 </children>
                 <padding>
