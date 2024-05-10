@@ -102,19 +102,16 @@ public class PopupController {
     }
 
     @FXML
-    protected void onSaveButtonClicked(){
+    protected void onSaveButtonClicked() throws IOException {
         if (checkInputAreasForEditConfigFile()) {
             System.out.println("Configuration File Path: " + configFilePath.getText());
             System.out.println("Program Language: " + languageChoice.getValue());
             System.out.println("Project Arguments: " + projectArguments.getText());
             System.out.println("Expected Output: " + expectedOutput.getText());
-            System.out.println("Destination Path: " + destinationPath.getText());
+
 
             MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-
-            //messageExchangePoint.getController()
-            //        .saveFileToGivenDirectory(messageExchangePoint.getController()
-            //                .createJsonConfiguration(configFileName.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText()),destinationPath.getText());
+            messageExchangePoint.getController().editJsonConfiguration(configFilePath.getText(),languageChoice.getValue().toString(),compCommand.getText(),runCommand.getText(),projectArguments.getText(),expectedOutput.getText());
             messageExchangePoint.getController().closePopUp();
         }
     }
@@ -132,7 +129,7 @@ public class PopupController {
     }
 
     private boolean checkInputAreasForEditConfigFile() {
-        return !configFileName.getText().isEmpty() && !expectedOutput.getText().isEmpty();
+        return !configFilePath.getText().isEmpty() && !expectedOutput.getText().isEmpty();
     }
 
     @FXML

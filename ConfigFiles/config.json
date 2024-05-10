@@ -7,8 +7,9 @@
     "projectConfig": {
         "argument": [
             "ege",
-            "harun"
+            "harun",
+            "ali"
         ],
-        "expectedOutput": "ouz kaan"
+        "expectedOutput": "ouz kaan tavur"
     }
 }

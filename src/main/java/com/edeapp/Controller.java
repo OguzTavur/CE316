@@ -30,14 +30,6 @@ import org.json.JSONWriter;
 public class Controller {
     @FXML
     public TableView tableView;
-    public ChoiceBox editConfigLanguageBox;
-    public TextField compCommand;
-    public TextField runCommand;
-    public TextField arguments;
-    public TextArea expectedOutput;
-    public Label secretPath;
-    public Button backButton;
-
     private Stage popup;
     private Stage primaryStage;
     @FXML
@@ -69,6 +61,20 @@ public class Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
         messageExchangePoint.setPopupController(fxmlLoader.getController());
+
+//        messageExchangePoint.getPopupController().languageChoice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue.equals("Java")) {
+//                messageExchangePoint.getPopupController().compCommand.setText("javac {sourceFile}");
+//                messageExchangePoint.getPopupController().runCommand.setText("java {mainClass}");
+//            } else if (newValue.equals("C")) {
+//                messageExchangePoint.getPopupController().compCommand.setText("gcc -o {outputFile} {sourceFile}");
+//                messageExchangePoint.getPopupController().runCommand.setText("./{outputFile}");
+//            }else if (newValue.equals("Python")) { //TODO: add here comp and run commands
+//                messageExchangePoint.getPopupController().compCommand.setText("");
+//                messageExchangePoint.getPopupController().runCommand.setText("");
+//            }
+//        });
+
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -515,25 +521,24 @@ public class Controller {
     }
 
     @FXML
-    protected void editJsonConfiguration() throws IOException {
+    protected void editJsonConfiguration(String configFilePath, String language, String compCommand, String runCommand, String arguments, String expectedOutput) throws IOException {
         JSONObject compilerConfig = new JSONObject();
-        compilerConfig.put("language", editConfigLanguageBox.getValue());
-        compilerConfig.put("compileCommand", compCommand.getText());
-        compilerConfig.put("runCommand", runCommand.getText());
+        compilerConfig.put("language", language);
+        compilerConfig.put("compileCommand", compCommand);
+        compilerConfig.put("runCommand", runCommand);
 
         // Create the projectConfig object
         JSONObject projectConfig = new JSONObject();
 
         JSONArray jsonArray = new JSONArray();
-        String text = arguments.getText();
-        String[] values = text.split(",");
+        String[] values = arguments.split(",");
 
         for (String value : values) {
             jsonArray.put(value.trim()); // Trim to remove leading/trailing spaces
         }
 
         projectConfig.put("argument", jsonArray);
-        projectConfig.put("expectedOutput", expectedOutput.getText());
+        projectConfig.put("expectedOutput", expectedOutput);
 
         JSONObject json = new JSONObject();
         json.put("compilerConfig", compilerConfig);
@@ -542,7 +547,7 @@ public class Controller {
         // Format the JSON string for better readability
         String formattedJson = json.toString(4); // Indent with 4 spaces
 
-        Files.write(Paths.get(secretPath.getText()), formattedJson.getBytes());
+        Files.write(Paths.get(configFilePath), formattedJson.getBytes());
     }
 
 
