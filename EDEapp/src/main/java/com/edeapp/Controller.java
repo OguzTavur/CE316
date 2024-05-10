@@ -407,9 +407,13 @@ public class Controller {
 
 
     /*public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
-        String compileCommand = "javac {sourceFile}";
-        String runCommand = "java {mainClass}";
-        String testInput = "input.txt";
+
+        if (language.equals("C")){
+            String compileCommand = "javac {sourceFile}";
+            String runCommand = "java {mainClass}";
+
+        }else if
+
 
         String json = "{\n" +
                 "    \"compilerConfig\": {\n" +
@@ -532,14 +536,17 @@ public class Controller {
 
     @FXML
     protected void den1() throws Exception {
-        File configFile = new File("Configurations/configj.json");
-        File srcFile = new File("src/main/resources/ProjectFiles/project2/Deneme.java");
+
+        File configFile = new File("EDEapp/Configurations/configj.json");
+        File srcFile = new File("EDEapp/ProjectFiles/project2/Deneme.java");
         System.out.println(configFile.getAbsolutePath());
         System.out.println(srcFile.getAbsolutePath());
 
+
+
+
         String configFilePath = configFile.getAbsolutePath();
         String sourceFilePath = srcFile.getAbsolutePath();
-
         System.out.println(runSourceCode(configFilePath,sourceFilePath,sourceFilePath));
     }
     public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
@@ -577,23 +584,28 @@ public class Controller {
          */
 
         // Replace {sourceFile} and {mainClass} in the commands with the actual values
-        compileCommand = compileCommand.replace("{sourceFile}", sourceFile);
-        runCommand = runCommand.replace("{mainClass}", mainClass);
 
-        System.out.println(compileCommand);
-        System.out.println(runCommand);
+
+        System.out.println(compileCommand + sourceFile);
+        System.out.println(runCommand+ sourceFile);
         // Compile the source
-        ProcessBuilder compileProcessBuilder = new ProcessBuilder((compileCommand).split(" ",2));//TODO : burası değiştirilecek
+
+        ProcessBuilder compileProcessBuilder = new ProcessBuilder(compileCommand,sourceFile);//TODO : burası değiştirilecek
         Process compileProcess = compileProcessBuilder.start();
         compileProcess.waitFor();
-
+        InputStream errorStream = compileProcess.getErrorStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.err.println(line); // Print the error message
+        }
         // Check if the compilation was successful
         if (compileProcess.exitValue() != 0) {
             return "Compilation failed";
         }
 
         // Run the compiled code
-        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand.split(" ",2));//TODO : burası değiştirilecek
+        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand,sourceFile);//TODO : burası değiştirilecek
         Process runProcess = runProcessBuilder.start();
         runProcess.waitFor();
 
@@ -603,11 +615,11 @@ public class Controller {
         }
 
         // Get the output of the run
-        BufferedReader reader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
+        BufferedReader reader1 = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
         StringBuilder output = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            output.append(line).append("\n");
+        String line1;
+        while ((line1 = reader1.readLine()) != null) {
+            output.append(line1).append("\n");
         }
 
         // Return the output as a string

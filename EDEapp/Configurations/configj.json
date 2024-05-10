@@ -1,7 +1,15 @@
 {
   "compilerConfig": {
+    "compileCommand": "javac ",
     "language": "Java",
-    "compileCommand": "javac {sourceFile}",
-    "runCommand": "java {mainClass}"
+    "runCommand": "java "
+  },
+  "projectConfig": {
+    "argument": [
+      "harun",
+      "ege",
+      "oguz"
+    ],
+    "expectedOutput": ""
   }
 }
