@@ -1,0 +1,13 @@
+{
+    "compilerConfig": {
+        "language": "Java",
+        "compileCommand": "javac {sourceFile}",
+        "runCommand": "java {mainClass}"
+    },
+    "testConfig": {
+        "arguments": "ali,ege,harun",
+        "expectedOutput": "Hello ali
+Hello ege
+Hello harun"
+    }
+}

@@ -126,7 +126,7 @@ public class PopupController {
     private File get_InitialDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
         directoryChooser.setTitle("Choose Save Project Directory");
-        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles")); // Initial Path
+        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ProjectFiles")); // Initial Path
         return directoryChooser.showDialog(new Popup());
     }
 
@@ -134,7 +134,7 @@ public class PopupController {
         FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles")); // Initial Path
+        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ConfigFiles")); // Initial Path
         return fileChooser.showOpenDialog(new Popup());
     }
 

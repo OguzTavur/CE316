@@ -69,7 +69,8 @@ public class Controller {
         FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles"));
+        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ConfigFiles"));
+
         File file = fileChooser.showOpenDialog(new Popup());
 
         //It is getting json information to put them in text fields
@@ -227,7 +228,7 @@ public class Controller {
     protected void onOpenButtonClicked(){
         DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
         directoryChooser.setTitle("Choose Project Directory");
-        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles")); // Initial Path
+        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ProjectFiles")); // Initial Path
         File selectedDirectory = directoryChooser.showDialog(new Popup()); // Popup is used to show Dialog
         if (selectedDirectory == null)// Check if any directory is selected
             return;
