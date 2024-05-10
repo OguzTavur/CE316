@@ -7,9 +7,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class PopupController {
@@ -33,6 +36,10 @@ public class PopupController {
     public TextField configFileName;
     public TextField destinationPath;
     public Button destinationPathButton;
+    public VBox editConfigVBox;
+    public TextField compCommand;
+    public TextField runCommand;
+    public Button configFilePathEditButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -97,18 +104,21 @@ public class PopupController {
     @FXML
     protected void onSaveButtonClicked(){
         if (checkInputAreasForEditConfigFile()) {
-            System.out.println("Configuration File Name: " + configFileName.getText());
+            System.out.println("Configuration File Path: " + configFilePath.getText());
             System.out.println("Program Language: " + languageChoice.getValue());
             System.out.println("Project Arguments: " + projectArguments.getText());
             System.out.println("Expected Output: " + expectedOutput.getText());
             System.out.println("Destination Path: " + destinationPath.getText());
+
             MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+
             //messageExchangePoint.getController()
             //        .saveFileToGivenDirectory(messageExchangePoint.getController()
             //                .createJsonConfiguration(configFileName.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText()),destinationPath.getText());
             messageExchangePoint.getController().closePopUp();
         }
     }
+
 
     private boolean checkInputAreas(boolean importConfig) {
         if (importConfig) {
@@ -122,7 +132,7 @@ public class PopupController {
     }
 
     private boolean checkInputAreasForEditConfigFile() {
-        return !configFileName.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !destinationPath.getText().isEmpty();
+        return !configFileName.getText().isEmpty() && !expectedOutput.getText().isEmpty();
     }
 
     @FXML
@@ -156,6 +166,14 @@ public class PopupController {
             if (file != null) {
                 destinationPath.setText(file.getAbsolutePath());
             } else System.out.println("File not found!");
+        } else if (event.getSource() == configFilePathEditButton) {
+            File file = get_JSONFilePath();
+            if (file != null) {
+                configFilePath.setText(file.getAbsolutePath());
+                extractJson(file);
+
+            }
+            else System.out.println("File not found!");
         }
     }
 
@@ -180,5 +198,45 @@ public class PopupController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Zip Files", "*.zip"));
         return fileChooser.showOpenDialog(new Popup());
     }
+
+    private void extractJson(File file){
+        if (configFilePath.getText().isEmpty()){
+            return;
+        }
+        //It is getting json information to put them in text fields
+        String jsonText ;
+        try {
+            jsonText = new String(Files.readAllBytes(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        JSONObject jsonObject = new JSONObject(jsonText);
+
+        JSONObject compilerConfig = jsonObject.getJSONObject("compilerConfig");
+        String language = compilerConfig.getString("language");
+        String compileCommand = compilerConfig.getString("compileCommand");
+        String rCommand = compilerConfig.getString("runCommand");
+
+        JSONObject projectConfig = jsonObject.getJSONObject("projectConfig");
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+        String expectedOut = projectConfig.getString("expectedOutput");
+
+        String argumentsToStr = "";
+        for (int i = 0; i < arguments.length(); i++) {
+            argumentsToStr += arguments.getString(i);
+            if (i != arguments.length()-1)
+                argumentsToStr+=",";
+        }
+
+        editConfigVBox.setVisible(true);
+        languageChoice.setValue(language);
+        compCommand.setText(compileCommand);
+        runCommand.setText(rCommand);
+        projectArguments.setText(argumentsToStr);
+        expectedOutput.setText(expectedOut);
+
+    }
+
 
 }

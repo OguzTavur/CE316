@@ -66,7 +66,19 @@ public class Controller {
     @FXML
     protected void onEditConfigButtonClicked(ActionEvent event) throws IOException {
 
-        FileChooser fileChooser = new FileChooser(); // To chose only Directories
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
+        // Scene
+        setPopup(new Stage());
+        popup.initOwner(getPrimaryStage());
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Edit Config File");
+        popup.setResizable(false);
+        popup.setScene(fxmlLoader.load());
+        popup.showAndWait();
+
+        /*FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ConfigFiles"));
@@ -125,6 +137,8 @@ public class Controller {
         Label secretPath = (Label) root.lookup("#secretPath");
         secretPath.setText(file.getPath());
 
+         */
+
 
         /* to print console
         System.out.println("Language: " + language);
@@ -135,6 +149,7 @@ public class Controller {
         System.out.println("Expected Output: " + expectedOutput);
         */
 
+        /*
         Stage popupStage = new Stage();
         popupStage.initOwner(getPrimaryStage());
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -153,6 +168,8 @@ public class Controller {
                 }
             }
         });
+
+         */
 
     }
 

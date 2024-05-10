@@ -11,135 +11,137 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.PopupController">
-    <VBox prefHeight="538.0" prefWidth="600.0">
-        <children>
-         <Label text="Edit Configuration File">
-            <font>
-               <Font size="18.0" />
-            </font>
-            <VBox.margin>
-               <Insets bottom="20.0" />
-            </VBox.margin>
-         </Label>
-         <AnchorPane prefHeight="34.0" prefWidth="560.0">
+<?import javafx.scene.Scene?>
+<Scene xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.PopupController">
+    <AnchorPane >
+        <VBox prefHeight="538.0" prefWidth="600.0">
             <children>
-               <Label layoutY="8.0" text="Config File Path">
-                  <padding>
-                     <Insets left="10.0" />
-                  </padding>
-               </Label>
-               <TextField fx:id="configFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="C:/User/" />
-               <Button fx:id="configFilePathButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
-            </children>
-            <padding>
-               <Insets top="5.0" />
-            </padding>
-            <VBox.margin>
-               <Insets bottom="10.0" />
-            </VBox.margin>
-         </AnchorPane>
-         <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
-            <children>
-                  <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                      <children>
-                          <Label layoutY="8.0" text="Language">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </Label>
-                          <ChoiceBox fx:id="languageChoice" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="110.0" value="C">
-                              <items>
-                                  <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="C" />
-                                      <String fx:value="Java" />
-                                      <String fx:value="Python" />
-                                  </FXCollections>
-                              </items>
-                          </ChoiceBox>
-                      </children>
-                      <padding>
-                          <Insets top="5.0" />
-                      </padding>
-                  <VBox.margin>
-                     <Insets bottom="10.0" />
-                  </VBox.margin>
-                  </AnchorPane>
-                  <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                      <children>
-                          <Label layoutY="8.0" text="Compile Command">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </Label>
-                          <TextField fx:id="compCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Java" />
-                      </children>
-                      <VBox.margin>
-                          <Insets bottom="10.0" />
-                      </VBox.margin>
-                  <padding>
-                     <Insets top="5.0" />
-                  </padding>
-                  </AnchorPane>
-                  <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                      <children>
-                          <Label layoutY="8.0" text="Run Command">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </Label>
-                          <TextField fx:id="runCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: gcc -c" />
-                      </children>
-                      <VBox.margin>
-                          <Insets bottom="10.0" />
-                      </VBox.margin>
-                      <padding>
-                          <Insets top="5.0" />
-                      </padding>
-                  </AnchorPane>
-                  <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                      <children>
-                          <Label layoutY="8.0" text="Program Arguments">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </Label>
-                          <TextField fx:id="projectArguments" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Joe,Allen,123,Car" />
-                      </children>
-                      <VBox.margin>
-                          <Insets bottom="10.0" />
-                      </VBox.margin>
-                      <padding>
-                          <Insets top="5.0" />
-                      </padding>
-                  </AnchorPane>
-                  <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                      <children>
-                          <Label layoutY="8.0" text="Expected Output">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </Label>
-                          <TextArea fx:id="expectedOutput" layoutX="170.0" layoutY="4.0" prefHeight="180.0" prefWidth="320.0" promptText="example: Hello, World!" />
-                      </children>
-                      <VBox.margin>
-                          <Insets bottom="10.0" />
-                      </VBox.margin>
-                      <padding>
-                          <Insets top="5.0" />
-                      </padding>
-                  </AnchorPane>
-            </children>
-         </VBox>
-            <AnchorPane>
+             <Label text="Edit Configuration File">
+                <font>
+                   <Font size="18.0" />
+                </font>
+                <VBox.margin>
+                   <Insets bottom="20.0" />
+                </VBox.margin>
+             </Label>
+             <AnchorPane prefHeight="34.0" prefWidth="560.0">
                 <children>
-                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="450.0" layoutY="9.0" mnemonicParsing="false" onAction="#onSaveButtonClicked" prefHeight="34.0" prefWidth="110.0" text="Save" />
+                   <Label layoutY="8.0" text="Config File Path">
+                      <padding>
+                         <Insets left="10.0" />
+                      </padding>
+                   </Label>
+                   <TextField fx:id="configFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="C:/User/" />
+                   <Button fx:id="configFilePathEditButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
                 </children>
-            </AnchorPane>
-        </children>
-      <padding>
-         <Insets bottom="5.0" left="20.0" right="20.0" top="15.0" />
-      </padding>
-    </VBox>
-</AnchorPane>
+                <padding>
+                   <Insets top="5.0" />
+                </padding>
+                <VBox.margin>
+                   <Insets bottom="10.0" />
+                </VBox.margin>
+             </AnchorPane>
+             <VBox  fx:id="editConfigVBox" prefHeight="200.0" prefWidth="100.0" visible="false">
+                <children>
+                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                          <children>
+                              <Label layoutY="8.0" text="Language">
+                            <padding>
+                               <Insets left="10.0" />
+                            </padding>
+                         </Label>
+                              <ChoiceBox fx:id="languageChoice" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="110.0" value="C">
+                                  <items>
+                                      <FXCollections fx:factory="observableArrayList">
+                                          <String fx:value="C" />
+                                          <String fx:value="Java" />
+                                          <String fx:value="Python" />
+                                      </FXCollections>
+                                  </items>
+                              </ChoiceBox>
+                          </children>
+                          <padding>
+                              <Insets top="5.0" />
+                          </padding>
+                      <VBox.margin>
+                         <Insets bottom="10.0" />
+                      </VBox.margin>
+                      </AnchorPane>
+                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                          <children>
+                              <Label layoutY="8.0" text="Compile Command">
+                            <padding>
+                               <Insets left="10.0" />
+                            </padding>
+                         </Label>
+                              <TextField fx:id="compCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Java" />
+                          </children>
+                          <VBox.margin>
+                              <Insets bottom="10.0" />
+                          </VBox.margin>
+                      <padding>
+                         <Insets top="5.0" />
+                      </padding>
+                      </AnchorPane>
+                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                          <children>
+                              <Label layoutY="8.0" text="Run Command">
+                            <padding>
+                               <Insets left="10.0" />
+                            </padding>
+                         </Label>
+                              <TextField fx:id="runCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: gcc -c" />
+                          </children>
+                          <VBox.margin>
+                              <Insets bottom="10.0" />
+                          </VBox.margin>
+                          <padding>
+                              <Insets top="5.0" />
+                          </padding>
+                      </AnchorPane>
+                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                          <children>
+                              <Label layoutY="8.0" text="Program Arguments">
+                            <padding>
+                               <Insets left="10.0" />
+                            </padding>
+                         </Label>
+                              <TextField fx:id="projectArguments" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Joe,Allen,123,Car" />
+                          </children>
+                          <VBox.margin>
+                              <Insets bottom="10.0" />
+                          </VBox.margin>
+                          <padding>
+                              <Insets top="5.0" />
+                          </padding>
+                      </AnchorPane>
+                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                          <children>
+                              <Label layoutY="8.0" text="Expected Output">
+                            <padding>
+                               <Insets left="10.0" />
+                            </padding>
+                         </Label>
+                              <TextArea fx:id="expectedOutput" layoutX="170.0" layoutY="4.0" prefHeight="180.0" prefWidth="320.0" promptText="example: Hello, World!" />
+                          </children>
+                          <VBox.margin>
+                              <Insets bottom="10.0" />
+                          </VBox.margin>
+                          <padding>
+                              <Insets top="5.0" />
+                          </padding>
+                      </AnchorPane>
+                </children>
+             </VBox>
+                <AnchorPane>
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="450.0" layoutY="9.0" mnemonicParsing="false" onAction="#onSaveButtonClicked" prefHeight="34.0" prefWidth="110.0" text="Save" />
+                    </children>
+                </AnchorPane>
+            </children>
+          <padding>
+             <Insets bottom="5.0" left="20.0" right="20.0" top="15.0" />
+          </padding>
+        </VBox>
+    </AnchorPane>
+</Scene>
