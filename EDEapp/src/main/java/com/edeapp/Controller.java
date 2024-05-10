@@ -156,8 +156,25 @@ public class Controller {
     }
 
     @FXML
+    protected void onCreateConfigButtonClicked() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createConfig.fxml"));
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
+        // Scene
+        setPopup(new Stage());
+        popup.initOwner(getPrimaryStage());
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Create Configuration File");
+        popup.setResizable(false);
+        popup.setScene(fxmlLoader.load());
+        popup.showAndWait();
+    }
+
+    @FXML
     protected void closePopUp(){
         popup.close();
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        messageExchangePoint.setPopupController(null); // To avoid any possible conflict
     }
 
     protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments, String expectedOutput) throws IOException {
@@ -174,6 +191,7 @@ public class Controller {
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
             File newJSONConfigFile = createJsonConfiguration(language,arguments,expectedOutput);
+            saveFileToGivenDirectory(createJsonConfiguration(language,arguments,expectedOutput),projectDirectory + "\\" + projectName);
             File relocateJSONFile = new File(newJSONConfigFile.getAbsolutePath());
             if(relocateJSONFile.renameTo(new File(projectDirectory + "\\" + projectName, relocateJSONFile.getName())))
                 System.out.println("JSON Moved to " + relocateJSONFile.getAbsolutePath());
@@ -202,6 +220,8 @@ public class Controller {
         populateTreeView(root);
         addFunctionalityToTreeItems();
     }
+
+
 
     @FXML
     protected void onOpenButtonClicked(){
@@ -425,7 +445,7 @@ public class Controller {
 
     }*/
 
-    public static File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
+    public File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
         String runCommand;
 
@@ -501,6 +521,11 @@ public class Controller {
         String formattedJson = json.toString(4); // Indent with 4 spaces
 
         Files.write(Paths.get(secretPath.getText()), formattedJson.getBytes());
+    }
+
+
+    private void saveFileToGivenDirectory(File file, String destinationPath){
+
     }
 
 

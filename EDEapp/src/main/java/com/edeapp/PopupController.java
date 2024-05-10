@@ -30,6 +30,8 @@ public class PopupController {
     public TextField projectDestinationPathImport;
     public Button projectDestinationPathImportButton;
     public TextArea expectedOutput;
+    public TextField configFileName;
+    public TextField destinationPath;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -69,11 +71,21 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
-                // TODO: GUI ye destination path ekle
                 messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null,null);
             }
         }
         // else TODO: Add here state information after
+    }
+    @FXML
+    protected void onCreateButtonClickedNewConfig() throws IOException {
+        System.out.println("Configuration File Name: " + configFileName.getText());
+        System.out.println("Program Language: " + languageChoice.getValue());
+        System.out.println("Project Arguments: " + projectArguments.getText());
+        System.out.println("Expected Output: " + expectedOutput.getText());
+        System.out.println("Destination Path: " + destinationPath.getText());
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        messageExchangePoint.getController().closePopUp();
+        //TODO: Bilgileri göndermedin daha
     }
 
     private boolean checkInputAreas(boolean importConfig) {
