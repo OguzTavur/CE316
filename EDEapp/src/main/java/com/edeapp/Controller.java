@@ -69,7 +69,7 @@ public class Controller {
         FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ConfigFiles"));
+        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/src/main/resources/ProjectFiles"));
         File file = fileChooser.showOpenDialog(new Popup());
 
         //It is getting json information to put them in text fields
@@ -240,35 +240,6 @@ public class Controller {
         populateTreeView(root);
 
         addFunctionalityToTreeItems();
-        /* TableView of students it will be moved to its method
-        tableView.getColumns().clear();
-
-        ObservableList<Student> data =
-                FXCollections.observableArrayList(
-                        new Student("20200602013", "❌"),
-                        new Student("2", "✔"),
-                        new Student("3", "✔")
-                );
-
-
-        TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
-        idColumn.setMinWidth(120);
-        idColumn.setCellValueFactory(
-                new PropertyValueFactory<Student,String>("id")
-        );
-
-        TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
-        resultColumn.setMinWidth(50);
-        resultColumn.setCellValueFactory(
-                new PropertyValueFactory<Student,Boolean>("result")
-        );
-
-        tableView.getColumns().addAll(idColumn, resultColumn);
-
-        // Sample data
-        tableView.setItems(data);
-
-         */
 
     }
 
@@ -376,6 +347,9 @@ public class Controller {
 
     //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
     private boolean compareResult(String studentOutputPath, String expectedOutputPath, String csvFilePath) {
+
+        System.out.println(treeView);
+
         try {
             // Read student output and expected output files
             String studentOutput = new String(Files.readAllBytes(Paths.get(studentOutputPath)));
@@ -403,6 +377,36 @@ public class Controller {
         boolean match = compareResult(studentOutputPath, expectedOutputPath, csvFilePath);
         System.out.println("Comparison result: " + (match ? "Match" : "Mismatch"));
         */
+
+        /* TableView of students it will be moved to its method
+        tableView.getColumns().clear();
+
+        ObservableList<Student> data =
+                FXCollections.observableArrayList(
+                        new Student("20200602013", "❌"),
+                        new Student("2", "✔"),
+                        new Student("3", "✔")
+                );
+
+
+        TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
+        idColumn.setMinWidth(120);
+        idColumn.setCellValueFactory(
+                new PropertyValueFactory<Student,String>("id")
+        );
+
+        TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
+        resultColumn.setMinWidth(50);
+        resultColumn.setCellValueFactory(
+                new PropertyValueFactory<Student,Boolean>("result")
+        );
+
+        tableView.getColumns().addAll(idColumn, resultColumn);
+
+        // Sample data
+        tableView.setItems(data);
+
+         */
     }
 
 
