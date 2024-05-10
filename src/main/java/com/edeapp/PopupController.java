@@ -32,6 +32,7 @@ public class PopupController {
     public TextArea expectedOutput;
     public TextField configFileName;
     public TextField destinationPath;
+    public Button destinationPathButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -60,7 +61,7 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
-                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,projectName.getText(),languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
             }
         }
         else if (radioImport.isSelected()) {
@@ -70,29 +71,58 @@ public class PopupController {
                 System.out.println("Project Destination Path: " + projectDestinationPathImport.getText());
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,null,zipFilePath.getText(),configFilePath.getText(),null,null);
                 messageExchangePoint.getController().closePopUp();
-                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,zipFilePath.getText(),configFilePath.getText(),null,null);
             }
         }
         // else TODO: Add here state information after
     }
     @FXML
     protected void onCreateButtonClickedNewConfig() throws IOException {
-        System.out.println("Configuration File Name: " + configFileName.getText());
-        System.out.println("Program Language: " + languageChoice.getValue());
-        System.out.println("Project Arguments: " + projectArguments.getText());
-        System.out.println("Expected Output: " + expectedOutput.getText());
-        System.out.println("Destination Path: " + destinationPath.getText());
-        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-        messageExchangePoint.getController().closePopUp();
-        //TODO: Bilgileri göndermedin daha
+        if (checkInputAreasForCreateConfigFile()) {
+            System.out.println("Configuration File Name: " + configFileName.getText());
+            System.out.println("Program Language: " + languageChoice.getValue());
+            System.out.println("Project Arguments: " + projectArguments.getText());
+            System.out.println("Expected Output: " + expectedOutput.getText());
+            System.out.println("Destination Path: " + destinationPath.getText());
+            MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+            messageExchangePoint.getController()
+                    .saveFileToGivenDirectory(messageExchangePoint.getController()
+                            .createJsonConfiguration(configFileName.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText()),destinationPath.getText());
+            messageExchangePoint.getController().closePopUp();
+        }
+        // TODO: Add something in here maybe later
+    }
+
+    @FXML
+    protected void onSaveButtonClicked(){
+        if (checkInputAreasForEditConfigFile()) {
+            System.out.println("Configuration File Name: " + configFileName.getText());
+            System.out.println("Program Language: " + languageChoice.getValue());
+            System.out.println("Project Arguments: " + projectArguments.getText());
+            System.out.println("Expected Output: " + expectedOutput.getText());
+            System.out.println("Destination Path: " + destinationPath.getText());
+            MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+            //messageExchangePoint.getController()
+            //        .saveFileToGivenDirectory(messageExchangePoint.getController()
+            //                .createJsonConfiguration(configFileName.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText()),destinationPath.getText());
+            messageExchangePoint.getController().closePopUp();
+        }
     }
 
     private boolean checkInputAreas(boolean importConfig) {
         if (importConfig) {
-            return !projectName.getText().isEmpty() && !configFilePath.getText().isEmpty() && !zipFilePath.getText().isEmpty();
+            return !projectName.getText().isEmpty() && !configFilePath.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !zipFilePath.getText().isEmpty();
         }
-        else return !projectName.getText().isEmpty() && !projectDestinationPath.getText().isEmpty() && !zipFilePath.getText().isEmpty();
+        else return !projectName.getText().isEmpty() && !projectDestinationPath.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !zipFilePath.getText().isEmpty();
+    }
+
+    private boolean checkInputAreasForCreateConfigFile() {
+        return !configFileName.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !destinationPath.getText().isEmpty();
+    }
+
+    private boolean checkInputAreasForEditConfigFile() {
+        return !configFileName.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !destinationPath.getText().isEmpty();
     }
 
     @FXML
@@ -104,7 +134,7 @@ public class PopupController {
             }
             else System.out.println("File not found!");
         } else if (event.getSource() == projectDestinationPathButton) {
-            File file = get_InitialDirectory();
+            File file = get_InitialDirectory("/ProjectFiles");
             if (file != null) {
                 projectDestinationPath.setText(file.getAbsolutePath());
             }
@@ -116,17 +146,23 @@ public class PopupController {
             }
             else System.out.println("File not found!");
         } else if (event.getSource() == projectDestinationPathImportButton) {
-            File file = get_InitialDirectory();
+            File file = get_InitialDirectory("/ProjectFiles");
             if (file != null) {
                 projectDestinationPathImport.setText(file.getAbsolutePath());
             } else System.out.println("File not found!");
         }
+        else if (event.getSource() == destinationPathButton) {
+            File file = get_InitialDirectory("/ConfigFiles");
+            if (file != null) {
+                destinationPath.setText(file.getAbsolutePath());
+            } else System.out.println("File not found!");
+        }
     }
 
-    private File get_InitialDirectory() {
+    private File get_InitialDirectory(String folderName) {
         DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
         directoryChooser.setTitle("Choose Save Project Directory");
-        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ProjectFiles")); // Initial Path
+        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + folderName)); // Initial Path
         return directoryChooser.showDialog(new Popup());
     }
 

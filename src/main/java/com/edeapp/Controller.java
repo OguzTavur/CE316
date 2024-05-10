@@ -178,7 +178,7 @@ public class Controller {
         messageExchangePoint.setPopupController(null); // To avoid any possible conflict
     }
 
-    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String language, String zipFilePath, String configFilePath, String arguments, String expectedOutput) throws IOException {
+    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String customConfigName, String language, String zipFilePath, String configFilePath, String arguments, String expectedOutput) throws IOException {
         // Create the destination directory if it doesn't exist
         File createNewProjectDirectory = new File(projectDirectory + "\\" + projectName);
         if (!createNewProjectDirectory.exists()) {
@@ -191,11 +191,7 @@ public class Controller {
 
         // If we have already a JSON Config File then we don't need to create one.
         if (!importConfig) {
-            File newJSONConfigFile = createJsonConfiguration(language,arguments,expectedOutput);
-            saveFileToGivenDirectory(createJsonConfiguration(language,arguments,expectedOutput),projectDirectory + "\\" + projectName);
-            File relocateJSONFile = new File(newJSONConfigFile.getAbsolutePath());
-            if(relocateJSONFile.renameTo(new File(projectDirectory + "\\" + projectName, relocateJSONFile.getName())))
-                System.out.println("JSON Moved to " + relocateJSONFile.getAbsolutePath());
+            saveFileToGivenDirectory(createJsonConfiguration(customConfigName,language,arguments,expectedOutput),projectDirectory + "\\" + projectName);
         }
         else {
             File configFile = new File(configFilePath);
@@ -454,7 +450,7 @@ public class Controller {
 
     }*/
 
-    public File createJsonConfiguration(String language, String arguments, String expectedOutput) throws IOException {
+    protected File createJsonConfiguration(String customFileName, String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
         String runCommand;
 
@@ -481,7 +477,7 @@ public class Controller {
                 "}";
 
         // Replace with the path where you want to save the config file
-        String configFilePath = "config.json";
+        String configFilePath = customFileName + ".json";
         File configFile = new File(configFilePath);
         try (FileWriter writer = new FileWriter(configFile)) {
             writer.write(json);
@@ -533,8 +529,11 @@ public class Controller {
     }
 
 
-    private void saveFileToGivenDirectory(File file, String destinationPath){
-
+    protected void saveFileToGivenDirectory(File file, String destinationPath){
+        File relocateJSONFile = new File(file.getAbsolutePath());
+        if(relocateJSONFile.renameTo(new File(destinationPath, relocateJSONFile.getName())))
+            System.out.println("File Moved to " + relocateJSONFile.getAbsolutePath());
+        else System.out.println("File could not move!");
     }
 
 

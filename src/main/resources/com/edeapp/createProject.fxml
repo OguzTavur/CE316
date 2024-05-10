@@ -45,137 +45,223 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <Scene xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.PopupController">
-    <AnchorPane prefHeight="324.0" prefWidth="400.0">
+   <VBox prefHeight="670.0" prefWidth="600.0">
       <children>
-         <VBox prefHeight="404.0" prefWidth="500.0">
+         <Label text="Create New Project">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin>
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+         <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefWidth="400.0">
             <children>
-               <Label text="Create New Project">
-                  <VBox.margin>
-                     <Insets bottom="5.0" left="15.0" top="10.0" />
-                  </VBox.margin>
+               <Label layoutY="8.0" text="Project Name">
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
                </Label>
-               <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                  <children>
-                     <Label layoutX="15.0" layoutY="18.0" text="Project Name" />
-                     <TextField fx:id="projectName" layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="340.0" />
-                  </children>
-               </AnchorPane>
-               <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="10.0" prefWidth="400.0">
-                  <children>
-                     <Label layoutX="15.0" layoutY="16.0" text="Configuration" />
-                     <RadioButton fx:id="radioNew" layoutX="125.0" layoutY="16.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="New" />
-                     <RadioButton fx:id="radioImport" layoutX="200.0" layoutY="16.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="Import" />
-                  </children>
-                  <padding>
-                     <Insets bottom="5.0" top="5.0" />
-                  </padding>
-               </AnchorPane>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                  <children>
-                     <VBox fx:id="newConfigInfo" prefHeight="258.0" prefWidth="500.0" visible="false">
-                        <children>
-                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="18.0" text="Project Language" />
-                                 <ChoiceBox fx:id="languageChoice" layoutX="125.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" value="C">
-                                    <items>
-                                       <FXCollections fx:factory="observableArrayList">
-                                          <String fx:value="C" />
-                                          <String fx:value="Java" />
-                                          <String fx:value="Python" />
-                                       </FXCollections>
-                                    </items>
-                                 </ChoiceBox>
-                              </children>
-                              <padding>
-                                 <Insets bottom="5.0" top="5.0" />
-                              </padding>
-                           </AnchorPane>
-                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="12.0" text="Project Arguments" />
-                                 <TextField fx:id="projectArguments" layoutX="125.0" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" promptText="example: Joe,Allen,123,Car" />
-                              </children>
-                              <VBox.margin>
-                                 <Insets />
-                              </VBox.margin>
-                              <padding>
-                                 <Insets bottom="5.0" top="5.0" />
-                              </padding>
-                           </AnchorPane>
-                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="12.0" text="Expected Output" />
-                                 <TextArea fx:id="expectedOutput" layoutX="125.0" layoutY="8.0" prefHeight="186.0" prefWidth="340.0" />
-                              </children>
-                              <padding>
-                                 <Insets bottom="5.0" top="5.0" />
-                              </padding>
-                           </AnchorPane>
-                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="16.0" text="Destination Path" />
-                                 <TextField fx:id="projectDestinationPath" layoutX="125.0" layoutY="12.0" prefHeight="25.0" prefWidth="280.0" promptText="../Projects/">
-                                    <cursor>
-                                       <Cursor fx:constant="DEFAULT" />
-                                    </cursor>
-                                 </TextField>
-                                 <Button fx:id="projectDestinationPathButton" layoutX="410.0" layoutY="11.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
-                              </children>
-                              <padding>
-                                 <Insets bottom="5.0" top="5.0" />
-                              </padding>
-                           </AnchorPane>
-                        </children>
-                     </VBox>
-                     <VBox fx:id="importConfigInfo" prefHeight="344.0" prefWidth="500.0" visible="false">
-                        <children>
-                           <AnchorPane prefHeight="58.0" prefWidth="500.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="20.0" text="Config File Path" />
-                                 <TextField fx:id="configFilePath" layoutX="125.0" layoutY="16.0" prefHeight="25.0" prefWidth="280.0" promptText="C:/User/" />
-                                 <Button fx:id="configFilePathButton" layoutX="410.0" layoutY="16.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
-                              </children>
-                           </AnchorPane>
-                           <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                              <children>
-                                 <Label layoutX="15.0" layoutY="16.0" text="Destination Path" />
-                                 <TextField fx:id="projectDestinationPathImport" layoutX="125.0" layoutY="12.0" prefHeight="25.0" prefWidth="280.0" promptText="../Projects/">
-                                    <cursor>
-                                       <Cursor fx:constant="DEFAULT" />
-                                    </cursor>
-                                 </TextField>
-                                 <Button fx:id="projectDestinationPathImportButton" layoutX="410.0" layoutY="11.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
-                              </children>
-                              <padding>
-                                 <Insets bottom="5.0" top="5.0" />
-                              </padding>
-                           </AnchorPane>
-                        </children>
-                     </VBox>
-                  </children>
-               </AnchorPane>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                  <children>
-                     <Label layoutX="15.0" layoutY="13.0" text="Project Zip File" />
-                     <TextField fx:id="zipFilePath" layoutX="125.0" layoutY="10.0" prefHeight="25.0" prefWidth="280.0" promptText="projects.zip" />
-                     <Button fx:id="zipFilePathButton" layoutX="410.0" layoutY="10.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
-                  </children>
-                  <padding>
-                     <Insets bottom="10.0" />
-                  </padding>
-               </AnchorPane>
-               <AnchorPane prefHeight="46.0" prefWidth="400.0">
-                  <children>
-                     <Button alignment="CENTER" contentDisplay="CENTER" layoutX="416.0" layoutY="11.0" mnemonicParsing="false" onAction="#onCreateButtonClicked" text="Create" />
-                  </children>
-                  <padding>
-                     <Insets bottom="10.0" />
-                  </padding>
-               </AnchorPane>
+               <TextField fx:id="projectName" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" />
             </children>
-         </VBox>
-      </children></AnchorPane>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+            <padding>
+               <Insets top="5.0" />
+            </padding>
+         </AnchorPane>
+         <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefWidth="400.0">
+            <children>
+               <Label layoutY="8.0" text="Configuration">
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+               <RadioButton fx:id="radioNew" layoutX="170.0" layoutY="8.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="New" />
+               <RadioButton fx:id="radioImport" layoutX="250.0" layoutY="8.0" mnemonicParsing="false" onAction="#onRadioButtonClicked" text="Import" />
+            </children>
+            <padding>
+               <Insets bottom="5.0" top="5.0" />
+            </padding>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </AnchorPane>
+         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+               <VBox fx:id="newConfigInfo" prefHeight="258.0" prefWidth="500.0" visible="false">
+                  <children>
+                     <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Project Language">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <ChoiceBox fx:id="languageChoice" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="100.0" value="C">
+                              <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="C" />
+                                    <String fx:value="Java" />
+                                    <String fx:value="Python" />
+                                 </FXCollections>
+                              </items>
+                           </ChoiceBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                     <AnchorPane layoutX="10.0" layoutY="59.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Config File Name">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextField fx:id="configFileName" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="MyConfiguration" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                     <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Project Arguments">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextField fx:id="projectArguments" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Joe,Allen,123,Car" />
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                        <padding>
+                           <Insets bottom="5.0" top="5.0" />
+                        </padding>
+                     </AnchorPane>
+                     <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Expected Output">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextArea fx:id="expectedOutput" layoutX="170.0" layoutY="4.0" prefHeight="186.0" prefWidth="320.0" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                     <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Save To">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextField fx:id="projectDestinationPath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="../Projects/">
+                              <cursor>
+                                 <Cursor fx:constant="DEFAULT" />
+                              </cursor>
+                           </TextField>
+                           <Button fx:id="projectDestinationPathButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                  </children>
+               </VBox>
+               <VBox fx:id="importConfigInfo" prefHeight="386.0" prefWidth="560.0" visible="false">
+                  <children>
+                     <AnchorPane prefHeight="34.0" prefWidth="560.0">
+                        <children>
+                           <Label layoutY="8.0" text="Config File Path">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextField fx:id="configFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="C:/User/" />
+                           <Button fx:id="configFilePathButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
+                        </children>
+                        <padding>
+                           <Insets top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                     <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefWidth="400.0">
+                        <children>
+                           <Label layoutY="8.0" text="Destination Path">
+                              <padding>
+                                 <Insets left="10.0" />
+                              </padding>
+                           </Label>
+                           <TextField fx:id="projectDestinationPathImport" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="../Projects/">
+                              <cursor>
+                                 <Cursor fx:constant="DEFAULT" />
+                              </cursor>
+                           </TextField>
+                           <Button fx:id="projectDestinationPathImportButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
+                        </children>
+                        <padding>
+                           <Insets top="5.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </AnchorPane>
+                  </children>
+                  <padding>
+                     <Insets bottom="10.0" />
+                  </padding>
+               </VBox>
+            </children>
+         </AnchorPane>
+         <AnchorPane layoutX="30.0" layoutY="150.0">
+            <children>
+               <Label layoutY="8.0" text="Project Zip File">
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+               <TextField fx:id="zipFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="projects.zip" />
+               <Button fx:id="zipFilePathButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
+            </children>
+            <padding>
+               <Insets bottom="10.0" />
+            </padding>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </AnchorPane>
+         <AnchorPane>
+            <children>
+               <Button layoutX="450.0" layoutY="9.0" mnemonicParsing="false" onAction="#onCreateButtonClicked" prefHeight="34.0" prefWidth="110.0" text="Create" />
+            </children>
+         </AnchorPane>
+      </children>
+      <padding>
+         <Insets bottom="5.0" left="20.0" right="20.0" top="15.0" />
+      </padding>
+   </VBox>
 </Scene>
