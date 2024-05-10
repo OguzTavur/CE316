@@ -560,22 +560,33 @@ public class Controller {
 
 
 
+
+
     @FXML
     protected void den1() throws Exception {
-
-        File configFile = new File("EDEapp/Configurations/configj.json");
-        File srcFile = new File("EDEapp/ProjectFiles/project2/Deneme.java");
-        System.out.println(configFile.getAbsolutePath());
-        System.out.println(srcFile.getAbsolutePath());
-
-
-
-
+        String filePath = "ProjectFiles/Project7";
+        File configFile = new File(filePath +"/config.json");
         String configFilePath = configFile.getAbsolutePath();
-        String sourceFilePath = srcFile.getAbsolutePath();
-        System.out.println(runSourceCode(configFilePath,sourceFilePath,sourceFilePath));
+
+        File directory =new File(filePath);
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    File[] sourceFiles = file.listFiles();
+                    assert sourceFiles != null;
+                    for(File sourceFile: sourceFiles){
+                        if (sourceFile.getName().endsWith(".java") || sourceFile.getName().endsWith(".c")){
+                            System.out.println(runSourceCode(configFilePath,sourceFile.getAbsolutePath()));
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
-    public String runSourceCode(String configFilePath, String sourceFile, String mainClass) throws Exception {
+    public String runSourceCode(String configFilePath, String sourceFile) throws Exception {
         // Read the JSON file
         String jsonText = new String(Files.readAllBytes(Path.of(configFilePath)));
 
@@ -588,7 +599,16 @@ public class Controller {
         String language = compilerConfig.getString("language");
         String compileCommand = compilerConfig.getString("compileCommand");
         String runCommand = compilerConfig.getString("runCommand");
+        compilerConfig = json.getJSONObject("projectConfig");
 
+
+        JSONArray arguments = compilerConfig.getJSONArray("argument");
+        String[] testInputs = new String[arguments.length()+2];
+        testInputs[0] = runCommand;
+        testInputs[1] = sourceFile;
+        for (int i = 0; i < arguments.length(); i++) {
+            testInputs[i+2] = arguments.getString(i);
+        }
         // Get the compiler path from the environment variable
         // TODO: 8.05.2024 path should be checked
         /*String compilerPath;
@@ -612,8 +632,9 @@ public class Controller {
         // Replace {sourceFile} and {mainClass} in the commands with the actual values
 
 
-        System.out.println(compileCommand + sourceFile);
-        System.out.println(runCommand+ sourceFile);
+
+
+
         // Compile the source
 
         ProcessBuilder compileProcessBuilder = new ProcessBuilder(compileCommand,sourceFile);//TODO : burası değiştirilecek
@@ -630,10 +651,23 @@ public class Controller {
             return "Compilation failed";
         }
 
+
         // Run the compiled code
-        ProcessBuilder runProcessBuilder = new ProcessBuilder(runCommand,sourceFile);//TODO : burası değiştirilecek
+        ProcessBuilder runProcessBuilder = new ProcessBuilder(testInputs);
         Process runProcess = runProcessBuilder.start();
+
+
         runProcess.waitFor();
+        BufferedReader errorReader = new BufferedReader(new InputStreamReader(runProcess.getErrorStream()));
+        StringBuilder errors = new StringBuilder();
+        String errorLine;
+        while ((errorLine = errorReader.readLine()) != null) {
+            errors.append(errorLine).append("\n");
+        }
+        if (errors.length() > 0) {
+            // Log or print the errors
+            System.err.println("Errors: " + errors.toString());
+        }
 
         // Check if the run was successful
         if (runProcess.exitValue() != 0) {
