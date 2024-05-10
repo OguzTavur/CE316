@@ -81,7 +81,7 @@
     </MenuBar>
     <SplitPane dividerPositions="0.2, 0.7506" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <TreeView fx:id="treeView" prefHeight="551.0" prefWidth="264.0" SplitPane.resizableWithParent="false" value=""/>
+        <TreeView fx:id="treeView" prefHeight="551.0" prefWidth="264.0" SplitPane.resizableWithParent="false"/>
 
             <TabPane fx:id="tabPane" prefHeight="551.0" prefWidth="487.0" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER" tabMaxWidth="200" tabMinWidth="100">
               <tabs>
