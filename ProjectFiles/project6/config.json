@@ -1,15 +1,14 @@
 {
   "compilerConfig": {
-    "compileCommand": "gcc",
-    "language": "C",
-    "runCommand": ""
+    "compileCommand": "python",
+    "language": "Python",
+    "runCommand": "python"
   },
   "projectConfig": {
     "argument": [
       "harun",
-      "ege",
-      "oguz"
+      "ege"
     ],
-    "expectedOutput": ""
+    "expectedOutput": "harun\nege\n"
   }
 }

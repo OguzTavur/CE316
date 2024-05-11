@@ -700,6 +700,7 @@ public class Controller {
     }
 
     public Student pythonRun(String configFilePath, String sourceFile){
+        //python -m py_compile
         JSONObject compilerConfig = null;
         JSONObject projectConfig = null;
         try {
@@ -709,7 +710,7 @@ public class Controller {
             throw new RuntimeException(e);
         }
 
-        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile};
+        String[] compileCommand = {compilerConfig.getString("compileCommand"), "-m", "py_compile",sourceFile};
         JSONArray arguments = projectConfig.getJSONArray("argument");
         String[] executeCommand = new String[arguments.length()+1];
         executeCommand[0] = compilerConfig.getString("runCommand");
