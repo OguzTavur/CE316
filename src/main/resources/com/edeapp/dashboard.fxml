@@ -63,7 +63,7 @@
               <MenuItem mnemonicParsing="false" onAction="#onCreateConfigButtonClicked" text="Create Config" />
               <MenuItem mnemonicParsing="false" onAction="#onEditConfigButtonClicked" text="Edit Config" />
               <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#den1" text="Close" />
+            <MenuItem mnemonicParsing="false" onAction="#queryStudents" text="Close" />
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>

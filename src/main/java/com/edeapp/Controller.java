@@ -1,12 +1,8 @@
 package com.edeapp;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.*;
 
@@ -25,7 +21,6 @@ import java.nio.file.Files;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONWriter;
 
 public class Controller {
     @FXML
@@ -568,10 +563,11 @@ public class Controller {
 
 
     @FXML
-    protected void den1() throws Exception {
+    protected void queryStudents() throws Exception {
         String filePath = "ProjectFiles/Project7";
         File configFile = new File(filePath +"/config.json");
         String configFilePath = configFile.getAbsolutePath();
+        ArrayList<Student> students = new ArrayList<>();
 
         File directory =new File(filePath);
         File[] files = directory.listFiles();
@@ -579,10 +575,13 @@ public class Controller {
             for (File file : files) {
                 if (file.isDirectory()) {
                     File[] sourceFiles = file.listFiles();
+
                     assert sourceFiles != null;
                     for(File sourceFile: sourceFiles){
                         if (sourceFile.getName().endsWith(".java") || sourceFile.getName().endsWith(".c")){
-                            System.out.println(runSourceCode(configFilePath,sourceFile.getAbsolutePath()));
+                            Student student = javaRun(configFilePath,sourceFile.getAbsolutePath());
+                            student.setId(file.getName());
+                            students.add(student);
                         }
                     }
                 }
@@ -590,30 +589,63 @@ public class Controller {
         }
 
 
+
+
     }
-    public String runSourceCode(String configFilePath, String sourceFile) throws Exception {
-        // Read the JSON file
+
+    public JSONObject getObject(String configFilePath,String objectName) throws IOException {
+
         String jsonText = new String(Files.readAllBytes(Path.of(configFilePath)));
 
-        // Parse the JSON
+
         JSONObject json = new JSONObject(jsonText);
 
-        // Get the language and commands
+
         System.out.println(json);
-        JSONObject compilerConfig = json.getJSONObject("compilerConfig");
-        String language = compilerConfig.getString("language");
-        String compileCommand = compilerConfig.getString("compileCommand");
-        String runCommand = compilerConfig.getString("runCommand");
-        compilerConfig = json.getJSONObject("projectConfig");
+        return json.getJSONObject(objectName);
+    }
 
+    public Student javaRun(String configFilePath, String sourceFile){
 
-        JSONArray arguments = compilerConfig.getJSONArray("argument");
-        String[] testInputs = new String[arguments.length()+2];
-        testInputs[0] = runCommand;
-        testInputs[1] = sourceFile;
-        for (int i = 0; i < arguments.length(); i++) {
-            testInputs[i+2] = arguments.getString(i);
+        JSONObject compilerConfig = null;
+        JSONObject projectConfig = null;
+
+        try {
+            compilerConfig = getObject(configFilePath,"compilerConfig");
+            projectConfig = getObject(configFilePath,"projectConfig");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        String jCompile = compilerConfig.getString("compileCommand");
+        String runCommand = compilerConfig.getString("runCommand");
+
+        String[] compileCommand = {jCompile,sourceFile};
+
+
+
+
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+
+        String[] executeCommand = new String[arguments.length()+2];
+        executeCommand[0] = runCommand;
+        executeCommand[1] = sourceFile;
+        for (int i = 0; i < arguments.length(); i++) {
+            executeCommand[i+2] = arguments.getString(i);
+        }
+
+        return runSourceCode(compileCommand,executeCommand);
+
+
+    }
+
+    public void cSetup(JSONObject compilerConfig,String runCommand, String sourceFile){
+        File cFile = new File(sourceFile);
+        String fileName = cFile.getName();
+
+    }
+    public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {
+
+
         // Get the compiler path from the environment variable
         // TODO: 8.05.2024 path should be checked
         /*String compilerPath;
@@ -636,59 +668,57 @@ public class Controller {
 
         // Replace {sourceFile} and {mainClass} in the commands with the actual values
 
+        Student student = new Student();
+        boolean isCompiled = true;
+        boolean isRan = true;
+        try {
+            // Compile the source
+            ProcessBuilder compileProcessBuilder = new ProcessBuilder(compilerCommand);
+            Process compileProcess = compileProcessBuilder.start();
+            compileProcess.waitFor();
+
+            // Check if the compilation was successful
+            if (compileProcess.exitValue() != 0) {
+                System.out.println("comp failed");
+                isCompiled = false;
+
+            }
+
+            // Run the compiled code
+            ProcessBuilder runProcessBuilder = new ProcessBuilder(executeCommand);
+            Process runProcess = runProcessBuilder.start();
+            runProcess.waitFor();
+
+            // Check if the run was successful
+            if (runProcess.exitValue() != 0) {
+                System.out.println("run failed");
+                isRan = false;
+            }
 
 
 
+            // Get the output of the run
+            BufferedReader reader1 = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            String line1;
+            while ((line1 = reader1.readLine()) != null) {
+                output.append(line1).append("\n");
+            }
+            student.setCompiled(isCompiled);
+            student.setRan(isRan);
+            student.setResult(output.toString());
 
-        // Compile the source
-
-        ProcessBuilder compileProcessBuilder = new ProcessBuilder(compileCommand,sourceFile);//TODO : burası değiştirilecek
-        Process compileProcess = compileProcessBuilder.start();
-        compileProcess.waitFor();
-        InputStream errorStream = compileProcess.getErrorStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            System.err.println(line); // Print the error message
+            return student;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        // Check if the compilation was successful
-        if (compileProcess.exitValue() != 0) {
-            return "Compilation failed";
-        }
 
 
-        // Run the compiled code
-        ProcessBuilder runProcessBuilder = new ProcessBuilder(testInputs);
-        Process runProcess = runProcessBuilder.start();
 
 
-        runProcess.waitFor();
-        BufferedReader errorReader = new BufferedReader(new InputStreamReader(runProcess.getErrorStream()));
-        StringBuilder errors = new StringBuilder();
-        String errorLine;
-        while ((errorLine = errorReader.readLine()) != null) {
-            errors.append(errorLine).append("\n");
-        }
-        if (errors.length() > 0) {
-            // Log or print the errors
-            System.err.println("Errors: " + errors.toString());
-        }
-
-        // Check if the run was successful
-        if (runProcess.exitValue() != 0) {
-            return "Run failed";
-        }
-
-        // Get the output of the run
-        BufferedReader reader1 = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
-        StringBuilder output = new StringBuilder();
-        String line1;
-        while ((line1 = reader1.readLine()) != null) {
-            output.append(line1).append("\n");
-        }
 
         // Return the output as a string
-        return output.toString();
+
     }
 
 
