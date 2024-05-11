@@ -564,7 +564,7 @@ public class Controller {
 
     @FXML
     protected void queryStudents() throws Exception {
-        String filePath = "ProjectFiles/Project7";
+        String filePath = "ProjectFiles/project6";
         File configFile = new File(filePath +"/config.json");
         String configFilePath = configFile.getAbsolutePath();
         ArrayList<Student> students = new ArrayList<>();
@@ -578,10 +578,15 @@ public class Controller {
 
                     assert sourceFiles != null;
                     for(File sourceFile: sourceFiles){
-                        if (sourceFile.getName().endsWith(".java") || sourceFile.getName().endsWith(".c")){
+                        if (sourceFile.getName().endsWith(".java")){
                             Student student = javaRun(configFilePath,sourceFile.getAbsolutePath());
                             student.setId(file.getName());
                             students.add(student);
+                        }else if (sourceFile.getName().endsWith(".c")){
+                            Student student = cRun(configFilePath,sourceFile.getAbsolutePath());
+                            student.setId(file.getName());
+                            students.add(student);
+
                         }
                     }
                 }
@@ -638,9 +643,30 @@ public class Controller {
 
     }
 
-    public void cSetup(JSONObject compilerConfig,String runCommand, String sourceFile){
+    public Student cRun(String configFilePath, String sourceFile){
         File cFile = new File(sourceFile);
         String fileName = cFile.getName();
+        JSONObject compilerConfig = null;
+        JSONObject projectConfig = null;
+        try {
+            compilerConfig = getObject(configFilePath,"compilerConfig");
+            projectConfig = getObject(configFilePath,"projectConfig");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile,"-o",fileName};
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+        String[] executeCommand = new String[arguments.length()+1];
+        executeCommand[0] = fileName;
+        for (int i = 0; i < arguments.length(); i++) {
+            executeCommand[i+1] = arguments.getString(i);
+        }
+
+
+
+        return runSourceCode(compileCommand,executeCommand);
 
     }
     public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {

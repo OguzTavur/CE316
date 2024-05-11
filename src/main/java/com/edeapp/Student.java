@@ -35,7 +35,7 @@ public class Student {
         this.id = id;
     }
 
-    public String isResult() {
+    public String getResult() {
         return result;
     }
 
