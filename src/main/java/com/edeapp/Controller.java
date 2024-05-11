@@ -572,6 +572,10 @@ public class Controller {
                             student.setId(file.getName());
                             students.add(student);
 
+                        }else if (sourceFile.getName().endsWith(".py")){
+                            Student student = pythonRun(configFilePath,sourceFile.getAbsolutePath());
+                            student.setId(file.getName());
+                            students.add(student);
                         }
                     }
                 }
@@ -692,6 +696,29 @@ public class Controller {
 
 
         return runSourceCode(compileCommand,executeCommand);
+
+    }
+
+    public Student pythonRun(String configFilePath, String sourceFile){
+        JSONObject compilerConfig = null;
+        JSONObject projectConfig = null;
+        try {
+            compilerConfig = getObject(configFilePath,"compilerConfig");
+            projectConfig = getObject(configFilePath,"projectConfig");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile};
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+        String[] executeCommand = new String[arguments.length()+1];
+        executeCommand[0] = compilerConfig.getString("runCommand");
+        for (int i = 0; i < arguments.length(); i++) {
+            executeCommand[i+1] = arguments.getString(i);
+        }
+
+        return runSourceCode(compileCommand,executeCommand);
+
 
     }
     public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {
