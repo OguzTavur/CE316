@@ -196,7 +196,7 @@ public class PopupController {
         return fileChooser.showOpenDialog(new Popup());
     }
 
-    private void extractJson(File file){
+    protected void extractJson(File file){
         if (configFilePath.getText().isEmpty()){
             return;
         }

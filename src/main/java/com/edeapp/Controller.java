@@ -35,15 +35,14 @@ public class Controller {
     private File _InitialDirectory;
     private final ArrayList<String> _acceptedExtensions = new ArrayList<>(Arrays.asList("txt", "java", "c", "cpp", "py", "json", "csv"));
     public TreeView<FileItem> treeView;
-    @FXML
-    private Label welcomeText;
+    private File openWithFilePath;
 
 
     @FXML
     protected void onNewProjectButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createProject.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-        messageExchangePoint.setPopupController(fxmlLoader.getController());
+
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -51,16 +50,14 @@ public class Controller {
         popup.setTitle("New Project");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
         popup.showAndWait();
     }
     @FXML
-    protected void onEditConfigButtonClicked(ActionEvent event) throws IOException {
+    protected void onEditConfigButtonClicked() throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-        messageExchangePoint.setPopupController(fxmlLoader.getController());
-
-
 
         // Scene
         setPopup(new Stage());
@@ -69,6 +66,14 @@ public class Controller {
         popup.setTitle("Edit Config File");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
+
+        if (openWithFilePath != null) {
+            System.out.println("som");
+            System.out.println(messageExchangePoint.getPopupController());
+            messageExchangePoint.getPopupController().configFilePath.setText(openWithFilePath.getAbsolutePath());
+            messageExchangePoint.getPopupController().extractJson(openWithFilePath);
+        }
         popup.showAndWait();
 
 
@@ -172,7 +177,7 @@ public class Controller {
     protected void onCreateConfigButtonClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("createConfig.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-        messageExchangePoint.setPopupController(fxmlLoader.getController());
+
         // Scene
         setPopup(new Stage());
         popup.initOwner(getPrimaryStage());
@@ -180,6 +185,7 @@ public class Controller {
         popup.setTitle("Create Configuration File");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
         popup.showAndWait();
     }
 
@@ -276,27 +282,11 @@ public class Controller {
 
             if (event.getButton() == MouseButton.SECONDARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null){
-
-                    ContextMenu contextMenu = new ContextMenu();
-                    MenuItem openMenuItem = new MenuItem("Open");
-                    System.out.println("Right Clicked!");
-                    openMenuItem.setOnAction(event1 -> {
-                        System.out.println("Opening file...");
-                        if (readFile(selectedItem.getValue().file()))
-                            openTabWithFileData(selectedItem.getValue().toString());
-                    });
-                    MenuItem deleteMenuItem = new MenuItem("Delete");
-                    deleteMenuItem.setOnAction(event1 -> {
-                        System.out.println("Deleting file...");
-                        // Add your delete file functionality here
-                    });
-                    MenuItem editMenuItem = new MenuItem("Edit");
-                    editMenuItem.setOnAction(event1 -> {
-                        System.out.println("Editing file...");
-                        // Add your edit file functionality here
-                    });
-                    contextMenu.getItems().addAll(openMenuItem, deleteMenuItem, editMenuItem);
+                if (selectedItem != null && selectedItem.getValue().file().isFile()){
+                    ContextMenu contextMenu = contextMenuBuilder(selectedItem.getValue().toString().split("\\.")[1],selectedItem.getValue().file().isFile(),selectedItem);
+                    if (contextMenu == null) {
+                        return;
+                    }
                     treeViewContextMenu = contextMenu;
                     contextMenu.show(treeView, event.getScreenX(), event.getScreenY());
                 }
@@ -486,10 +476,9 @@ public class Controller {
     }
 
 
-    protected void deleteJsonConfiguration(String configName){
-        File myObj = new File("Configurations/"+ configName+".json");
-        if (myObj.delete()) {
-            System.out.println("Deleted the file: " + myObj.getName());
+    protected void deleteFileOrDirectory(File file){
+        if (file.delete()) {
+            System.out.println("Deleted the file: " + file.getName());
         } else {
             System.out.println("Failed to delete the file.");
         }
@@ -750,13 +739,7 @@ public class Controller {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-
-
-
-
         // Return the output as a string
-
     }
 
 
@@ -804,6 +787,51 @@ public class Controller {
         }
 
         return destFile;
+    }
+
+    private ContextMenu contextMenuBuilder(String fileExtension, boolean isFile, TreeItem<FileItem> selectedItem){
+
+        if (isFile) {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem openMenuItem = new MenuItem("Open");
+            openMenuItem.setOnAction(event1 -> {
+                System.out.println("Opening file...");
+                if (readFile(selectedItem.getValue().file()))
+                    openTabWithFileData(selectedItem.getValue().toString());
+            });
+            MenuItem deleteMenuItem = new MenuItem("Delete");
+            deleteMenuItem.setOnAction(event1 -> {
+                System.out.println("Deleting file...");
+                deleteFileOrDirectory(selectedItem.getValue().file());
+            });
+            MenuItem editMenuItem = new MenuItem("Edit");
+            editMenuItem.setOnAction(event1 -> {
+                try {
+                    openWithFilePath = selectedItem.getValue().file();
+                    onEditConfigButtonClicked();
+                    openWithFilePath = null;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("Editing file...");
+            });
+            MenuItem unzipMenuItem = new MenuItem("Unzip");
+            unzipMenuItem.setOnAction(event1 -> {
+                System.out.println("Unzipping file...");
+                // Add your edit file functionality here
+            });
+
+            if (fileExtension.equalsIgnoreCase("json")) {
+                contextMenu.getItems().addAll(openMenuItem, editMenuItem, deleteMenuItem);
+            } else if (fileExtension.equalsIgnoreCase("zip")) {
+                contextMenu.getItems().addAll(unzipMenuItem, deleteMenuItem);
+            } else {
+                contextMenu.getItems().addAll(openMenuItem, deleteMenuItem);
+            }
+            return contextMenu;
+        }
+
+        return null;
     }
 
 
