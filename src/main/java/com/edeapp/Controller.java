@@ -169,6 +169,10 @@ public class Controller {
     protected void onCheckButtonClicked() throws IOException {
         if (treeView == null)
             return;
+        if (_InitialDirectory == null) {
+            showAlert(Alert.AlertType.WARNING, "Warning", "Project Not Selected", "Please open or create a project before check.");
+            return;
+        }
         checkOutputsOfStudents(_InitialDirectory.getAbsolutePath());
         String csvFilePath = _InitialDirectory.getAbsolutePath() + "/StudentResults.csv";
 
@@ -763,6 +767,31 @@ public class Controller {
         }
 
         return null;
+    }
+
+    @FXML
+    protected void onAboutClicked() {
+        String contentText = "- Harun Onur\n- Ege Deniz Yasar\n- Ali Boztepe\n- Oguz Kaan Tavur" +
+                "\n\nThis application is development in the scope of CE 316 - Programming Paradigms as the  course project.";
+        showAlert(Alert.AlertType.INFORMATION, "About", "Software Development Team", contentText);
+    }
+
+    /*
+    This is the alert popup that will be given if there will be warning, required place to be filled, information etc.
+    This are the alertTypes:
+    1 - Alert.AlertType.NONE: Represents an alert with no predefined type.
+    2 - Alert.AlertType.INFORMATION: Represents an information alert.
+    3 - Alert.AlertType.WARNING: Represents a warning alert.
+    4 - Alert.AlertType.ERROR: Represents an error alert.
+    5 - Alert.AlertType.CONFIRMATION: Represents a confirmation alert, typically used to confirm an action with the user.
+     */
+    protected void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText){
+
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 
 
