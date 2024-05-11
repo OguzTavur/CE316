@@ -63,7 +63,7 @@
               <MenuItem mnemonicParsing="false" onAction="#onCreateConfigButtonClicked" text="Create Config" />
               <MenuItem mnemonicParsing="false" onAction="#onEditConfigButtonClicked" text="Edit Config" />
               <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#queryStudents" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Close" />
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
@@ -107,7 +107,7 @@
                <bottom>
                   <HBox alignment="TOP_RIGHT" prefHeight="25.0" prefWidth="178.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="52.0" text="Check">
+                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="52.0" text="Check" onAction="#onCheckButtonClicked">
                            <HBox.margin>
                               <Insets right="2.0" />
                            </HBox.margin>

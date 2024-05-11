@@ -7,10 +7,8 @@
     "projectConfig": {
         "argument": [
             "harun",
-            "ege",
-            "oguz",
-            "ali"
+            "ege"
         ],
-        "expectedOutput": ""
+        "expectedOutput": "Hello, harun\nHello, ege\n"
     }
 }

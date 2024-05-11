@@ -2,9 +2,22 @@ package com.edeapp;
 
 public class Student {
     private String id;
-    private String result;
+    private String output;
+
+    private boolean result;
 
     private boolean isCompiled;
+    private boolean isRan;
+
+    public Student(String id, boolean result) {
+        this.id = id;
+        this.result = result;
+    }
+
+    public Student(){
+
+    }
+
 
     public boolean isCompiled() {
         return isCompiled;
@@ -22,10 +35,6 @@ public class Student {
         isRan = ran;
     }
 
-    private boolean isRan;
-
-
-
 
     public String getId() {
         return id;
@@ -35,11 +44,19 @@ public class Student {
         this.id = id;
     }
 
-    public String getResult() {
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    public boolean getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(boolean result) {
         this.result = result;
     }
 }

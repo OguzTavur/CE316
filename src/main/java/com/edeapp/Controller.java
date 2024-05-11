@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.*;
 
@@ -258,6 +260,50 @@ public class Controller {
 
     }
 
+    @FXML
+    protected void onCheckButtonClicked() throws IOException {
+        if (treeView == null)
+            return;
+        checkOutputsOfStudents(_InitialDirectory.getAbsolutePath());
+        String csvFilePath = _InitialDirectory.getAbsolutePath() + "/StudentResults.csv";
+
+
+        //TableView of students it will be moved to its method
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
+        TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
+        resultColumn.setCellValueFactory(new PropertyValueFactory<>("result"));
+        resultColumn.setCellFactory(column -> new TextFieldTableCell<>() {
+            @Override
+            public void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "✔" : "❌");
+                }
+            }
+        });
+
+        tableView.getColumns().addAll(idColumn, resultColumn);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    boolean result = (parts[1].equals("Match"));
+                    tableView.getItems().add(new Student(parts[0], result));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private ContextMenu treeViewContextMenu;
     private void addFunctionalityToTreeItems(){
         // To detect double-click on TreeView
@@ -376,68 +422,30 @@ public class Controller {
     }
 
     //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
-    private boolean compareResult(String studentOutputPath, String expectedOutputPath, String csvFilePath) {
-
-        System.out.println(treeView);
-
-        try {
-            // Read student output and expected output files
-            String studentOutput = new String(Files.readAllBytes(Paths.get(studentOutputPath)));
-            String expectedOutput = new String(Files.readAllBytes(Paths.get(expectedOutputPath)));
-
-            // Compare outputs
-            boolean match = studentOutput.trim().equals(expectedOutput.trim());
-
-            // Write comparison result to CSV file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, true))) {
-                writer.append(studentOutputPath + "," + expectedOutputPath + "," + (match ? "Match" : "Mismatch") + "\n");
-            }
-
-            return match;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        /* Will be put to the method that will run this method
-        String studentOutputPath = "src\\main\\resources\\ProjectFiles\\project1\\result.txt"; // Path to student output file
-        String expectedOutputPath = "src\\main\\resources\\ProjectFiles\\project1\\expectedResult.txt"; // Path to expected output file
-        String csvFilePath = "src\\main\\resources\\ProjectFiles\\project1\\comparison_results.csv"; // Path to CSV file to store results
-
-        boolean match = compareResult(studentOutputPath, expectedOutputPath, csvFilePath);
-        System.out.println("Comparison result: " + (match ? "Match" : "Mismatch"));
-        */
-
-        /* TableView of students it will be moved to its method
-        tableView.getColumns().clear();
-
-        ObservableList<Student> data =
-                FXCollections.observableArrayList(
-                        new Student("20200602013", "❌"),
-                        new Student("2", "✔"),
-                        new Student("3", "✔")
-                );
-
-
-        TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
-        idColumn.setMinWidth(120);
-        idColumn.setCellValueFactory(
-                new PropertyValueFactory<Student,String>("id")
-        );
-
-        TableColumn<Student, Boolean> resultColumn = new TableColumn<>("Result");
-        resultColumn.setMinWidth(50);
-        resultColumn.setCellValueFactory(
-                new PropertyValueFactory<Student,Boolean>("result")
-        );
-
-        tableView.getColumns().addAll(idColumn, resultColumn);
-
-        // Sample data
-        tableView.setItems(data);
-
-         */
-    }
+//    private boolean compareResult(String studentOutputPath, String expectedOutputPath, String csvFilePath) {
+//
+//        System.out.println(treeView);
+//
+//        try {
+//            // Read student output and expected output files
+//            String studentOutput = new String(Files.readAllBytes(Paths.get(studentOutputPath)));
+//            String expectedOutput = new String(Files.readAllBytes(Paths.get(expectedOutputPath)));
+//
+//            // Compare outputs
+//            boolean match = studentOutput.trim().equals(expectedOutput.trim());
+//
+//            // Write comparison result to CSV file
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, true))) {
+//                writer.append(studentOutputPath + "," + expectedOutputPath + "," + (match ? "Match" : "Mismatch") + "\n");
+//            }
+//
+//            return match;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//
+//    }
 
     protected File createJsonConfiguration(String customFileName, String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
@@ -572,30 +580,46 @@ public class Controller {
         return students;
     }
 
-    protected void writeToCSV(){
+    protected void writeToCSV(FileWriter writer, String studentId, boolean result){
+        try  {
+            // Write CSV records
+            writer.append(studentId);
+            writer.append(",");
+            if (result)
+                writer.append("Match");
+            else
+                writer.append("MisMatch");
+            writer.append("\n");
 
+            writer.flush();
+            System.out.println("CSV file created successfully.");
+        } catch (IOException e) {
+            System.err.println("Error writing CSV file: " + e.getMessage());
+        }
     }
 
-    protected void checkOutputsOfStudents() throws IOException {
-        String configOfProject = _InitialDirectory.getAbsolutePath() + "/config.json";
+    protected void checkOutputsOfStudents(String projectPath) throws IOException {
+        String configOfProject = projectPath + "/config.json";
         JSONObject projectConfig = getObject(configOfProject, "projectConfig");
         String expOutput = projectConfig.getString("expectedOutput");
+        String pathOfCSV = projectPath + "/StudentResults.csv";
+        FileWriter writer = new FileWriter(pathOfCSV);
 
         try {
-            ArrayList<Student> studentList = queryStudents(_InitialDirectory.getAbsolutePath());
+            ArrayList<Student> studentList = queryStudents(projectPath);
             for (Student student: studentList) {
-                if (student.get)
+                if (student.getOutput().equals(expOutput)) //student.getOutput().trim().equals(expOutput.trim())
+                    student.setResult(true);
+                else
+                    student.setResult(false);
 
+                writeToCSV(writer, student.getId(),student.getResult());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
-
-
-
     }
+
 
 
 
@@ -733,7 +757,7 @@ public class Controller {
             }
             student.setCompiled(isCompiled);
             student.setRan(isRan);
-            student.setResult(output.toString());
+            student.setOutput(output.toString());
 
             return student;
         } catch (IOException | InterruptedException e) {
