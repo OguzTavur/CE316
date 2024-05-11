@@ -1,15 +1,14 @@
 {
     "compilerConfig": {
-        "compileCommand": "javac {sourceFile}",
-        "language": "Python",
-        "runCommand": "java {mainClass}"
+        "compileCommand": "javac",
+        "language": "Java",
+        "runCommand": "java"
     },
     "projectConfig": {
         "argument": [
             "ege",
-            "harun",
-            "ali"
+            "harun"
         ],
-        "expectedOutput": "ouz kaan tavur"
+        "expectedOutput": "ouz kaan tavur 231"
     }
 }

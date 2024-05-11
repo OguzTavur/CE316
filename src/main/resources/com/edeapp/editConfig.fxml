@@ -14,7 +14,7 @@
 <?import javafx.scene.Scene?>
 <Scene xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.PopupController">
     <AnchorPane >
-        <VBox prefHeight="538.0" prefWidth="600.0">
+        <VBox prefHeight="450.0" prefWidth="600.0">
             <children>
              <Label text="Edit Configuration File">
                 <font>
@@ -66,38 +66,6 @@
                       <VBox.margin>
                          <Insets bottom="10.0" />
                       </VBox.margin>
-                      </AnchorPane>
-                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                          <children>
-                              <Label layoutY="8.0" text="Compile Command">
-                            <padding>
-                               <Insets left="10.0" />
-                            </padding>
-                         </Label>
-                              <TextField fx:id="compCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: Java" />
-                          </children>
-                          <VBox.margin>
-                              <Insets bottom="10.0" />
-                          </VBox.margin>
-                      <padding>
-                         <Insets top="5.0" />
-                      </padding>
-                      </AnchorPane>
-                      <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
-                          <children>
-                              <Label layoutY="8.0" text="Run Command">
-                            <padding>
-                               <Insets left="10.0" />
-                            </padding>
-                         </Label>
-                              <TextField fx:id="runCommand" editable="false" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="example: gcc -c" />
-                          </children>
-                          <VBox.margin>
-                              <Insets bottom="10.0" />
-                          </VBox.margin>
-                          <padding>
-                              <Insets top="5.0" />
-                          </padding>
                       </AnchorPane>
                       <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="400.0">
                           <children>

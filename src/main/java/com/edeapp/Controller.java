@@ -62,18 +62,7 @@ public class Controller {
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
         messageExchangePoint.setPopupController(fxmlLoader.getController());
 
-//        messageExchangePoint.getPopupController().languageChoice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue.equals("Java")) {
-//                messageExchangePoint.getPopupController().compCommand.setText("javac {sourceFile}");
-//                messageExchangePoint.getPopupController().runCommand.setText("java {mainClass}");
-//            } else if (newValue.equals("C")) {
-//                messageExchangePoint.getPopupController().compCommand.setText("gcc -o {outputFile} {sourceFile}");
-//                messageExchangePoint.getPopupController().runCommand.setText("./{outputFile}");
-//            }else if (newValue.equals("Python")) { //TODO: add here comp and run commands
-//                messageExchangePoint.getPopupController().compCommand.setText("");
-//                messageExchangePoint.getPopupController().runCommand.setText("");
-//            }
-//        });
+
 
         // Scene
         setPopup(new Stage());
@@ -83,6 +72,8 @@ public class Controller {
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         popup.showAndWait();
+
+
 
         /*FileChooser fileChooser = new FileChooser(); // To chose only Directories
         fileChooser.setTitle("Choose Configuration File");
@@ -521,9 +512,23 @@ public class Controller {
     }
 
     @FXML
-    protected void editJsonConfiguration(String configFilePath, String language, String compCommand, String runCommand, String arguments, String expectedOutput) throws IOException {
+    protected void editJsonConfiguration(String configFilePath, String language, String arguments, String expectedOutput) throws IOException {
+        String compCommand = "";
+        String runCommand = "";
+
         JSONObject compilerConfig = new JSONObject();
         compilerConfig.put("language", language);
+
+        if (language.equals("Java")){
+            compCommand = "javac";
+            runCommand = "java";
+        } else if (language.equals("C")) {
+            compCommand = "gcc";
+            runCommand = "";
+        } else if (language.equals("Python")) {
+            compCommand = "";
+            runCommand = "";
+        }
         compilerConfig.put("compileCommand", compCommand);
         compilerConfig.put("runCommand", runCommand);
 

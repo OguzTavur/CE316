@@ -111,7 +111,7 @@ public class PopupController {
 
 
             MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-            messageExchangePoint.getController().editJsonConfiguration(configFilePath.getText(),languageChoice.getValue().toString(),compCommand.getText(),runCommand.getText(),projectArguments.getText(),expectedOutput.getText());
+            messageExchangePoint.getController().editJsonConfiguration(configFilePath.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText());
             messageExchangePoint.getController().closePopUp();
         }
     }
@@ -228,8 +228,6 @@ public class PopupController {
 
         editConfigVBox.setVisible(true);
         languageChoice.setValue(language);
-        compCommand.setText(compileCommand);
-        runCommand.setText(rCommand);
         projectArguments.setText(argumentsToStr);
         expectedOutput.setText(expectedOut);
 
