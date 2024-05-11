@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.stage.*;
 
 import java.io.File;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 import org.json.JSONArray;
@@ -249,22 +252,53 @@ public class Controller {
 
     }
 
+    private ContextMenu treeViewContextMenu;
     private void addFunctionalityToTreeItems(){
         // To detect double-click on TreeView
         // Other functionalities like is clicked element is a file or folder, handled in redFile() function
         // TODO: Selected Files shouldn't be able to open at multiple tabs
         // TODO: If a file is selected and even though the user does not click on it double times the file opens because it is selected
         treeView.setOnMouseClicked(event -> {
-            if (event.isPrimaryButtonDown()) {
 
+            if (treeViewContextMenu != null) {
+                treeViewContextMenu.hide();
             }
-            if (event.getClickCount() == 2) {
+
+            if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && selectedItem.getValue() != null) {
                     System.out.println("Double-clicked on: " + selectedItem.getValue());
                     if (readFile(selectedItem.getValue().file()))
                         openTabWithFileData(selectedItem.getValue().toString());
                     // Add your double click handling code here
+                }
+            }
+
+            if (event.getButton() == MouseButton.SECONDARY) {
+                TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null){
+
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem openMenuItem = new MenuItem("Open");
+                    System.out.println("Right Clicked!");
+                    openMenuItem.setOnAction(event1 -> {
+                        System.out.println("Opening file...");
+                        if (readFile(selectedItem.getValue().file()))
+                            openTabWithFileData(selectedItem.getValue().toString());
+                    });
+                    MenuItem deleteMenuItem = new MenuItem("Delete");
+                    deleteMenuItem.setOnAction(event1 -> {
+                        System.out.println("Deleting file...");
+                        // Add your delete file functionality here
+                    });
+                    MenuItem editMenuItem = new MenuItem("Edit");
+                    editMenuItem.setOnAction(event1 -> {
+                        System.out.println("Editing file...");
+                        // Add your edit file functionality here
+                    });
+                    contextMenu.getItems().addAll(openMenuItem, deleteMenuItem, editMenuItem);
+                    treeViewContextMenu = contextMenu;
+                    contextMenu.show(treeView, event.getScreenX(), event.getScreenY());
                 }
             }
         });
@@ -745,6 +779,53 @@ public class Controller {
 
         // Return the output as a string
 
+    }
+
+
+    protected void unZipFile(String sourceZipFile, String destinationZipFile) throws IOException {
+        File destDir = new File(destinationZipFile);
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceZipFile));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            File newFile = newFile(destDir, zipEntry);
+            if (zipEntry.isDirectory()) {
+                if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                    throw new IOException("Failed to create directory " + newFile);
+                }
+            } else {
+                // fix for Windows-created archives
+                File parent = newFile.getParentFile();
+                if (!parent.isDirectory() && !parent.mkdirs()) {
+                    throw new IOException("Failed to create directory " + parent);
+                }
+
+                // write file content
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+            }
+            zipEntry = zis.getNextEntry();
+        }
+
+        zis.closeEntry();
+        zis.close();
+    }
+
+    public File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+        File destFile = new File(destinationDir, zipEntry.getName());
+
+        String destDirPath = destinationDir.getCanonicalPath();
+        String destFilePath = destFile.getCanonicalPath();
+
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        }
+
+        return destFile;
     }
 
 
