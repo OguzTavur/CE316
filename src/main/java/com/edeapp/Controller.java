@@ -449,50 +449,6 @@ public class Controller {
          */
     }
 
-
-    /*public static File createJsonConfiguration(String language, String inputCodePath, String expectedOutputPath) throws IOException {
-
-        if (language.equals("C")){
-            String compileCommand = "javac {sourceFile}";
-            String runCommand = "java {mainClass}";
-
-        }else if
-
-
-        String json = "{\n" +
-                "    \"compilerConfig\": {\n" +
-                "        \"language\": \"" + language + "\",\n" +
-                "        \"compileCommand\": \"" + compileCommand + "\",\n" +
-                "        \"runCommand\": \"" + runCommand + "\"\n" +
-                "    },\n" +
-                "    \"testConfig\": {\n" +
-                "        \"testInput\": \"" + testInput + "\",\n" +
-                "        \"expectedOutput\": \"" + expectedOutputPath + "\"\n" +
-                "    }\n" +
-                "}";
-
-        String pathWithoutFile = inputCodePath.substring(0, inputCodePath.lastIndexOf("\\"));
-        File configFile = new File(pathWithoutFile + "/config.json");
-        try (FileWriter writer = new FileWriter(configFile)) {
-            writer.write(json);
-        }
-
-        return configFile;
-
-         Will be put to the method that will run this method
-        String language = "Java";
-        String inputCodePath = "src\\main\\resources\\ProjectFiles\\project1\\result.txt";
-        String expectedOutputPath = "output.txt";
-
-        try {
-            File configFile = createJsonConfiguration(language, inputCodePath, expectedOutputPath);
-            System.out.println("JSON configuration file created: " + configFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
     protected File createJsonConfiguration(String customFileName, String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
         String runCommand;
@@ -596,9 +552,7 @@ public class Controller {
 
 
 
-    @FXML
-    protected void queryStudents() throws Exception {
-        String filePath = "ProjectFiles/project6";
+    protected ArrayList<Student> queryStudents(String filePath) throws Exception {
         File configFile = new File(filePath +"/config.json");
         String configFilePath = configFile.getAbsolutePath();
         ArrayList<Student> students = new ArrayList<>();
@@ -626,11 +580,37 @@ public class Controller {
                 }
             }
         }
+        return students;
+    }
+
+    protected void writeToCSV(){
+
+    }
+
+    protected void checkOutputsOfStudents() throws IOException {
+        String configOfProject = _InitialDirectory.getAbsolutePath() + "/config.json";
+        JSONObject projectConfig = getObject(configOfProject, "projectConfig");
+        String expOutput = projectConfig.getString("expectedOutput");
+
+        try {
+            ArrayList<Student> studentList = queryStudents(_InitialDirectory.getAbsolutePath());
+            for (Student student: studentList) {
+                if (student.get)
+
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
 
 
 
 
     }
+
+
+
+
 
     public JSONObject getObject(String configFilePath,String objectName) throws IOException {
 
@@ -659,8 +639,6 @@ public class Controller {
         String runCommand = compilerConfig.getString("runCommand");
 
         String[] compileCommand = {jCompile,sourceFile};
-
-
 
 
         JSONArray arguments = projectConfig.getJSONArray("argument");
