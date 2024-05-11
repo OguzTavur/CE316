@@ -77,102 +77,6 @@ public class Controller {
             messageExchangePoint.getPopupController().extractJson(openWithFilePath);
         }
         popup.showAndWait();
-
-
-
-        /*FileChooser fileChooser = new FileChooser(); // To chose only Directories
-        fileChooser.setTitle("Choose Configuration File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        fileChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + "/ConfigFiles"));
-
-        File file = fileChooser.showOpenDialog(new Popup());
-
-        //It is getting json information to put them in text fields
-        String jsonText = new String(Files.readAllBytes(Paths.get(file.getPath())));
-
-        JSONObject jsonObject = new JSONObject(jsonText);
-
-        JSONObject compilerConfig = jsonObject.getJSONObject("compilerConfig");
-        String language = compilerConfig.getString("language");
-        String compileCommand = compilerConfig.getString("compileCommand");
-        String runCommand = compilerConfig.getString("runCommand");
-
-        JSONObject projectConfig = jsonObject.getJSONObject("projectConfig");
-        JSONArray arguments = projectConfig.getJSONArray("argument");
-        String expectedOutput = projectConfig.getString("expectedOutput");
-
-        String argumentsToStr = "";
-        for (int i = 0; i < arguments.length(); i++) {
-            argumentsToStr += arguments.getString(i);
-            if (i != arguments.length()-1)
-                argumentsToStr+=",";
-        }
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
-        Parent root = fxmlLoader.load();
-
-
-
-        ChoiceBox editConfigLanguageBox = (ChoiceBox) root.lookup("#editConfigLanguageBox");
-        editConfigLanguageBox.setValue(language);
-        TextField compCommand = (TextField) root.lookup("#compCommand");
-        compCommand.setText(compileCommand);
-        TextField rCommand = (TextField) root.lookup("#runCommand");
-        rCommand.setText(runCommand);
-
-        editConfigLanguageBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals("Java")) {
-                compCommand.setText("javac {sourceFile}");
-                rCommand.setText("java {mainClass}");
-            } else if (newValue.equals("C")) {
-                compCommand.setText("gcc -o {outputFile} {sourceFile}");
-                rCommand.setText("./{outputFile}");
-            }else if (newValue.equals("Python")) { //TODO: add here comp and run commands
-                compCommand.setText("");
-                rCommand.setText("");
-            }
-        });
-
-        TextField argument = (TextField) root.lookup("#arguments");
-        argument.setText(argumentsToStr);
-        TextArea expectedOut = (TextArea) root.lookup("#expectedOutput");
-        expectedOut.setText(expectedOutput);
-        Label secretPath = (Label) root.lookup("#secretPath");
-        secretPath.setText(file.getPath());
-
-         */
-
-
-        /* to print console
-        System.out.println("Language: " + language);
-        System.out.println("Compile Command: " + compileCommand);
-        System.out.println("Run Command: " + runCommand);
-
-        System.out.println("Arguments: " + argumentsToStr);
-        System.out.println("Expected Output: " + expectedOutput);
-        */
-
-        /*
-        Stage popupStage = new Stage();
-        popupStage.initOwner(getPrimaryStage());
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Edit Configuration");
-        popupStage.setResizable(false);
-        popupStage.setScene(new Scene(root));
-        popupStage.show();
-
-        Button backBut = (Button) root.lookup("#backButton");
-        backBut.pressedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    // Close the popup
-                    popupStage.close();
-                }
-            }
-        });
-
-         */
-
     }
 
     @FXML
@@ -260,6 +164,7 @@ public class Controller {
 
     }
 
+    //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
     @FXML
     protected void onCheckButtonClicked() throws IOException {
         if (treeView == null)
@@ -420,32 +325,6 @@ public class Controller {
         Tab newTab = new Tab(tabHeader,textArea);
         tabPane.getTabs().add(newTab);
     }
-
-    //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
-//    private boolean compareResult(String studentOutputPath, String expectedOutputPath, String csvFilePath) {
-//
-//        System.out.println(treeView);
-//
-//        try {
-//            // Read student output and expected output files
-//            String studentOutput = new String(Files.readAllBytes(Paths.get(studentOutputPath)));
-//            String expectedOutput = new String(Files.readAllBytes(Paths.get(expectedOutputPath)));
-//
-//            // Compare outputs
-//            boolean match = studentOutput.trim().equals(expectedOutput.trim());
-//
-//            // Write comparison result to CSV file
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, true))) {
-//                writer.append(studentOutputPath + "," + expectedOutputPath + "," + (match ? "Match" : "Mismatch") + "\n");
-//            }
-//
-//            return match;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//
-//    }
 
     protected File createJsonConfiguration(String customFileName, String language, String arguments, String expectedOutput) throws IOException {
         String compileCommand;
