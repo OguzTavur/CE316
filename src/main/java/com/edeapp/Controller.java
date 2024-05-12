@@ -3,6 +3,7 @@ package com.edeapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -67,7 +68,9 @@ public class Controller {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Edit Config File");
         popup.setResizable(false);
+        // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
         popup.setScene(fxmlLoader.load());
+
         messageExchangePoint.setPopupController(fxmlLoader.getController());
 
         if (openWithFilePath != null) {
@@ -91,13 +94,14 @@ public class Controller {
         popup.setTitle("Create Configuration File");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
+        // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
         messageExchangePoint.setPopupController(fxmlLoader.getController());
         popup.showAndWait();
     }
 
     @FXML
     protected void closePopUp(){
-        popup.close();
+        popup.close();// Closes the current active popup
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
         messageExchangePoint.setPopupController(null); // To avoid any possible conflict
     }
@@ -138,8 +142,8 @@ public class Controller {
         root.setExpanded(true);
         treeView.setRoot(root);
 
-        populateTreeView(root);
-        addFunctionalityToTreeItems();
+        populateTreeView(root);// Adding all other Sub-Items to the TreeView
+        addFunctionalityToTreeItems();// Adds the functionality to the TreeItems
     }
 
 
@@ -158,9 +162,9 @@ public class Controller {
         root.setExpanded(true);
         treeView.setRoot(root);
 
-        populateTreeView(root);
+        populateTreeView(root);// Adding all other Sub-Items to the TreeView
 
-        addFunctionalityToTreeItems();
+        addFunctionalityToTreeItems();// Adds the functionality to the TreeItems
 
     }
 
@@ -213,9 +217,10 @@ public class Controller {
         }
     }
 
+    // ContextMenu that will contain options
     private ContextMenu treeViewContextMenu;
     private void addFunctionalityToTreeItems(){
-        // To detect double-click on TreeView
+
         // Other functionalities like is clicked element is a file or folder, handled in redFile() function
         // TODO: Selected Files shouldn't be able to open at multiple tabs
         // TODO: If a file is selected and even though the user does not click on it double times the file opens because it is selected
@@ -224,17 +229,17 @@ public class Controller {
             if (treeViewContextMenu != null) {
                 treeViewContextMenu.hide();
             }
-
+            // To detect double-click on TreeView
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && selectedItem.getValue() != null) {
-                    System.out.println("Double-clicked on: " + selectedItem.getValue());
+                    //System.out.println("Double-clicked on: " + selectedItem.getValue());
                     if (readFile(selectedItem.getValue().file()))
                         openTabWithFileData(selectedItem.getValue().toString());
-                    // Add your double click handling code here
                 }
             }
 
+            // This if statement is used for create option view when the user clicks secondary mouse click
             if (event.getButton() == MouseButton.SECONDARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && selectedItem.getValue().file().isFile()){
@@ -283,6 +288,7 @@ public class Controller {
 
 
     }
+    // This ArrayList is used for save file text that will be used after printing in GUI
     protected ArrayList<String> fileData = new ArrayList<>();
 
     // Reads the given File and stores all data in a ArrayList
@@ -320,6 +326,7 @@ public class Controller {
 
     // Creates a Tab with a TextArea with given data and puts it into TabPane
     private void openTabWithFileData(String tabHeader) {
+
 
         TextArea textArea = new TextArea();
         textArea.setEditable(false); // We don't want the TextArea be editable

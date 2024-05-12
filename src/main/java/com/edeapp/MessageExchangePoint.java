@@ -1,10 +1,16 @@
 package com.edeapp;
 
+
+// This class handles communication between two controller classes
+// The design pattern of this class is Singleton
+// When the object of this class called it won't create a new MessageExchangePoint class
+// Also other controller classes have same design structure
+
+
 public class MessageExchangePoint {
     private static MessageExchangePoint instance;
     private Controller controller;
     private PopupController popupController;
-    private String data;
 
     private MessageExchangePoint() {}
 
@@ -13,14 +19,6 @@ public class MessageExchangePoint {
             instance = new MessageExchangePoint();
         }
         return instance;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public Controller getController() {

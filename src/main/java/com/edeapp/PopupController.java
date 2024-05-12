@@ -43,6 +43,7 @@ public class PopupController {
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
+        // To display input areas by looking radio buttons
         if (event.getSource().equals(radioNew)) {
             radioNew.setSelected(true);
             radioImport.setSelected(false);
