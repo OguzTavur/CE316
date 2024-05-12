@@ -9,6 +9,6 @@
       "ege",
       "harun"
     ],
-    "expectedOutput": "ege harun"
+    "expectedOutput": "ege harun\n"
   }
 }

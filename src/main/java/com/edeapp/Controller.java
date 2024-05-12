@@ -626,10 +626,11 @@ public class Controller {
         }
 
 
-        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile,"-o",fileName};
+        String substring = fileName.substring(0, fileName.length() - 2);
+        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile,"-o", substring};
         JSONArray arguments = projectConfig.getJSONArray("argument");
         String[] executeCommand = new String[arguments.length()+1];
-        executeCommand[0] = fileName;
+        executeCommand[0] = substring;
         for (int i = 0; i < arguments.length(); i++) {
             executeCommand[i+1] = arguments.getString(i);
         }
@@ -728,6 +729,7 @@ public class Controller {
             student.setCompiled(isCompiled);
             student.setRan(isRan);
             student.setOutput(output.toString());
+
 
             return student;
         } catch (IOException | InterruptedException e) {
