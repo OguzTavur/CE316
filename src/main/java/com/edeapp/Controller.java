@@ -62,6 +62,9 @@ public class Controller {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("editConfig.fxml"));
         MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+        if (messageExchangePoint.getPopupController() != null) {
+            messageExchangePoint.setPopupController(null);
+        }
 
         // Scene
         setPopup(new Stage());
@@ -69,14 +72,11 @@ public class Controller {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Edit Config File");
         popup.setResizable(false);
-        // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
         popup.setScene(fxmlLoader.load());
-
+        // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
         messageExchangePoint.setPopupController(fxmlLoader.getController());
 
         if (openWithFilePath != null) {
-            System.out.println("som");
-            System.out.println(messageExchangePoint.getPopupController());
             messageExchangePoint.getPopupController().configFilePath.setText(openWithFilePath.getAbsolutePath());
             messageExchangePoint.getPopupController().extractJson(openWithFilePath);
         }
@@ -121,7 +121,7 @@ public class Controller {
         messageExchangePoint.setPopupController(null); // To avoid any possible conflict
     }
 
-    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String customConfigName, String language, String zipFilePath, String configFilePath, String arguments, String expectedOutput) throws IOException {
+    protected void createNewProject(String projectDirectory, String projectName, boolean importConfig, String customConfigName, String language, String directoryThatContainsProjectZips, String configFilePath, String arguments, String expectedOutput) throws IOException {
         // Create the destination directory if it doesn't exist
         File createNewProjectDirectory = new File(projectDirectory + "\\" + projectName);
         if (!createNewProjectDirectory.exists()) {
@@ -149,9 +149,9 @@ public class Controller {
             }
         }
 
-        File relocateZipFile = new File(zipFilePath);
-        if(relocateZipFile.renameTo(new File(projectDirectory + "\\" + projectName, relocateZipFile.getName())))
-            System.out.println("Zip Moved to " + relocateZipFile.getAbsolutePath());
+        File relocateFolderThatContainsZipFiles = new File(directoryThatContainsProjectZips);
+        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName)))
+            System.out.println("File move to " + relocateFolderThatContainsZipFiles.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
         root.setExpanded(true);

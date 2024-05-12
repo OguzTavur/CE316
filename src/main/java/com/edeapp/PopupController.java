@@ -69,7 +69,7 @@ public class PopupController {
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
-                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,projectName.getText(),languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,configFileName.getText(),languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
             }
         }
         else if (radioImport.isSelected()) {
@@ -148,7 +148,7 @@ public class PopupController {
             }
             else System.out.println("File not found!");
         } else if (event.getSource() == zipFilePathButton) {
-            File file = get_ZipDirectory();
+            File file = get_InitialDirectory("");
             if (file != null) {
                 zipFilePath.setText(file.getAbsolutePath());
             }
@@ -177,8 +177,9 @@ public class PopupController {
 
     private File get_InitialDirectory(String folderName) {
         DirectoryChooser directoryChooser = new DirectoryChooser(); // To chose only Directories
-        directoryChooser.setTitle("Choose Save Project Directory");
-        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + folderName)); // Initial Path
+        directoryChooser.setTitle("Choose Directory");
+        // Initial Path
+        directoryChooser.setInitialDirectory(new File(Paths.get("").toAbsolutePath() + folderName));
         return directoryChooser.showDialog(new Popup());
     }
 

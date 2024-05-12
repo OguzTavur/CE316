@@ -35,8 +35,9 @@ public class MessageExchangePoint {
     }
 
     public void setPopupController(PopupController popupController) {
-        if (this.popupController == null)
+        if (this.popupController == null || popupController == null)
             this.popupController = popupController;
+
 
     }
 }
