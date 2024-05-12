@@ -150,7 +150,7 @@ public class Controller {
         }
 
         File relocateFolderThatContainsZipFiles = new File(directoryThatContainsProjectZips);
-        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName)))
+        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + relocateFolderThatContainsZipFiles.getName())))
             System.out.println("File move to " + relocateFolderThatContainsZipFiles.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
