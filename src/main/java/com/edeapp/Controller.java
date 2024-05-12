@@ -1,5 +1,7 @@
 package com.edeapp;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -403,7 +405,7 @@ public class Controller {
         } else {
             System.out.println("Failed to delete the file.");
         }
-
+        refreshTreeView();
     }
 
     @FXML
@@ -719,37 +721,33 @@ public class Controller {
     }
 
 
-    protected void unZipFile(String sourceZipFile, String destinationZipFile) throws IOException {
-        File destDir = new File(destinationZipFile);
+    protected void unZipFile(File zipFile) throws IOException {
+        String destinationDir = zipFile.getParent() + File.separator + zipFile.getName().replaceAll("\\.zip$", "");
         byte[] buffer = new byte[1024];
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceZipFile));
-        ZipEntry zipEntry = zis.getNextEntry();
-        while (zipEntry != null) {
-            File newFile = newFile(destDir, zipEntry);
-            if (zipEntry.isDirectory()) {
-                if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                    throw new IOException("Failed to create directory " + newFile);
-                }
-            } else {
-                // fix for Windows-created archives
-                File parent = newFile.getParentFile();
-                if (!parent.isDirectory() && !parent.mkdirs()) {
-                    throw new IOException("Failed to create directory " + parent);
-                }
 
-                // write file content
-                FileOutputStream fos = new FileOutputStream(newFile);
-                int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+            ZipEntry zipEntry = zis.getNextEntry();
+            while (zipEntry != null) {
+                String fileName = zipEntry.getName();
+                File newFile = new File(destinationDir + File.separator + fileName);
+
+                // Create directories if necessary
+                boolean isDirectoryCreated = new File(newFile.getParent()).mkdirs();
+
+                try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                    int len;
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
                 }
-                fos.close();
+                zipEntry = zis.getNextEntry();
             }
-            zipEntry = zis.getNextEntry();
+            zis.closeEntry();
         }
-
-        zis.closeEntry();
-        zis.close();
+        if (zipFile.delete()) {
+            System.out.println("Zip is unzipped and deleted!");
+        }else System.out.println("Zip could not be deleted!");
+        refreshTreeView();
     }
 
     public File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
@@ -794,7 +792,11 @@ public class Controller {
             MenuItem unzipMenuItem = new MenuItem("Unzip");
             unzipMenuItem.setOnAction(event1 -> {
                 System.out.println("Unzipping file...");
-                // Add your edit file functionality here
+                try {
+                    unZipFile(selectedItem.getValue().file());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             if (fileExtension.equalsIgnoreCase("json")) {
@@ -808,6 +810,15 @@ public class Controller {
         }
 
         return null;
+    }
+
+    protected void refreshTreeView(){
+        TreeItem<FileItem> root = new TreeItem<>(new FileItem(_InitialDirectory));
+        root.setExpanded(true);
+        treeView.setRoot(root);
+
+        populateTreeView(root);// Adding all other Sub-Items to the TreeView
+        addFunctionalityToTreeItems();// Adds the functionality to the TreeItems
     }
 
     @FXML
