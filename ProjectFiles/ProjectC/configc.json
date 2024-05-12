@@ -1,0 +1,14 @@
+{
+  "compilerConfig": {
+    "compileCommand": "gcc",
+    "language": "C",
+    "runCommand": ""
+  },
+  "projectConfig": {
+    "argument": [
+      "ege",
+      "harun"
+    ],
+    "expectedOutput": "ege harun"
+  }
+}

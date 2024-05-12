@@ -167,8 +167,15 @@ public class Controller {
         }
 
         File relocateFolderThatContainsZipFiles = new File(directoryThatContainsProjectZips);
-        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + relocateFolderThatContainsZipFiles.getName())))
-            System.out.println("File move to " + relocateFolderThatContainsZipFiles.getAbsolutePath());
+        File[] files = relocateFolderThatContainsZipFiles.listFiles();
+        assert files != null;
+        for (File file: files){
+            if (file.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + file.getName()))) {
+                System.out.println("File move to " + file.getAbsolutePath());
+            }
+        }
+//        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + relocateFolderThatContainsZipFiles.getName())))
+//            System.out.println("File move to " + relocateFolderThatContainsZipFiles.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
         root.setExpanded(true);
@@ -852,7 +859,7 @@ public class Controller {
 
     /*
     This is the alert popup that will be given if there will be warning, required place to be filled, information etc.
-    This are the alertTypes:
+    These are the alertTypes:
     1 - Alert.AlertType.NONE: Represents an alert with no predefined type.
     2 - Alert.AlertType.INFORMATION: Represents an information alert.
     3 - Alert.AlertType.WARNING: Represents a warning alert.
