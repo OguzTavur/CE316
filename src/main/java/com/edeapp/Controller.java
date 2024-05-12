@@ -483,21 +483,7 @@ public class Controller {
 
 
     protected ArrayList<Student> queryStudents(String filePath) throws Exception {
-
-        Path directoryPath = Paths.get(filePath);
-
-        Optional<Path> jsonFile = Files.walk(directoryPath)
-                .filter(file -> Files.isRegularFile(file) && file.toString().endsWith(".json"))
-                .findFirst();
-
-//        Check if a JSON file was found
-//        if (jsonFile.isPresent()) {
-//            System.out.println("JSON file path: " + jsonFile.get().toString());
-//        } else {
-//            System.out.println("No JSON file found in the directory.");
-//        }
-        File configFile = new File(jsonFile.get().toString());
-
+        File configFile = new File(getJsonFilePath(filePath));
         String configFilePath = configFile.getAbsolutePath();
         ArrayList<Student> students = new ArrayList<>();
 
@@ -531,17 +517,6 @@ public class Controller {
         return students;
     }
 
-    protected String getJsonFilePath(String dirPath) throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
-            for (Path path : stream) {
-                if (path.toString().endsWith(".json")) {
-                    return path.toString();
-                }
-            }
-        }
-        return null;
-    }
-
     protected void writeToCSV(FileWriter writer, String studentId, boolean result){
         try  {
             // Write CSV records
@@ -561,7 +536,7 @@ public class Controller {
     }
 
     protected void checkOutputsOfStudents(String projectPath) throws IOException {
-        String configOfProject = projectPath + "/config.json";
+        String configOfProject = getJsonFilePath(projectPath);
         JSONObject projectConfig = getObject(configOfProject, "projectConfig");
         String expOutput = projectConfig.getString("expectedOutput");
         String pathOfCSV = projectPath + "/StudentResults.csv";
@@ -680,6 +655,7 @@ public class Controller {
 
 
     }
+
     public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {
 
 
@@ -752,7 +728,6 @@ public class Controller {
         // Return the output as a string
     }
 
-
     protected void unZipFile(File zipFile) throws IOException {
         String destinationDir = zipFile.getParent() + File.separator + zipFile.getName().replaceAll("\\.zip$", "");
         byte[] buffer = new byte[1024];
@@ -780,6 +755,17 @@ public class Controller {
             System.out.println("Zip is unzipped and deleted!");
         }else System.out.println("Zip could not be deleted!");
         refreshTreeView();
+    }
+
+    protected String getJsonFilePath(String dirPath) throws IOException {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
+            for (Path path : stream) {
+                if (path.toString().endsWith(".json")) {
+                    return path.toString();
+                }
+            }
+        }
+        return null;
     }
 
     public File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
@@ -845,12 +831,15 @@ public class Controller {
     }
 
     protected void refreshTreeView(){
+        if (_InitialDirectory == null)
+            return;
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(_InitialDirectory));
         root.setExpanded(true);
         treeView.setRoot(root);
 
         populateTreeView(root);// Adding all other Sub-Items to the TreeView
         addFunctionalityToTreeItems();// Adds the functionality to the TreeItems
+
     }
 
     @FXML
@@ -869,6 +858,7 @@ public class Controller {
     4 - Alert.AlertType.ERROR: Represents an error alert.
     5 - Alert.AlertType.CONFIRMATION: Represents a confirmation alert, typically used to confirm an action with the user.
      */
+
     protected void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText){
 
         Alert alert = new Alert(alertType);
@@ -877,7 +867,6 @@ public class Controller {
         alert.setContentText(contentText);
         alert.showAndWait();
     }
-
 
     public Stage getPopup() {
         return popup;

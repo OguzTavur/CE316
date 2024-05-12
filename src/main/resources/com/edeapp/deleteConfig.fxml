@@ -14,7 +14,7 @@
 <?import javafx.scene.Scene?>
 <Scene xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edeapp.PopupController">
     <AnchorPane >
-        <VBox prefHeight="450.0" prefWidth="600.0">
+        <VBox prefHeight="175.0" prefWidth="600.0">
             <children>
                 <Label text="Delete Configuration File">
                     <font>
@@ -43,7 +43,7 @@
                 </AnchorPane>
                 <AnchorPane>
                     <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="450.0" layoutY="9.0" mnemonicParsing="false" onAction="#onDeleteButtonClicked" prefHeight="34.0" prefWidth="110.0" text="Save" />
+                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="450.0" layoutY="9.0" mnemonicParsing="false" onAction="#onDeleteButtonClicked" prefHeight="34.0" prefWidth="110.0" text="Delete" />
                     </children>
                 </AnchorPane>
             </children>
