@@ -99,6 +99,9 @@
                                  <children>
                                     <TableView fx:id="tableView" nodeOrientation="LEFT_TO_RIGHT" prefHeight="524.0" prefWidth="250.0" VBox.vgrow="ALWAYS" >
                                      <placeholder >
+                                         <Label text="Open a project and then click 'Check' to see results of students." wrapText="true" prefWidth="125" />
+                                     </placeholder>
+                                     </TableView>
                                  </children>
                               </VBox>
                            </children>
