@@ -40,6 +40,8 @@ public class PopupController {
     public TextField compCommand;
     public TextField runCommand;
     public Button configFilePathEditButton;
+    public TextField configFilePathForDelete;
+    public Button configFilePathDeleteButton;
 
     @FXML
     protected void onRadioButtonClicked(ActionEvent event){
@@ -117,6 +119,16 @@ public class PopupController {
         }
     }
 
+    @FXML
+    protected void onDeleteButtonClicked(){
+        if (!configFilePathForDelete.getText().isEmpty()) {
+            File file = new File(configFilePathForDelete.getText());
+            MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+            messageExchangePoint.getController().deleteFileOrDirectory(file);
+            messageExchangePoint.getController().closePopUp();
+        }
+    }
+
 
     private boolean checkInputAreas(boolean importConfig) {
         if (importConfig) {
@@ -169,10 +181,15 @@ public class PopupController {
             if (file != null) {
                 configFilePath.setText(file.getAbsolutePath());
                 extractJson(file);
-
             }
             else System.out.println("File not found!");
+        } else if (event.getSource() == configFilePathDeleteButton) {
+            File file = get_JSONFilePath();
+            if (file != null) {
+                configFilePathForDelete.setText(file.getAbsolutePath());
+            } else System.out.println("File not found!");
         }
+
     }
 
     private File get_InitialDirectory(String folderName) {

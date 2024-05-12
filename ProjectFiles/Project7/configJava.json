@@ -1,8 +1,8 @@
 {
     "compilerConfig": {
-        "compileCommand": "javac ",
+        "compileCommand": "javac",
         "language": "Java",
-        "runCommand": "java "
+        "runCommand": "java"
     },
     "projectConfig": {
         "argument": [

@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -92,6 +93,23 @@ public class Controller {
         popup.initOwner(getPrimaryStage());
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Create Configuration File");
+        popup.setResizable(false);
+        popup.setScene(fxmlLoader.load());
+        // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
+        messageExchangePoint.setPopupController(fxmlLoader.getController());
+        popup.showAndWait();
+    }
+
+    @FXML
+    protected void onDeleteConfigButtonClicked() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("deleteConfig.fxml"));
+        MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
+
+        // Scene
+        setPopup(new Stage());
+        popup.initOwner(getPrimaryStage());
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Delete Configuration File");
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
@@ -465,7 +483,21 @@ public class Controller {
 
 
     protected ArrayList<Student> queryStudents(String filePath) throws Exception {
-        File configFile = new File(getJsonFilePath(filePath));
+
+        Path directoryPath = Paths.get(filePath);
+
+        Optional<Path> jsonFile = Files.walk(directoryPath)
+                .filter(file -> Files.isRegularFile(file) && file.toString().endsWith(".json"))
+                .findFirst();
+
+//        Check if a JSON file was found
+//        if (jsonFile.isPresent()) {
+//            System.out.println("JSON file path: " + jsonFile.get().toString());
+//        } else {
+//            System.out.println("No JSON file found in the directory.");
+//        }
+        File configFile = new File(jsonFile.get().toString());
+
         String configFilePath = configFile.getAbsolutePath();
         ArrayList<Student> students = new ArrayList<>();
 
