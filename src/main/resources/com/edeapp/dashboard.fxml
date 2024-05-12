@@ -63,8 +63,8 @@
               <MenuItem mnemonicParsing="false" onAction="#onCreateConfigButtonClicked" text="Create Config" />
               <MenuItem mnemonicParsing="false" onAction="#onEditConfigButtonClicked" text="Edit Config" />
               <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" text="Close" onAction="#onCloseButtonClicked" />
+            <MenuItem mnemonicParsing="false" text="Quit" onAction="#onQuitButtonClicked" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
@@ -79,7 +79,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.2, 0.7506" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane fx:id="splitPane" dividerPositions="0.2, 0.7506" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
         <TreeView fx:id="treeView" prefHeight="551.0" prefWidth="264.0" SplitPane.resizableWithParent="false"/>
 

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 public class Controller {
     @FXML
     public TableView tableView;
+    public SplitPane splitPane;
     private Stage popup;
     private Stage primaryStage;
     @FXML
@@ -98,6 +99,20 @@ public class Controller {
         messageExchangePoint.setPopupController(fxmlLoader.getController());
         popup.showAndWait();
     }
+
+    @FXML
+    protected void onCloseButtonClicked(){
+        treeView.setRoot(null);
+        tabPane.getTabs().clear();
+        tableView.getColumns().clear();
+        tableView.getItems().clear();
+    }
+    @FXML
+    protected void onQuitButtonClicked(){
+        System.exit(0);
+    }
+
+
 
     @FXML
     protected void closePopUp(){
@@ -342,14 +357,16 @@ public class Controller {
         String runCommand;
 
         if ("Java".equalsIgnoreCase(language)) {
-            compileCommand = "javac {sourceFile}";
-            runCommand = "java {mainClass}";
+            compileCommand = "javac";
+            runCommand = "java";
         } else if ("C".equalsIgnoreCase(language)) {
-            compileCommand = "gcc -o {outputFile} {sourceFile}";
-            runCommand = "./{outputFile}";
+            compileCommand = "gcc";
+            runCommand = "";
         } else {
-            throw new IllegalArgumentException("Unsupported language: " + language);
+            compileCommand = "";
+            runCommand = "";
         }
+
 
         String json = "{\n" +
                 "    \"compilerConfig\": {\n" +
@@ -357,12 +374,21 @@ public class Controller {
                 "        \"compileCommand\": \"" + compileCommand + "\",\n" +
                 "        \"runCommand\": \"" + runCommand + "\"\n" +
                 "    },\n" +
-                "    \"testConfig\": {\n" +
-                "        \"arguments\": \"" + arguments + "\",\n" +
-                "        \"expectedOutput\": \"" + expectedOutput + "\"\n" +
+                "    \"projectConfig\": {\n" +
+                "        \"argument\": [" ;
+
+        String[] argArray = arguments.split(",");
+        if (argArray[0] == "") {
+            for (String argument : argArray) {
+                json += "\n           \"" + argument + "\",\n";
+            }
+            json = json.substring(0,json.length()-2);
+        }
+        json += "\n        ],\n        \"expectedOutput\": \"" + expectedOutput + "\"\n" +
                 "    }\n" +
                 "}";
 
+        System.out.println(json);
         // Replace with the path where you want to save the config file
         String configFilePath = customFileName + ".json";
         File configFile = new File(configFilePath);
@@ -779,7 +805,7 @@ public class Controller {
     @FXML
     protected void onAboutClicked() {
         String contentText = "- Harun Onur\n- Ege Deniz Yasar\n- Ali Boztepe\n- Oguz Kaan Tavur" +
-                "\n\nThis application is development in the scope of CE 316 - Programming Paradigms as the  course project.";
+                "\n\nThis application is in development in the scope of CE 316 - Programming Paradigms as the  course project.";
         showAlert(Alert.AlertType.INFORMATION, "About", "Software Development Team", contentText);
     }
 
