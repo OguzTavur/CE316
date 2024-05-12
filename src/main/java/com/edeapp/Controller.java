@@ -244,6 +244,7 @@ public class Controller {
                     tableView.getItems().add(new Student(parts[0], result));
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

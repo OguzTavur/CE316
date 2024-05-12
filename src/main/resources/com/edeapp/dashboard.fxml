@@ -97,7 +97,8 @@
                            <children>
                               <VBox prefHeight="524.0" prefWidth="217.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tableView" nodeOrientation="LEFT_TO_RIGHT" prefHeight="524.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+                                    <TableView fx:id="tableView" nodeOrientation="LEFT_TO_RIGHT" prefHeight="524.0" prefWidth="250.0" VBox.vgrow="ALWAYS" >
+                                     <placeholder >
                                  </children>
                               </VBox>
                            </children>
