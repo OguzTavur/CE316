@@ -13,14 +13,11 @@ import javafx.stage.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -466,7 +463,7 @@ public class Controller {
 
 
     protected ArrayList<Student> queryStudents(String filePath) throws Exception {
-        File configFile = new File(filePath +"/config.json");
+        File configFile = new File(getJsonFilePath(filePath));
         String configFilePath = configFile.getAbsolutePath();
         ArrayList<Student> students = new ArrayList<>();
 
@@ -498,6 +495,17 @@ public class Controller {
             }
         }
         return students;
+    }
+
+    protected String getJsonFilePath(String dirPath) throws IOException {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
+            for (Path path : stream) {
+                if (path.toString().endsWith(".json")) {
+                    return path.toString();
+                }
+            }
+        }
+        return null;
     }
 
     protected void writeToCSV(FileWriter writer, String studentId, boolean result){
