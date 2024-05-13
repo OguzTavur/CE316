@@ -145,6 +145,7 @@ public class Controller {
             if(createNewProjectDirectory.mkdirs()){
                 System.out.println("Directory is created!");
                 System.out.println(createNewProjectDirectory.getAbsolutePath());
+                _InitialDirectory = createNewProjectDirectory;
             }
         }
 
