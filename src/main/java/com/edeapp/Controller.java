@@ -256,6 +256,7 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        refreshTreeView();
     }
 
     // ContextMenu that will contain options
