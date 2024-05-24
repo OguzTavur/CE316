@@ -654,12 +654,14 @@ public class Controller {
             throw new RuntimeException(e);
         }
 
-        String[] compileCommand = {compilerConfig.getString("compileCommand"), "-m", "py_compile",sourceFile};
         JSONArray arguments = projectConfig.getJSONArray("argument");
-        String[] executeCommand = new String[arguments.length()+1];
+
+        String[] compileCommand = {compilerConfig.getString("compileCommand"), "-m", "py_compile", sourceFile};
+        String[] executeCommand = new String[arguments.length()+2];
         executeCommand[0] = compilerConfig.getString("runCommand");
+        executeCommand[1] = sourceFile;
         for (int i = 0; i < arguments.length(); i++) {
-            executeCommand[i+1] = arguments.getString(i);
+            executeCommand[i+2] = arguments.getString(i);
         }
 
         return runSourceCode(compileCommand,executeCommand);
@@ -705,7 +707,6 @@ public class Controller {
             if (compileProcess.exitValue() != 0) {
                 System.out.println("comp failed");
                 isCompiled = false;
-
             }
 
             // Run the compiled code
@@ -718,8 +719,6 @@ public class Controller {
                 System.out.println("run failed");
                 isRan = false;
             }
-
-
 
             // Get the output of the run
             BufferedReader reader1 = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
@@ -737,7 +736,6 @@ public class Controller {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // Return the output as a string
     }
 
     protected void unZipFile(File zipFile) throws IOException {

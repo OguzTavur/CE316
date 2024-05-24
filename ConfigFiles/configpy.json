@@ -1,0 +1,14 @@
+{
+  "compilerConfig": {
+    "compileCommand": "python -m py_compile",
+    "language": "Python",
+    "runCommand": "python3"
+  },
+  "projectConfig": {
+    "argument": [
+      "oguz",
+      "harun"
+    ],
+    "expectedOutput": "You are first oguz\nYou are second harun"
+  }
+}
