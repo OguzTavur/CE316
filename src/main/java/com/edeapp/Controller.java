@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.skin.TreeViewSkin;
 import javafx.scene.input.MouseButton;
 import javafx.stage.*;
 
@@ -21,6 +22,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -265,8 +268,18 @@ public class Controller {
 
         // Other functionalities like is clicked element is a file or folder, handled in redFile() function
         // TODO: Selected Files shouldn't be able to open at multiple tabs
-        // TODO: If a file is selected and even though the user does not click on it double times the file opens because it is selected
         treeView.setOnMouseClicked(event -> {
+
+            // Define the regex pattern to match content inside single quotes
+            Pattern pattern = Pattern.compile("'null'");
+
+            // Create a matcher object
+            Matcher matcher = pattern.matcher(event.getTarget().toString());
+
+            if (matcher.find()) {
+                treeView.getSelectionModel().clearSelection();
+                return;
+            }
 
             if (treeViewContextMenu != null) {
                 treeViewContextMenu.hide();
