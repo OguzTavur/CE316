@@ -439,7 +439,6 @@ public class Controller {
         return configFile;
     }
 
-
     protected void deleteFileOrDirectory(File file){
         if (file.delete()) {
             System.out.println("Deleted the file: " + file.getName());
@@ -464,7 +463,10 @@ public class Controller {
             compCommand = "gcc";
             runCommand = "";
         } else if (language.equals("Python")) {
-            compCommand = "";
+            compCommand = "python -m py_compile";
+            runCommand = "python";
+        } else if (language.equals("C++")) {
+            compCommand = "g++";
             runCommand = "";
         }
         compilerConfig.put("compileCommand", compCommand);
@@ -493,17 +495,12 @@ public class Controller {
         Files.write(Paths.get(configFilePath), formattedJson.getBytes());
     }
 
-
     protected void saveFileToGivenDirectory(File file, String destinationPath){
         File relocateJSONFile = new File(file.getAbsolutePath());
         if(relocateJSONFile.renameTo(new File(destinationPath, relocateJSONFile.getName())))
             System.out.println("File Moved to " + relocateJSONFile.getAbsolutePath());
         else System.out.println("File could not move!");
     }
-
-
-
-
 
     protected ArrayList<Student> queryStudents(String filePath) throws Exception {
         File configFile = new File(getJsonFilePath(filePath));
@@ -527,9 +524,12 @@ public class Controller {
                             Student student = cRun(configFilePath,sourceFile.getAbsolutePath());
                             student.setId(file.getName());
                             students.add(student);
-
                         }else if (sourceFile.getName().endsWith(".py")){
                             Student student = pythonRun(configFilePath,sourceFile.getAbsolutePath());
+                            student.setId(file.getName());
+                            students.add(student);
+                        } else if (sourceFile.getName().endsWith(".cpp")) {
+                            Student student = cppRun(configFilePath,sourceFile.getAbsolutePath());
                             student.setId(file.getName());
                             students.add(student);
                         }
@@ -579,11 +579,6 @@ public class Controller {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
 
     public JSONObject getObject(String configFilePath,String objectName) throws IOException {
 
@@ -650,8 +645,6 @@ public class Controller {
             executeCommand[i+1] = arguments.getString(i);
         }
 
-
-
         return runSourceCode(compileCommand,executeCommand);
 
     }
@@ -680,6 +673,39 @@ public class Controller {
         return runSourceCode(compileCommand,executeCommand);
 
 
+    }
+
+    public Student cppRun(String configFilePath, String sourceFile){
+        File cppFile = new File(sourceFile);
+        String fileName = cppFile.getName();
+        JSONObject compilerConfig;
+        JSONObject projectConfig;
+
+        try {
+            compilerConfig = getObject(configFilePath, "compilerConfig");
+            projectConfig = getObject(configFilePath, "projectConfig");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Extract the base name (without path) and remove .cpp extension
+        String executableName = fileName.substring(0, fileName.length() - 4);
+
+        String[] compileCommand = {
+                compilerConfig.getString("compileCommand"),
+                sourceFile,
+                "-o",
+                executableName
+        };
+
+        JSONArray arguments = projectConfig.getJSONArray("argument");
+        String[] executeCommand = new String[arguments.length() + 1];
+        executeCommand[0] = "./" + executableName; // Add ./ prefix
+        for (int i = 0; i < arguments.length(); i++) {
+            executeCommand[i + 1] = arguments.getString(i);
+        }
+
+        return runSourceCode(compileCommand,executeCommand);
     }
 
     public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {

@@ -2,7 +2,7 @@
   "compilerConfig": {
     "compileCommand": "python -m py_compile",
     "language": "Python",
-    "runCommand": "python3"
+    "runCommand": "python"
   },
   "projectConfig": {
     "argument": [
