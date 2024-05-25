@@ -709,30 +709,7 @@ public class Controller {
     }
 
     public Student runSourceCode(String[] compilerCommand,String[] executeCommand) {
-
-
-        // Get the compiler path from the environment variable
-        // TODO: 8.05.2024 path should be checked
-        /*String compilerPath;
-        if ("Java".equalsIgnoreCase(language)) {
-            compilerPath = System.getenv("JAVA_HOME");
-            if (compilerPath == null) {
-                return "JAVA_HOME is not set";
-            }
-            compilerPath += File.separator + "bin" + File.separator + "javac";
-        } else if ("C".equalsIgnoreCase(language)) {
-            compilerPath = System.getenv("GCC"); // Replace with the correct environment variable for C compiler
-            if (compilerPath == null) {
-                return "GCC is not set"; // Replace with the correct error message for C compiler
-            }
-        } else {
-            return "Unsupported language: " + language;
-        }
-
-         */
-
-        // Replace {sourceFile} and {mainClass} in the commands with the actual values
-
+        
         Student student = new Student();
         boolean isCompiled = true;
         boolean isRan = true;
