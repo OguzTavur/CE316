@@ -402,6 +402,12 @@ public class Controller {
         } else if ("C".equalsIgnoreCase(language)) {
             compileCommand = "gcc";
             runCommand = "";
+        } else if ("Python".equalsIgnoreCase(language)) {
+            compileCommand = "python -m py_compile";
+            runCommand = "python";
+        } else if ("C++".equalsIgnoreCase(language)) {
+            compileCommand = "g++";
+            runCommand = "";
         } else {
             compileCommand = "";
             runCommand = "";
