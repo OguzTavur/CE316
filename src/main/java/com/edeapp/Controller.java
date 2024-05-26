@@ -276,7 +276,6 @@ public class Controller {
             if (treeViewContextMenu != null) {
                 treeViewContextMenu.hide();
             }
-            System.out.println(event.getTarget());
 
             // Define the regex pattern to match content inside single quotes
             Pattern pattern = Pattern.compile("'null'");
@@ -644,10 +643,10 @@ public class Controller {
 
 
         String substring = fileName.substring(0, fileName.length() - 2);
-        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile,"-o", substring};
+        String[] compileCommand = {compilerConfig.getString("compileCommand"),sourceFile,"-o", cFile.getParent() + "\\" + substring};
         JSONArray arguments = projectConfig.getJSONArray("argument");
         String[] executeCommand = new String[arguments.length()+1];
-        executeCommand[0] = substring;
+        executeCommand[0] = cFile.getParent() + "\\" + substring;
         for (int i = 0; i < arguments.length(); i++) {
             executeCommand[i+1] = arguments.getString(i);
         }
@@ -702,12 +701,12 @@ public class Controller {
                 compilerConfig.getString("compileCommand"),
                 sourceFile,
                 "-o",
-                executableName
+                cppFile.getParent() + "\\" + executableName
         };
 
         JSONArray arguments = projectConfig.getJSONArray("argument");
         String[] executeCommand = new String[arguments.length() + 1];
-        executeCommand[0] = executableName; // Add ./ prefix
+        executeCommand[0] = cppFile.getParent() + "\\" + executableName;
         for (int i = 0; i < arguments.length(); i++) {
             executeCommand[i + 1] = arguments.getString(i);
         }
