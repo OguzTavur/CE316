@@ -30,8 +30,6 @@ public class PopupController {
     public Button configFilePathButton;
     public Button projectDestinationPathButton;
     public Button zipFilePathButton;
-    public TextField projectDestinationPathImport;
-    public Button projectDestinationPathImportButton;
     public TextArea expectedOutput;
     public TextField configFileName;
     public TextField destinationPath;
@@ -78,10 +76,10 @@ public class PopupController {
             if (checkInputAreas(true)) {
                 System.out.println("Project Name: " + projectName.getText());
                 System.out.println("Config File Path: " + configFilePath.getText());
-                System.out.println("Project Destination Path: " + projectDestinationPathImport.getText());
+                System.out.println("Project Destination Path: " + projectDestinationPath.getText());
                 System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
-                messageExchangePoint.getController().createNewProject(projectDestinationPathImport.getText(),projectName.getText(),true,null,null,zipFilePath.getText(),configFilePath.getText(),null,null);
+                messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),true,null,null,zipFilePath.getText(),configFilePath.getText(),null,null);
                 messageExchangePoint.getController().closePopUp();
             }
         }
@@ -132,7 +130,7 @@ public class PopupController {
 
     private boolean checkInputAreas(boolean importConfig) {
         if (importConfig) {
-            return !projectName.getText().isEmpty() && !configFilePath.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !zipFilePath.getText().isEmpty();
+            return !projectName.getText().isEmpty() && !configFilePath.getText().isEmpty() && !projectDestinationPath.getText().isEmpty() && !zipFilePath.getText().isEmpty();
         }
         else return !projectName.getText().isEmpty() && !projectDestinationPath.getText().isEmpty() && !expectedOutput.getText().isEmpty() && !zipFilePath.getText().isEmpty();
     }
@@ -165,11 +163,6 @@ public class PopupController {
                 zipFilePath.setText(file.getAbsolutePath());
             }
             else System.out.println("File not found!");
-        } else if (event.getSource() == projectDestinationPathImportButton) {
-            File file = get_InitialDirectory("/ProjectFiles");
-            if (file != null) {
-                projectDestinationPathImport.setText(file.getAbsolutePath());
-            } else System.out.println("File not found!");
         }
         else if (event.getSource() == destinationPathButton) {
             File file = get_InitialDirectory("/ConfigFiles");

@@ -1,0 +1,14 @@
+{
+    "compilerConfig": {
+        "compileCommand": "javac",
+        "language": "Java",
+        "runCommand": "java"
+    },
+    "projectConfig": {
+        "argument": [
+            "ege",
+            "harun"
+        ],
+        "expectedOutput": "ouz kaan tavur 231"
+    }
+}

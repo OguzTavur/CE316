@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuItem;
@@ -277,6 +278,11 @@ public class Controller {
         // TODO: Selected Files shouldn't be able to open at multiple tabs
         treeView.setOnMouseClicked(event -> {
 
+            if (treeViewContextMenu != null) {
+                treeViewContextMenu.hide();
+            }
+            System.out.println(event.getTarget());
+
             // Define the regex pattern to match content inside single quotes
             Pattern pattern = Pattern.compile("'null'");
 
@@ -288,9 +294,6 @@ public class Controller {
                 return;
             }
 
-            if (treeViewContextMenu != null) {
-                treeViewContextMenu.hide();
-            }
             // To detect double-click on TreeView
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
@@ -303,9 +306,18 @@ public class Controller {
 
             // This if statement is used for create option view when the user clicks secondary mouse click
             if (event.getButton() == MouseButton.SECONDARY) {
+
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && selectedItem.getValue().file().isFile()){
                     ContextMenu contextMenu = contextMenuBuilder(selectedItem.getValue().toString().split("\\.")[1],selectedItem.getValue().file().isFile(),selectedItem);
+                    if (contextMenu == null) {
+                        return;
+                    }
+                    treeViewContextMenu = contextMenu;
+                    contextMenu.show(treeView, event.getScreenX(), event.getScreenY());
+                } else if (selectedItem != null && !selectedItem.getValue().file().isFile()) {
+                    System.out.println("Buradayim");
+                    ContextMenu contextMenu = contextMenuBuilder(null,selectedItem.getValue().file().isFile(),selectedItem);
                     if (contextMenu == null) {
                         return;
                     }
@@ -867,8 +879,31 @@ public class Controller {
             }
             return contextMenu;
         }
+        else {
+            if (selectedItem.getValue().file().getAbsoluteFile().toString().equals(_InitialDirectory.getAbsoluteFile().toString())) {
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem unzipMenuItem = new MenuItem("Unzip All");
+                unzipMenuItem.setOnAction(event1 -> {
+                    System.out.println("Unzipping files...");
+                    try {
+                        FileFilter filter = f -> f.getName().endsWith("zip");
 
-        return null;
+                        File[] subZipFiles = selectedItem.getValue().file().listFiles(filter);
+                        if (subZipFiles == null) {
+                            return;
+                        }
+                        for (File zip: subZipFiles) {
+                            unZipFile(zip);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                contextMenu.getItems().add(unzipMenuItem);
+                return contextMenu;
+            }
+            else return null;
+        }
     }
 
     protected void refreshTreeView(){
