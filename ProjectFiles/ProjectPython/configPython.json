@@ -1,0 +1,14 @@
+{
+    "compilerConfig": {
+        "compileCommand": "",
+        "language": "Python",
+        "runCommand": "python"
+    },
+    "projectConfig": {
+        "argument": [
+            "harun",
+            "ege"
+        ],
+        "expectedOutput": "harun,ege\n"
+    }
+}

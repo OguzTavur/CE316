@@ -17,10 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -668,7 +665,7 @@ public class Controller {
 
         JSONArray arguments = projectConfig.getJSONArray("argument");
 
-        String[] compileCommand = {compilerConfig.getString("compileCommand"), "-m", "py_compile", sourceFile};
+        String[] compileCommand = {compilerConfig.getString("compileCommand")};
         String[] executeCommand = new String[arguments.length()+2];
         executeCommand[0] = compilerConfig.getString("runCommand");
         executeCommand[1] = sourceFile;
@@ -720,15 +717,17 @@ public class Controller {
         boolean isCompiled = true;
         boolean isRan = true;
         try {
-            // Compile the source
-            ProcessBuilder compileProcessBuilder = new ProcessBuilder(compilerCommand);
-            Process compileProcess = compileProcessBuilder.start();
-            compileProcess.waitFor();
+            if (!Objects.equals(executeCommand[0], "python")) {
+                // Compile the source
+                ProcessBuilder compileProcessBuilder = new ProcessBuilder(compilerCommand);
+                Process compileProcess = compileProcessBuilder.start();
+                compileProcess.waitFor();
 
-            // Check if the compilation was successful
-            if (compileProcess.exitValue() != 0) {
-                System.out.println("comp failed");
-                isCompiled = false;
+                // Check if the compilation was successful
+                if (compileProcess.exitValue() != 0) {
+                    System.out.println("comp failed");
+                    isCompiled = false;
+                }
             }
 
             // Run the compiled code
