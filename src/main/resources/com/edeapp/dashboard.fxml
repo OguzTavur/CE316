@@ -63,14 +63,10 @@
               <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#onCreateConfigButtonClicked" text="Create Config" />
               <MenuItem mnemonicParsing="false" onAction="#onEditConfigButtonClicked" text="Edit Config" />
+              <MenuItem mnemonicParsing="false" onAction="#onExportConfigButtonClicked" text="Export Config" />
               <MenuItem mnemonicParsing="false" onAction="#onDeleteConfigButtonClicked" text="Delete Config" />
               <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Quit" onAction="#onQuitButtonClicked" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">

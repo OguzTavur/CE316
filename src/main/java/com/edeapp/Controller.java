@@ -7,12 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.skin.TreeViewSkin;
 import javafx.scene.input.MouseButton;
 import javafx.stage.*;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -209,6 +212,12 @@ public class Controller {
 
         addFunctionalityToTreeItems();// Adds the functionality to the TreeItems
 
+    }
+
+    @FXML
+    protected void onExportConfigButtonClicked() throws IOException {
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(new File(Paths.get("").toAbsolutePath() + "/ConfigFiles"));
     }
 
     //Requirement 8: Comparing expected and student's result. Writing comparison result to CSV file
