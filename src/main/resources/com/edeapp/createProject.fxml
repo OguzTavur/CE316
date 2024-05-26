@@ -219,12 +219,12 @@
          </AnchorPane>
          <AnchorPane layoutX="30.0" layoutY="150.0">
             <children>
-               <Label layoutY="8.0" text="Project Zip File">
+               <Label layoutY="8.0" wrapText="true"  maxWidth="150.0" text="Choose Folder That Contains Zip Files">
                   <padding>
                      <Insets left="10.0" />
                   </padding>
                </Label>
-               <TextField fx:id="zipFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="projects.zip" />
+               <TextField fx:id="zipFilePath" layoutX="170.0" layoutY="4.0" prefHeight="25.0" prefWidth="320.0" promptText="Projects" />
                <Button fx:id="zipFilePathButton" layoutX="504.0" layoutY="4.0" mnemonicParsing="false" onAction="#onExploreButtonClicked" text="Explore" />
             </children>
             <padding>
