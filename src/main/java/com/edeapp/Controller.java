@@ -15,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.skin.TreeViewSkin;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.stage.*;
 
@@ -58,6 +59,7 @@ public class Controller {
         popup.initOwner(getPrimaryStage());
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("New Project");
+        popup.getIcons().add(new Image(new FileInputStream("img.png")));
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         messageExchangePoint.setPopupController(fxmlLoader.getController());
@@ -77,6 +79,7 @@ public class Controller {
         popup.initOwner(getPrimaryStage());
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Edit Config File");
+        popup.getIcons().add(new Image(new FileInputStream("img.png")));
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
@@ -99,6 +102,7 @@ public class Controller {
         popup.initOwner(getPrimaryStage());
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Create Configuration File");
+        popup.getIcons().add(new Image(new FileInputStream("img.png")));
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
@@ -116,6 +120,7 @@ public class Controller {
         popup.initOwner(getPrimaryStage());
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Delete Configuration File");
+        popup.getIcons().add(new Image(new FileInputStream("img.png")));
         popup.setResizable(false);
         popup.setScene(fxmlLoader.load());
         // This comes after load() function. The reason behind of this, if we set the controller before load it the PopupController will store null
@@ -909,9 +914,10 @@ public class Controller {
 
     }
 
-    public void showPopupWithContent(String content) {
+    public void showPopupWithContent(String content) throws FileNotFoundException {
         Stage popupStage = new Stage();
         popupStage.setTitle("User Manual");
+        popupStage.getIcons().add(new Image(new FileInputStream("img.png")));
 
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
