@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -918,6 +920,40 @@ public class Controller {
 
     }
 
+    @FXML
+    protected void onUserManualClicked() {
+        String filePath = "UserManual.txt";
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            showPopupWithContent(content.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showPopupWithContent(String content) {
+        Stage popupStage = new Stage();
+        popupStage.setTitle("User Manual");
+
+        TextArea textArea = new TextArea(content);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+
+        ScrollPane scrollPane = new ScrollPane(textArea);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        Scene scene = new Scene(scrollPane, 750, 600);
+        popupStage.setScene(scene);
+        popupStage.show();
+    }
     @FXML
     protected void onAboutClicked() {
         String contentText = "- Harun Onur\n- Ege Deniz Yasar\n- Ali Boztepe\n- Oguz Kaan Tavur" +

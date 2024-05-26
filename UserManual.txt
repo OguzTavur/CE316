@@ -1,0 +1,91 @@
+Educational Development Environment (EDE) User Manual
+
+Introduction
+Welcome to the Educational Development Environment (EDE), a tool designed for teachers to manage programming assignments efficiently. This user manual will guide you through the features and functionalities of EDE, ensuring you can utilize the application effectively.
+
+Features Overview
+	•  Project Management: Create, open, and close projects.
+	•  Configuration Management: Create, edit, export, and delete configuration files.
+	•  File Handling: Extract student code submissions and check outputs.
+	•  Help Section: Access information about the application and usage instructions.
+
+Getting Started
+File Menu Functions
+	1. New Project:
+		•  Access: File Menu > New Project
+		•  Steps:
+			1. Click New Project. A popup window will appear.
+			2. Enter your Project name.
+			3. Choose to create a new configuration file or import an existing one:
+				•  New Configuration: Click New, fill in the required details, and select the location to save the project.
+				•  Import Configuration: Click Import, select the configuration file, and choose the location to save the project.
+			4. In the last part of the popup, provide the ZIP file containing student submissions.
+			5. Click Create to generate the project, which will appear in the left tree view.
+
+	2. Open Project:
+		•  Access: File Menu > Open Project
+		•  Steps:
+			1. Click Open Project.
+			2. Select the project file to open. The project will be displayed in the left tree view.
+
+	3. Close Project:
+		•  Access: File Menu > Close Project
+		•  Steps:
+			1. Click Close Project. The currently open project will be closed.
+
+Configuration File Management
+	1. Create Configuration:
+		•  Access: File Menu > Create Config
+		•  Steps:
+			1. Click Create Config.
+			2. Enter the configuration file name, project language, optional arguments, expected output, and the location to save the configuration file.
+			3. Click Create to generate the configuration file.
+
+	2. Edit Configuration:
+		•  Access: File Menu > Edit Config
+		•  Steps:
+			1. Click Edit Config.
+			2. Select the configuration file to edit.
+			3. Make the desired changes and click Save to update the configuration file.
+
+	3. Export Configuration:
+		•  Access: File Menu > Export Config
+		•  Steps:
+			1. Click Export Config.
+			2. Select the configuration file to export.
+
+	4. Delete Configuration:
+		•  Access: File Menu > Delete Config
+		•  Steps:
+			1. Click Delete Config.
+			2. Select the configuration file to delete and confirm.
+
+Quit Application
+	•  Access: File Menu > Quit
+	•  Steps:
+		1. Click Quit to close the application.
+
+Help Menu
+	1. About:
+		•  Access: Help Menu > About
+		•  Details: Provides brief information about the application and the developers' names.
+
+	2. User Manual:
+		•  Access: Help Menu > User Manual
+		•  Details: Provides detailed usage instructions for the application.
+
+Main Screen Operations
+	•  File Management:
+		•  View files in the tree view on the left.
+		•  Double-click a file to open it in the center pane.
+		•  Right-click on configuration files to edit or delete them.
+		•  Right-click on the project folder to unzip all files or unzip files individually.
+
+	•  Checking Student Outputs:
+		•  After unzipping student files, click the Check button at the bottom right.
+		•  The results will show if student outputs match the expected results:
+		•  ✔ indicates a match.
+		•  X indicates a mismatch.
+		•  A CSV file summarizing the results will be generated in the project folder.
+		•  To update results with new student submissions, reopen the project and click Check.
+
