@@ -149,8 +149,6 @@ public class Controller {
         File createNewProjectDirectory = new File(projectDirectory + "\\" + projectName);
         if (!createNewProjectDirectory.exists()) {
             if(createNewProjectDirectory.mkdirs()){
-                System.out.println("Directory is created!");
-                System.out.println(createNewProjectDirectory.getAbsolutePath());
                 _InitialDirectory = createNewProjectDirectory;
             }
         }
@@ -167,7 +165,6 @@ public class Controller {
             try {
                 // Perform the copy operation
                 Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("File copied successfully from " + configFilePath + " to " + projectDirectory + "\\" + projectName);
             } catch (IOException e) {
                 System.out.println("Failed to copy file: " + e.getMessage());
             }
@@ -177,12 +174,8 @@ public class Controller {
         File[] files = relocateFolderThatContainsZipFiles.listFiles();
         assert files != null;
         for (File file: files){
-            if (file.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + file.getName()))) {
-                System.out.println("File move to " + file.getAbsolutePath());
-            }
+            boolean renamed = file.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + file.getName()));
         }
-//        if(relocateFolderThatContainsZipFiles.renameTo(new File(projectDirectory + "\\" + projectName + "\\" + relocateFolderThatContainsZipFiles.getName())))
-//            System.out.println("File move to " + relocateFolderThatContainsZipFiles.getAbsolutePath());
 
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(createNewProjectDirectory.getAbsoluteFile()));
         root.setExpanded(true);
@@ -300,7 +293,6 @@ public class Controller {
             if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
                 TreeItem<FileItem> selectedItem = treeView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && selectedItem.getValue() != null) {
-                    //System.out.println("Double-clicked on: " + selectedItem.getValue());
                     if (readFile(selectedItem.getValue().file()))
                         openTabWithFileData(selectedItem.getValue().toString());
                 }
@@ -318,7 +310,6 @@ public class Controller {
                     treeViewContextMenu = contextMenu;
                     contextMenu.show(treeView, event.getScreenX(), event.getScreenY());
                 } else if (selectedItem != null && !selectedItem.getValue().file().isFile()) {
-                    System.out.println("Buradayim");
                     ContextMenu contextMenu = contextMenuBuilder(null,selectedItem.getValue().file().isFile(),selectedItem);
                     if (contextMenu == null) {
                         return;
@@ -455,7 +446,6 @@ public class Controller {
                 "    }\n" +
                 "}";
 
-        System.out.println(json);
         // Replace with the path where you want to save the config file
         String configFilePath = customFileName + ".json";
         File configFile = new File(configFilePath);
@@ -467,11 +457,7 @@ public class Controller {
     }
 
     protected void deleteFileOrDirectory(File file){
-        if (file.delete()) {
-            System.out.println("Deleted the file: " + file.getName());
-        } else {
-            System.out.println("Failed to delete the file.");
-        }
+        boolean deleted = file.delete();
         refreshTreeView();
     }
 
@@ -524,9 +510,8 @@ public class Controller {
 
     protected void saveFileToGivenDirectory(File file, String destinationPath){
         File relocateJSONFile = new File(file.getAbsolutePath());
-        if(relocateJSONFile.renameTo(new File(destinationPath, relocateJSONFile.getName())))
-            System.out.println("File Moved to " + relocateJSONFile.getAbsolutePath());
-        else System.out.println("File could not move!");
+        boolean relocated = relocateJSONFile.renameTo(new File(destinationPath, relocateJSONFile.getName()));
+
     }
 
     protected ArrayList<Student> queryStudents(String filePath) throws Exception {
@@ -579,7 +564,7 @@ public class Controller {
             writer.append("\n");
 
             writer.flush();
-            System.out.println("CSV file created successfully.");
+
         } catch (IOException e) {
             System.err.println("Error writing CSV file: " + e.getMessage());
         }
@@ -610,12 +595,7 @@ public class Controller {
     public JSONObject getObject(String configFilePath,String objectName) throws IOException {
 
         String jsonText = new String(Files.readAllBytes(Path.of(configFilePath)));
-
-
         JSONObject json = new JSONObject(jsonText);
-
-
-        System.out.println(json);
         return json.getJSONObject(objectName);
     }
 
@@ -749,7 +729,6 @@ public class Controller {
 
                 // Check if the compilation was successful
                 if (compileProcess.exitValue() != 0) {
-                    System.out.println("comp failed");
                     isCompiled = false;
                 }
             }
@@ -761,7 +740,6 @@ public class Controller {
 
             // Check if the run was successful
             if (runProcess.exitValue() != 0) {
-                System.out.println("run failed");
                 isRan = false;
             }
 
@@ -806,9 +784,7 @@ public class Controller {
             }
             zis.closeEntry();
         }
-        if (zipFile.delete()) {
-            System.out.println("Zip is unzipped and deleted!");
-        }else System.out.println("Zip could not be deleted!");
+        boolean deleted = zipFile.delete();
         refreshTreeView();
     }
 
@@ -842,13 +818,11 @@ public class Controller {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem openMenuItem = new MenuItem("Open");
             openMenuItem.setOnAction(event1 -> {
-                System.out.println("Opening file...");
                 if (readFile(selectedItem.getValue().file()))
                     openTabWithFileData(selectedItem.getValue().toString());
             });
             MenuItem deleteMenuItem = new MenuItem("Delete");
             deleteMenuItem.setOnAction(event1 -> {
-                System.out.println("Deleting file...");
                 deleteFileOrDirectory(selectedItem.getValue().file());
             });
             MenuItem editMenuItem = new MenuItem("Edit");
@@ -860,11 +834,10 @@ public class Controller {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("Editing file...");
             });
             MenuItem unzipMenuItem = new MenuItem("Unzip");
             unzipMenuItem.setOnAction(event1 -> {
-                System.out.println("Unzipping file...");
+
                 try {
                     unZipFile(selectedItem.getValue().file());
                 } catch (IOException e) {
@@ -886,7 +859,6 @@ public class Controller {
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem unzipMenuItem = new MenuItem("Unzip All");
                 unzipMenuItem.setOnAction(event1 -> {
-                    System.out.println("Unzipping files...");
                     try {
                         FileFilter filter = f -> f.getName().endsWith("zip");
 

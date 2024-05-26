@@ -62,11 +62,6 @@ public class PopupController {
     protected void onCreateButtonClicked() throws IOException {
         if (radioNew.isSelected()) {
             if (checkInputAreas(false)) {
-                System.out.println("Project Name: " + projectName.getText());
-                System.out.println("Language: " + languageChoice.getValue());
-                System.out.println("Project Arguments: " + projectArguments.getText());
-                System.out.println("Project Destination Path: " + projectDestinationPath.getText());
-                System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().closePopUp();
                 messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),false,configFileName.getText(),languageChoice.getValue().toString(),zipFilePath.getText(),null,projectArguments.getText(),expectedOutput.getText());
@@ -74,10 +69,6 @@ public class PopupController {
         }
         else if (radioImport.isSelected()) {
             if (checkInputAreas(true)) {
-                System.out.println("Project Name: " + projectName.getText());
-                System.out.println("Config File Path: " + configFilePath.getText());
-                System.out.println("Project Destination Path: " + projectDestinationPath.getText());
-                System.out.println("Zip File Path: " + zipFilePath.getText());
                 MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
                 messageExchangePoint.getController().createNewProject(projectDestinationPath.getText(),projectName.getText(),true,null,null,zipFilePath.getText(),configFilePath.getText(),null,null);
                 messageExchangePoint.getController().closePopUp();
@@ -88,11 +79,6 @@ public class PopupController {
     @FXML
     protected void onCreateButtonClickedNewConfig() throws IOException {
         if (checkInputAreasForCreateConfigFile()) {
-            System.out.println("Configuration File Name: " + configFileName.getText());
-            System.out.println("Program Language: " + languageChoice.getValue());
-            System.out.println("Project Arguments: " + projectArguments.getText());
-            System.out.println("Expected Output: " + expectedOutput.getText());
-            System.out.println("Destination Path: " + destinationPath.getText());
             MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
             messageExchangePoint.getController()
                     .saveFileToGivenDirectory(messageExchangePoint.getController()
@@ -105,12 +91,6 @@ public class PopupController {
     @FXML
     protected void onSaveButtonClicked() throws IOException {
         if (checkInputAreasForEditConfigFile()) {
-            System.out.println("Configuration File Path: " + configFilePath.getText());
-            System.out.println("Program Language: " + languageChoice.getValue());
-            System.out.println("Project Arguments: " + projectArguments.getText());
-            System.out.println("Expected Output: " + expectedOutput.getText());
-
-
             MessageExchangePoint messageExchangePoint = MessageExchangePoint.getInstance();
             messageExchangePoint.getController().editJsonConfiguration(configFilePath.getText(),languageChoice.getValue().toString(),projectArguments.getText(),expectedOutput.getText());
             messageExchangePoint.getController().closePopUp();
