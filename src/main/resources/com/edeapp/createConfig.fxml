@@ -53,6 +53,7 @@
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="C" />
+                           <String fx:value="C++" />
                            <String fx:value="Java" />
                            <String fx:value="Python" />
                         </FXCollections>

@@ -198,6 +198,9 @@ public class Controller {
             return;
         _InitialDirectory = selectedDirectory.getAbsoluteFile(); // To store selected root directory
 
+        tableView.getColumns().clear();
+        tableView.getItems().clear();
+
         TreeItem<FileItem> root = new TreeItem<>(new FileItem(selectedDirectory.getAbsoluteFile()));
         root.setExpanded(true);
         treeView.setRoot(root);
@@ -400,7 +403,7 @@ public class Controller {
             compileCommand = "gcc";
             runCommand = "";
         } else if ("Python".equalsIgnoreCase(language)) {
-            compileCommand = "python -m py_compile";
+            compileCommand = "";
             runCommand = "python";
         } else if ("C++".equalsIgnoreCase(language)) {
             compileCommand = "g++";
@@ -421,11 +424,11 @@ public class Controller {
                 "        \"argument\": [" ;
 
         String[] argArray = arguments.split(",");
-        if (argArray[0] == "") {
+        if (!Objects.equals(argArray[0], "")) {
             for (String argument : argArray) {
-                json += "\n           \"" + argument + "\",\n";
+                json += "\n           \"" + argument + "\",";
             }
-            json = json.substring(0,json.length()-2);
+            json = json.substring(0,json.length()-1);
         }
         json += "\n        ],\n        \"expectedOutput\": \"" + expectedOutput + "\"\n" +
                 "    }\n" +
@@ -466,7 +469,7 @@ public class Controller {
             compCommand = "gcc";
             runCommand = "";
         } else if (language.equals("Python")) {
-            compCommand = "python -m py_compile";
+            compCommand = "";
             runCommand = "python";
         } else if (language.equals("C++")) {
             compCommand = "g++";
@@ -703,7 +706,7 @@ public class Controller {
 
         JSONArray arguments = projectConfig.getJSONArray("argument");
         String[] executeCommand = new String[arguments.length() + 1];
-        executeCommand[0] = "./" + executableName; // Add ./ prefix
+        executeCommand[0] = executableName; // Add ./ prefix
         for (int i = 0; i < arguments.length(); i++) {
             executeCommand[i + 1] = arguments.getString(i);
         }
