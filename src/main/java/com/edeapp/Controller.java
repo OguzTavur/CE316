@@ -223,8 +223,6 @@ public class Controller {
         checkOutputsOfStudents(_InitialDirectory.getAbsolutePath());
         String csvFilePath = _InitialDirectory.getAbsolutePath() + "/StudentResults.csv";
 
-
-        //TableView of students it will be moved to its method
         tableView.getItems().clear();
         tableView.getColumns().clear();
         TableColumn<Student, String> idColumn = new TableColumn<>("Student ID");
