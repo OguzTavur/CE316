@@ -19,7 +19,7 @@ File Menu Functions
 			3. Choose to create a new configuration file or import an existing one:
 				•  New Configuration: Click New, fill in the required details, and select the location to save the project.
 				•  Import Configuration: Click Import, select the configuration file, and choose the location to save the project.
-			4. In the last part of the popup, provide the ZIP file containing student submissions.
+			4. In the last part of the popup, choose the file containing ZIP file of student submissions.
 			5. Click Create to generate the project, which will appear in the left tree view.
 
 	2. Open Project:
